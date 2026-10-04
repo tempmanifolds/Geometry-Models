@@ -1,0 +1,114 @@
+\section{集中解析}
+\begin{solution}{题 1 · 解析}
+\think 两个三角形不一定全等，等面积也不必比较三边。先用已知的 \(BC=BC'\) 作等底，再把问题转成等高。
+
+\solve 过 \(D'\) 作 \(D'M\perp BC\)，\(M\) 为垂足；过 \(D\) 作 \(DN\perp BC'\)，\(N\) 为垂足。本图中 \(M\) 在射线 \(BC\) 上，\(N\) 在 \(C'B\) 向 \(B\) 外的延长线上。
+\diagram{\diArea}
+
+由两个公共顶角都是直角，按图有
+\[
+\angle CBD'=180^\circ-\angle C'BD.
+\]
+由于 \(BM\) 与 \(BC\) 同向、\(BN\) 与 \(BC'\) 反向，
+\[
+\angle MBD'=\angle CBD',\qquad
+\angle NBD=180^\circ-\angle C'BD,
+\]
+所以 \(\angle MBD'=\angle NBD\)。结合 \(\angle BMD'=\angle BND=90^\circ\)、\(BD'=BD\)，得到
+\[
+\triangle BMD'\cong\triangle BND\quad(\mathrm{AAS}),\qquad D'M=DN.
+\]
+从而
+\[
+S_{\triangle CBD'}=\frac12 BC\cdot D'M
+=\frac12 BC'\cdot DN=S_{\triangle C'BD}.
+\]
+
+\checkup 用一组满足构型的坐标核对：\(B(0,0)\)、\(C(-6,2)\)、\(C'(-2,-6)\)、\(D(3,1)\)、\(D'(-1,3)\)。此时 \(BC=BC'=2\sqrt{10}\)，两条高都是 \(8/\sqrt{10}\)，两块面积都是 \(8\)。坐标只作核验，正式证明用全等。
+\insight{等面积先找等底；高不现成，就作垂线，把等高交给直角三角形全等。}
+\end{solution}
+\clearpage
+
+\begin{solution}{题 2 · 解析}
+\think \(E\) 是 \(CD'\) 的中点，但这个等长条件还不能和 \(BC=BC'\)、\(BD=BD'\) 放进同一组全等。倍长 \(BE\)，把 \(BD'\) 搬到 \(C\) 处，再比较一个大三角形。
+
+\solve 延长 \(BE\) 到 \(G\)，使 \(EG=EB\)，连接 \(CG\)。于是 \(B\)、\(E\)、\(G\) 共线，\(CE=ED'\)，\(\angle CEG=\angle D'EB\)。
+\diagram{\diMidpoint}
+
+\solvehead{第一步：用八字形全等搬运一条边}
+\[
+\triangle CEG\cong\triangle D'EB\quad(\mathrm{SAS}).
+\]
+因此 \(CG=D'B=DB\)，且 \(\angle ECG=\angle ED'B\)，故 \(CG\parallel BD'\)。按图，射线 \(CG\) 与 \(BD'\) 同向。
+
+\solvehead{第二步：比较一组大三角形}
+由于 \(CB\) 与 \(BC\) 反向，\(CG\) 与 \(BD'\) 同向，
+\[
+\angle GCB=180^\circ-\angle CBD'=\angle DBC'.
+\]
+结合 \(CG=DB\)、\(CB=BC'\)，得到
+\[
+\triangle GCB\cong\triangle DBC'\quad(\mathrm{SAS}).
+\]
+于是 \(\angle GBC=\angle DC'B\)。
+
+\solvehead{第三步：用对应角推出垂直}
+延长 \(EB\) 过 \(B\)，与 \(C'D\) 相交于 \(H\)。按图，\(BH\)、\(BG\) 是反向射线，\(\angle CBC'=90^\circ\)，所以
+\[
+\angle C'BH+\angle GBC=90^\circ.
+\]
+又因 \(H\) 在 \(C'D\) 上，\(\angle BC'H=\angle DC'B=\angle GBC\)。在 \(\triangle BC'H\) 中，\(B\)、\(C'\) 两个角之和为 \(90^\circ\)，故 \(\angle BHC'=90^\circ\)，即 \(BE\perp C'D\)。
+
+\solvehead{顺手得到的长度关系}
+第二次全等还给出 \(GB=DC'\)。因为 \(GB=2BE\)，故
+\[
+\boxed{2BE=C'D}.
+\]
+
+\checkup 沿用题 1 的坐标，\(E(-7/2,5/2)\)，\(G(-7,5)\)，\(CG=BD=\sqrt{10}\)；\(BE=\sqrt{74}/2\)，\(C'D=\sqrt{74}\)，与伴随的长度关系一致。
+\insight{倍长中线先搬运等长边，再用大三角形全等同时取得角度与长度关系。}
+\end{solution}
+\clearpage
+
+\begin{solution}{题 3 · 解析}
+\think 这一题和题 2 的已知、结论交换了位置。现在 \(CE=ED'\) 还是待证，不能把它放进倍长后的全等条件。题目给出了垂直，便从 \(C\)、\(D'\) 向 \(BF\) 作双垂，连续用两次章首模型。
+
+\solve 过 \(C\) 作 \(CM\perp BF\)，过 \(D'\) 作 \(D'N\perp BF\)，\(M\)、\(N\) 为垂足。本题的 \(M\)、\(N\) 与题 1 的垂足不同。
+\diagram{\diConverse}
+
+\solvehead{第一步：用 \(BC=BC'\)，得到 \(CM=BF\)}
+\(M\)、\(B\)、\(F\) 共线，\(\angle CMB=\angle CBC'=\angle BFC'=90^\circ\)。由直线上的角和，
+\[
+\angle CBM+\angle C'BF=90^\circ.
+\]
+而在直角三角形 \(C'BF\) 中，\(\angle BC'F+\angle C'BF=90^\circ\)，故 \(\angle CBM=\angle BC'F\)。再结合 \(BC=BC'\)，得到
+\[
+\triangle BCM\cong\triangle C'BF\quad(\mathrm{AAS}),\qquad CM=BF.
+\]
+这正是章首的一线三等角：等斜边推出对应直角边相等。
+
+\solvehead{第二步：用 \(BD'=BD\)，得到 \(D'N=BF\)}
+\(N\)、\(B\)、\(F\) 共线，\(\angle D'NB=\angle D'BD=\angle BFD=90^\circ\)。同样，
+\begin{align*}
+\angle D'BN+\angle DBF&=90^\circ,\\
+\angle BDF+\angle DBF&=90^\circ,
+\end{align*}
+所以 \(\angle D'BN=\angle BDF\)。结合 \(BD'=BD\)，得到
+\[
+\triangle BD'N\cong\triangle DBF\quad(\mathrm{AAS}),\qquad D'N=BF.
+\]
+于是 \(CM=D'N\)。
+
+\solvehead{第三步：接上八字形全等，得到中点}
+按图，\(C\)、\(E\)、\(D'\) 共线，\(M\)、\(E\)、\(N\) 共线，\(\angle CME=\angle D'NE=90^\circ\)，\(\angle CEM=\angle D'EN\)。结合 \(CM=D'N\)，得到
+\[
+\triangle CME\cong\triangle D'NE\quad(\mathrm{AAS}),\qquad CE=ED'.
+\]
+所以 \(E\) 是 \(CD'\) 的中点。
+
+若 \(M\)、\(N\) 恰好都与 \(E\) 重合，则 \(CM=D'N\) 直接给出 \(CE=ED'\)，不再使用退化三角形的全等。
+
+\checkup 沿用题 1 的坐标，三条垂线段满足 \(CM=D'N=BF=16/\sqrt{74}\)，且 \(CE=ED'=\sqrt{26}/2\)，符合上述两次搬运。
+\insight{要从垂直证明中点，先用双垂把同一条 \(BF\) 搬到两侧，再用八字形全等收尾。}
+\end{solution}
+\clearpage

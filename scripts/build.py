@@ -35,15 +35,17 @@ def expanded_tex(project, path, seen=None):
 
 projects={
     'half-angle':(ROOT/'chapters/01-half-angle/latex','geometry-Models-01-夹半角讲义.pdf',10),
-    'book':(ROOT/'latex','geometry-Models-讲义.pdf',12),
+    'book':(ROOT/'latex','geometry-Models-讲义.pdf',15),
 }
 names=('half-angle','book') if args.target=='all' else (args.target,)
 out=ROOT/'output/pdf';out.mkdir(parents=True,exist_ok=True)
 # The combined Markdown is generated from the separately editable chapter drafts.
 drafts=['# geometry Models\n\n署名：Hence\n\n从图形中发现关系，在推理中理解几何\n']
-for folder,title in (('01-half-angle','第一章 夹半角'),('02-hand-in-hand','第二章 手拉手模型')):
+for folder,title in (('01-half-angle','第一章 夹半角'),('02-hand-in-hand','第二章 手拉手模型'),
+                     ('03-double-isosceles','第三章 双等腰模型（婆罗摩笈多模型）')):
     draft=(ROOT/'chapters'/folder/'content.md').read_text(encoding='utf-8')
     draft=re.sub(r'^# .*\n','',draft,count=1)
+    draft=re.sub(r'^署名：Hence\s*\n','',draft,flags=re.M)
     if folder=='01-half-angle':
         draft=re.sub(r'^\s*## 第一部分 夹半角\s*\n','',draft,count=1)
     draft=re.sub(r'^(#{2,5}) ',r'\1# ',draft,flags=re.M)

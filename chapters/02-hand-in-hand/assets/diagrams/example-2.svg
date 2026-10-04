@@ -11,12 +11,12 @@
 <line x1="440.000" y1="286.542" x2="452.021" y2="274.521" stroke="#8e969e" stroke-width="2"/>
 <line x1="631.623" y1="91.492" x2="615.131" y2="95.616" stroke="#8e969e" stroke-width="2"/>
 <line x1="615.131" y1="95.616" x2="611.008" y2="79.123" stroke="#8e969e" stroke-width="2"/>
-<line x1="278.800" y1="413.800" x2="288.700" y2="423.700" stroke="#20252b" stroke-width="2"/>
-<line x1="591.300" y1="423.700" x2="601.200" y2="413.800" stroke="#20252b" stroke-width="2"/>
-<line x1="682.360" y1="323.302" x2="695.942" y2="319.907" stroke="#20252b" stroke-width="2"/>
-<line x1="684.058" y1="330.093" x2="697.640" y2="326.698" stroke="#20252b" stroke-width="2"/>
-<line x1="379.198" y1="129.860" x2="382.593" y2="143.442" stroke="#20252b" stroke-width="2"/>
-<line x1="372.407" y1="131.558" x2="375.802" y2="145.140" stroke="#20252b" stroke-width="2"/>
+<line x1="276.325" y1="411.325" x2="291.175" y2="426.175" stroke="#20252b" stroke-width="2"/>
+<line x1="588.825" y1="426.175" x2="603.675" y2="411.325" stroke="#20252b" stroke-width="2"/>
+<line x1="678.965" y1="324.151" x2="699.338" y2="319.058" stroke="#20252b" stroke-width="2"/>
+<line x1="680.662" y1="330.942" x2="701.035" y2="325.849" stroke="#20252b" stroke-width="2"/>
+<line x1="378.349" y1="126.465" x2="383.442" y2="146.838" stroke="#20252b" stroke-width="2"/>
+<line x1="371.558" y1="128.162" x2="376.651" y2="148.535" stroke="#20252b" stroke-width="2"/>
 <text x="98.500" y="616.000" font-family="Arial, sans-serif" font-size="30" font-style="italic" fill="#20252b">B</text>
 <text x="418.000" y="299.500" font-family="Arial, sans-serif" font-size="30" font-style="italic" fill="#20252b">A</text>
 <text x="760.500" y="616.000" font-family="Arial, sans-serif" font-size="30" font-style="italic" fill="#20252b">C</text>

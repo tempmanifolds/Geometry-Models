@@ -4,10 +4,11 @@ Hence 的初中几何模型总结与培优讲义。面向初二、初三培优�
 
 ## 阅读与编辑
 
-- [完整讲义 PDF](output/pdf/geometry-Models-讲义.pdf)：夹半角与手拉手合编，共用封面和目录，各章保留自己的题号。
+- [完整讲义 PDF](output/pdf/geometry-Models-讲义.pdf)：夹半角、手拉手与双等腰合编，共用封面和目录，各章保留自己的题号。
 - [全书 Markdown](content.md)：由各章内容稿汇总。
 - [全书 LaTeX 主文件](latex/main.tex)：可编辑正文、显示开关与编译入口。
 - [夹半角单章 PDF](output/pdf/geometry-Models-01-夹半角讲义.pdf)：保留单章使用方式。
+- [双等腰单章核对稿](output/pdf/geometry-Models-03-双等腰模型-核对稿.pdf)：与主书第三章共用正文和重绘图。
 
 ## 章节
 
@@ -15,6 +16,7 @@ Hence 的初中几何模型总结与培优讲义。面向初二、初三培优�
 | --- | --- | --- | --- |
 | 第一章 夹半角 | 10 道题、4 种识别构型；旋转、翻折、延长、矩形迁移及和差变化 | [Markdown](chapters/01-half-angle/content.md) | [专题说明](chapters/01-half-angle/README.md) |
 | 第二章 手拉手模型 | 2 道原题，每题两种解法；手拉脚、脚拉脚、倍长及中点搬运 | [Markdown](chapters/02-hand-in-hand/content.md) | [专题说明](chapters/02-hand-in-hand/README.md) |
+| 第三章 双等腰模型（婆罗摩笈多模型） | 1 页一线三等角回顾、3 项结论及完整证明；等面积、中点与垂直、伴随长度关系 | [Markdown](chapters/03-double-isosceles/content.md) | [专题说明](chapters/03-double-isosceles/README.md) |
 
 原始 Word、PDF、视频、字幕及提取截图只保留在本地，均从版本管理和交付项目包中排除。GitHub 保存整理后的讲义、可编辑源文件和重绘图。
 
@@ -27,6 +29,10 @@ Hence 的初中几何模型总结与培优讲义。面向初二、初三培优�
 脚本默认各编译两遍，生成完整讲义与夹半角单章 PDF，同时更新全书 Markdown。单独编译全书可增加参数：
 
     python scripts/build.py --target book
+
+单独编译双等腰章节并更新自包含编辑稿：
+
+    python chapters/03-double-isosceles/build.py
 
 如果 XeLaTeX 不在环境路径中，用参数指定位置：
 
@@ -42,13 +48,19 @@ Hence 的初中几何模型总结与培优讲义。面向初二、初三培优�
 
 几何图由 TikZ 绘制，可在各章的 diagrams.tex 中修改。图中保留点名、角度、等长记号及必要的变量；数值长度写在题干或推导中。
 
+全书现有等长标记的小短线已按核对结果统一加长 50%，TikZ 参数从总长 4pt 调到 6pt，配套 PNG、SVG 同步更新。重绘脚本保存在 scripts/ 中：
+
+    python scripts/make_hand_in_hand_diagrams.py
+    python scripts/make_double_isosceles_diagrams.py
+
 主文件中的显示开关可以隐藏入手提示，或将模型总结切换为学生自主总结区。原有讲解内容保留在开关内。
 
 ## 数学核验
 
     python scripts/check_math.py
     python scripts/check_hand_in_hand.py
+    python scripts/check_double_isosceles.py
 
-前者验证夹半角数值题和拓展公式；后者以精确分数验证手拉手两题的旋转、等长、平行、垂直与相似，包括位置变化和退化情形。最终 PDF 还需逐页检查。
+三个脚本分别验证夹半角数值题和拓展公式、手拉手两题的旋转与搬运关系、双等腰的等面积与中点垂直关系。双等腰检查 288 组精确构型，包含垂足重合情形及镜像反例。最终 PDF 还需逐页检查。
 
 Loom 模板由 Polaris（北极甜虾）提供，类文件头保留原作者与 MIT 许可说明。
