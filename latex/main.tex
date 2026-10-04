@@ -14,7 +14,7 @@
 %\runningthread{《主题》 · 课前自学讲义}
 
 % ---------------------------------------------------------------------------
-%  讲义专用组件：题面（茜红结）、解析（靛蓝结）、四段式解答标签
+%  讲义专用组件：题面（茜红结）、解析（靛蓝结）、三段式解答标签
 %  —— 这些宏定义住在 main.tex（不在 cls），以便随讲义微调。
 % ---------------------------------------------------------------------------
 % 题目框：breakable=false 保证一题不跨页。默认不留答题空白区（老师偏好）。
@@ -35,8 +35,6 @@
   {\headingfont\bfseries\color{inkiron}〔解〕}\enspace}
 \newcommand{\solvehead}[1]{\par\smallskip\noindent
   {\headingfont\bfseries\color{inkiron}〔#1〕}\enspace}
-\newcommand{\checkup}{\par\smallskip\noindent
-  {\headingfont\bfseries\color{selvage}〔检验〕}\enspace}
 \newcommand{\insight}[1]{\par\smallskip\noindent
   {\headingfont\bfseries\color{weld!60!inkiron}〔方法点睛〕}\enspace
   {\strandfont\small #1}\par}
@@ -63,17 +61,21 @@
 \hypersetup{pdftitle={geometry Models},pdfauthor={Hence},pdfsubject={初中几何模型培优讲义：夹半角、手拉手、双等腰}}
 \renewcommand{\loomcovermotto}{从图形中发现关系，在推理中理解几何}
 \renewcommand{\contentsname}{目录}
+% BEGIN GENERATED: chapter-diagrams
 \input{../chapters/01-half-angle/latex/diagrams}
 \input{../chapters/02-hand-in-hand/latex/diagrams}
 \input{../chapters/03-double-isosceles/latex/diagrams}
+% END GENERATED: chapter-diagrams
 \begin{document}
 \loomcover{geometry Models}{}{Hence}{2026年10月}
 \clearpage
 {\small\tableofcontents}
 \clearpage
+% BEGIN GENERATED: chapter-body
 \input{sections/01-half-angle}
 \clearpage
 \input{sections/02-hand-in-hand}
 \clearpage
 \input{sections/03-double-isosceles}
+% END GENERATED: chapter-body
 \end{document}

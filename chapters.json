@@ -1,0 +1,60 @@
+{
+  "schema_version": 1,
+  "book": {
+    "title": "geometry Models",
+    "author": "Hence",
+    "motto": "从图形中发现关系，在推理中理解几何",
+    "main": "latex/main.tex",
+    "markdown": "content.md",
+    "pdf": "geometry-Models-讲义.pdf"
+  },
+  "chapters": [
+    {
+      "id": "half-angle",
+      "path": "chapters/01-half-angle",
+      "title": "夹半角",
+      "book_title": "第一章 夹半角",
+      "status": "integrated",
+      "problem_count": 10,
+      "book_entry": "latex/sections/01-half-angle.tex",
+      "markdown_remove_heading": "第一部分 夹半角",
+      "standalone": {
+        "main": "chapters/01-half-angle/latex/main.tex",
+        "pdf": "geometry-Models-01-夹半角讲义.pdf"
+      },
+      "math_checks": [
+        "scripts/check_math.py"
+      ]
+    },
+    {
+      "id": "hand-in-hand",
+      "path": "chapters/02-hand-in-hand",
+      "title": "手拉手模型",
+      "book_title": "第二章 手拉手模型",
+      "status": "integrated",
+      "problem_count": 2,
+      "book_entry": "latex/sections/02-hand-in-hand.tex",
+      "standalone": null,
+      "math_checks": [
+        "scripts/check_hand_in_hand.py"
+      ]
+    },
+    {
+      "id": "double-isosceles",
+      "path": "chapters/03-double-isosceles",
+      "title": "双等腰模型（婆罗摩笈多模型）",
+      "book_title": "第三章 双等腰模型（婆罗摩笈多模型）",
+      "status": "integrated",
+      "problem_count": 3,
+      "book_entry": "latex/sections/03-double-isosceles.tex",
+      "standalone": {
+        "main": "chapters/03-double-isosceles/latex/main.tex",
+        "pdf": "geometry-Models-03-双等腰模型-核对稿.pdf",
+        "builder": "chapters/03-double-isosceles/build.py"
+      },
+      "math_checks": [
+        "scripts/check_double_isosceles.py"
+      ]
+    }
+  ]
+}
