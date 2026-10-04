@@ -1,0 +1,926 @@
+
+
+
+
+
+
+
+%% loom.cls -- a WOVEN notebook class for handwritten LaTeX notes
+%% ===========================================================================
+%%  OVERLEAF EDITION.  Same class name (\documentclass{loom}) and same command
+%%  set as the local loom.cls, but every font ships with TeX Live / Overleaf,
+%%  so there is NOTHING to upload -- just drop this file next to your main.tex.
+%%
+%%    Body + math : Libertinus Serif + Libertinus Math   (the original look)
+%%    Display     : Libertinus Sans   (humanist sans, in the spirit of Optima)
+%%    Mono        : Libertinus Mono
+%%    Chinese     : Noto CJK SC        (bundled on Overleaf; macOS fallback)
+%% ---------------------------------------------------------------------------
+%%  Concept:  A page is cloth on a loom.  You don't just typeset the maths,
+%%            you typeset the WEAVE of your own understanding.
+%%
+%%              warp   = threads currently in play (left selvage rail)
+%%              knot   = a result that binds threads together (theorem boxes)
+%%              loose  = an open question / confusion (dangling margin thread)
+%%              warmth = a gauge of how well you actually grok a block
+%%
+%%  Fill-in study notes (built in):  \fillin blanks · \TODO proof gaps ·
+%%            yourturn boxes · \recall margin prompts · \workspace ruled lines.
+%%
+%%  Palette:  natural dyes -- indigo, madder, weld -- ruled in iron-gall.
+%%  Engine:   XeLaTeX  (Libertinus text+math + Libertinus Sans display).
+%%  Author:   北极甜虾 (Polaris), 2026.   MIT-licensed.
+%% ---------------------------------------------------------------------------
+
+\documentclass[11pt]{article}
+\makeatletter
+\newif\ifloom@letter\loom@letterfalse
+\newif\ifloom@cjk\loom@cjktrue
+\RequirePackage{geometry}
+\ifloom@letter
+  \geometry{letterpaper}
+\else
+  \geometry{a4paper}
+\fi
+\geometry{top=2.0cm, bottom=2.3cm, left=2.9cm, right=3.1cm,
+          marginparwidth=2.35cm, marginparsep=0.35cm, headsep=14pt}
+
+% ----- fonts: three-platform adaptive (macOS / Windows / TeXLive container) --
+%   Latin+math: libertinus-otf when installed (full TeX Live / Overleaf), else
+%   fontspec+unicode-math with Latin Modern Math (slim container).
+%   Every family degrades gracefully: macOS native -> Windows lookalike ->
+%   bundled fallback.  Each branch logs a "loom-cn:" line into the .log so a
+%   compile can always be audited for which fonts were actually used.
+\newif\ifloom@haslib
+\IfFileExists{libertinus-otf.sty}{\loom@haslibtrue}{\loom@haslibfalse}
+\ifloom@haslib
+  \RequirePackage{libertinus-otf}% loads fontspec + unicode-math
+  \IfFileExists{microtype.sty}{\RequirePackage{microtype}}{}%
+  \typeout{loom-cn: latin/math = Libertinus}
+\else
+  \RequirePackage{fontspec}
+  \RequirePackage{unicode-math}
+  \IfFileExists{microtype.sty}{\RequirePackage{microtype}}{}%
+  \setmathfont{Latin Modern Math}
+  \typeout{loom-cn: latin/math = Latin Modern (container)}
+\fi
+
+%   Display faces: Optima -> Candara -> \sffamily ; Avenir Next -> Segoe UI -> \sffamily
+\IfFontExistsTF{Optima}{%
+  \newfontfamily\headingfont{Optima}\typeout{loom-cn: heading = Optima}%
+}{%
+  \IfFontExistsTF{Candara}{%
+    \newfontfamily\headingfont{Candara}\typeout{loom-cn: heading = Candara}%
+  }{%
+    \newcommand{\headingfont}{\sffamily}\typeout{loom-cn: heading = sffamily}%
+  }%
+}
+\IfFontExistsTF{Avenir Next}{%
+  \newfontfamily\strandfont{Avenir Next}\typeout{loom-cn: strand = Avenir Next}%
+}{%
+  \IfFontExistsTF{Segoe UI}{%
+    \newfontfamily\strandfont{Segoe UI}\typeout{loom-cn: strand = Segoe UI}%
+  }{%
+    \newcommand{\strandfont}{\sffamily}\typeout{loom-cn: strand = sffamily}%
+  }%
+}
+\newcommand{\labelfont}{\strandfont}
+
+%   Mono: Menlo -> Consolas -> Noto Sans Mono CJK SC -> DejaVu -> (keep default)
+\IfFontExistsTF{Menlo}{\setmonofont{Menlo}[Scale=0.92]}{%
+  \IfFontExistsTF{Consolas}{\setmonofont{Consolas}[Scale=0.92]}{%
+    \IfFontExistsTF{Noto Sans Mono CJK SC}{\setmonofont{Noto Sans Mono CJK SC}[Scale=0.92]}{%
+      \IfFontExistsTF{DejaVu Sans Mono}{\setmonofont{DejaVu Sans Mono}[Scale=0.90]}{}}}}
+
+%   CJK: with xeCJK -> Noto CJK -> SimSun/DengXian (Windows) -> Songti/PingFang
+%   (macOS); without xeCJK (slim container) -> Noto as main text + ICU breaking.
+\IfFileExists{xeCJK.sty}{%
+  \RequirePackage{xeCJK}%
+  \IfFontExistsTF{Noto Serif CJK SC}{%
+    \setCJKmainfont{Noto Serif CJK SC}[BoldFont={Noto Serif CJK SC Bold}]%
+    \setCJKmonofont{Noto Sans Mono CJK SC}%
+    \typeout{loom-cn: cjk main = Noto Serif CJK SC}%
+  }{%
+    \IfFontExistsTF{SimSun}{%
+      \setCJKmainfont{SimSun}[BoldFont={SimHei}, ItalicFont={KaiTi}, BoldItalicFont={SimHei}]%
+      \setCJKmonofont{SimSun}%
+      \typeout{loom-cn: cjk main = SimSun}%
+    }{%
+      \setCJKmainfont{Songti SC}[ItalicFont={Kaiti SC}]%
+      \setCJKmonofont{Songti SC}%
+      \typeout{loom-cn: cjk main = Songti SC}%
+    }%
+  }%
+  \IfFontExistsTF{Noto Sans CJK SC}{%
+    \setCJKsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]%
+    \typeout{loom-cn: cjk sans = Noto Sans CJK SC}%
+  }{%
+    \IfFontExistsTF{DengXian}{%
+      \setCJKsansfont{DengXian}[BoldFont={DengXian Bold}, ItalicFont={KaiTi}, BoldItalicFont={DengXian Bold}]%
+      \typeout{loom-cn: cjk sans = DengXian}%
+    }{%
+      \IfFontExistsTF{Microsoft YaHei}{%
+        \setCJKsansfont{Microsoft YaHei}[BoldFont={Microsoft YaHei Bold}, ItalicFont={KaiTi}, BoldItalicFont={Microsoft YaHei Bold}]%
+        \typeout{loom-cn: cjk sans = Microsoft YaHei}%
+      }{%
+        \setCJKsansfont{PingFang SC}%
+        \typeout{loom-cn: cjk sans = PingFang SC}%
+      }%
+    }%
+  }%
+  \xeCJKsetup{CJKmath=true}%
+  \linespread{1.06}%
+}{%
+  \IfFontExistsTF{Noto Serif CJK SC}{%
+    \setmainfont{Noto Serif CJK SC}[BoldFont={Noto Serif CJK SC Bold}]%
+  }{}%
+  \IfFontExistsTF{Noto Sans CJK SC}{%
+    \setsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]%
+  }{}%
+  \typeout{loom-cn: cjk via ICU line breaking (no xeCJK)}%
+  \linespread{1.12}%
+  \XeTeXlinebreaklocale "zh"%
+  \XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt%
+}
+
+% ----- the dye-pot ----------------------------------------------------------
+\RequirePackage{xcolor}
+\definecolor{inkiron}{HTML}{211C17}   % iron-gall: warm near-black body ink
+\definecolor{indigo}{HTML}{27406B}   % indigo: structure, headings, knots
+\definecolor{madder}{HTML}{9C2B2E}   % madder red: definitions, emphasis
+\definecolor{weld}{HTML}{BE8A20}   % weld gold: examples, warmth
+\definecolor{linen}{HTML}{F5EFE2}   % undyed cloth: rail + soft box fills
+\definecolor{thread}{HTML}{C7BBA1}   % the faint warp hairlines
+\definecolor{selvage}{HTML}{8A7F6B}   % muted edge text in the margins
+\color{inkiron}
+
+% ----- maths & theorem machinery -------------------------------------------
+\RequirePackage{amsmath,mathtools}   % NB: unicode-math already supplies amssymb glyphs
+\RequirePackage{amsthm}
+\RequirePackage[most]{tcolorbox}
+\tcbuselibrary{skins,breakable}
+\RequirePackage{enumitem}
+\RequirePackage{needspace}
+\RequirePackage{marginnote}
+\RequirePackage{eso-pic}
+\usetikzlibrary{calc,decorations.pathmorphing}
+\RequirePackage{titlesec}
+\RequirePackage{fancyhdr}
+
+% page furniture: a quiet selvage footer
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancyfoot[R]{\strandfont\footnotesize\color{selvage}\thepage}
+\fancyfoot[L]{\strandfont\footnotesize\color{selvage}\MakeLowercase{\loom@runtitle}}
+\def\loom@runtitle{}
+\newcommand{\runningthread}[1]{\def\loom@runtitle{#1}}
+
+% loose page layout for notes
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45em plus 0.2em minus 0.1em}
+
+% ===========================================================================
+%  WOVEN PRIMITIVES
+% ===========================================================================
+
+% a 2x2 plain-weave tile -- the "knot" emblem (arg: dye colour)
+\newcommand{\loomtile}[1]{%
+  \begin{tikzpicture}[x=1pt,y=1pt,baseline=-0.4pt]
+    \fill[#1]            (0,0) rectangle (3,3);
+    \fill[#1]            (3,3) rectangle (6,6);
+    \fill[#1!28!linen]   (3,0) rectangle (6,3);
+    \fill[#1!28!linen]   (0,3) rectangle (3,6);
+  \end{tikzpicture}}
+
+% a procedural tri-colour plain-weave swatch (arg: side length in pt)
+\newcommand{\weaveemblem}[1]{%
+  \begin{tikzpicture}[x=1pt,y=1pt]
+    \pgfmathsetmacro{\cell}{#1/8}%
+    \foreach \c in {0,...,7}{%
+      \foreach \r in {0,...,7}{%
+        \pgfmathtruncatemacro{\warpover}{mod(\c+\r,2)}%
+        \pgfmathtruncatemacro{\warpcol}{mod(\c,3)}%
+        \def\wcolor{indigo}\ifnum\warpcol=2\def\wcolor{weld}\fi
+        \coordinate (o) at (\c*\cell,\r*\cell);
+        \def\drawwarp{\fill[\wcolor,rounded corners=0.8pt]
+            ($(o)+(0.17*\cell,-0.03*\cell)$) rectangle ($(o)+(0.83*\cell,1.03*\cell)$);}%
+        \def\drawweft{\fill[madder,rounded corners=0.8pt]
+            ($(o)+(-0.03*\cell,0.17*\cell)$) rectangle ($(o)+(1.03*\cell,0.83*\cell)$);}%
+        \ifnum\warpover=1 \drawweft\drawwarp \else \drawwarp\drawweft \fi
+      }}%
+  \end{tikzpicture}}
+
+% the persistent SELVAGE RAIL, painted into every page background
+\newcommand{\loomrail}{%
+  \AddToShipoutPictureBG{%
+    \begin{tikzpicture}[remember picture,overlay]
+      \fill[linen]
+        ([xshift=1.05cm,yshift=-1.9cm]current page.north west) rectangle
+        ([xshift=1.55cm,yshift= 2.0cm]current page.south west);
+      \foreach \i in {0,1,2,3}{%
+        \draw[thread,line width=0.4pt]
+          ([xshift={1.10cm+\i*0.13cm},yshift=-1.9cm]current page.north west) --
+          ([xshift={1.10cm+\i*0.13cm},yshift= 2.0cm]current page.south west);}
+    \end{tikzpicture}}}
+
+% ===========================================================================
+%  HEADINGS  (number hangs onto the rail as a woven knot)
+% ===========================================================================
+\newcommand{\sectionheadfont}{\headingfont\bfseries\fontsize{15}{18}\selectfont
+  \color{indigo}\addfontfeatures{LetterSpace=3.0}}
+\titleformat{\section}[block]
+  {\sectionheadfont}
+  {\llap{\raisebox{-1.2pt}{\loomtile{indigo}}\hspace{7pt}}\textcolor{selvage}{\thesection}\hspace{0.7em}}
+  {0pt}
+  {\MakeUppercase}
+  [\vspace{1pt}{\color{madder}\rule{\linewidth}{1.1pt}}]
+\titlespacing*{\section}{0pt}{20pt plus 4pt}{8pt}
+
+\titleformat{\subsection}[runin]
+  {\headingfont\bfseries\color{madder}}
+  {\thesubsection}{0.55em}{}
+\titlespacing*{\subsection}{0pt}{11pt plus 2pt}{0.7em}
+
+\titleformat{\subsubsection}[runin]
+  {\strandfont\bfseries\color{indigo}}
+  {}{0pt}{}
+\titlespacing*{\subsubsection}{0pt}{8pt}{0.6em}
+
+% ===========================================================================
+%  KNOTS  (theorem-likes: amsthm head + tcolorbox skin)
+% ===========================================================================
+% 括号注记一律用正体：中文斜体在 Windows 会映射成楷体，看着"歪"（见 pitfalls）。
+\newtheoremstyle{loomplain}{6pt}{6pt}{\normalfont}{0pt}
+  {\headingfont\bfseries\color{indigo}}{.}{0.5em}
+  {\thmname{#1}\thmnumber{ #2}\thmnote{ \normalfont\color{inkiron}(#3)}}
+\newtheoremstyle{loomdefn}{6pt}{6pt}{\normalfont}{0pt}
+  {\headingfont\bfseries\color{madder}}{.}{0.5em}
+  {\thmname{#1}\thmnumber{ #2}\thmnote{ \normalfont\color{inkiron}(#3)}}
+\newtheoremstyle{loomexm}{6pt}{6pt}{\normalfont}{0pt}
+  {\headingfont\bfseries\color{weld!75!inkiron}}{.}{0.5em}
+  {\thmname{#1}\thmnumber{ #2}\thmnote{ \normalfont\color{inkiron}(#3)}}
+\newtheoremstyle{loomrem}{6pt}{6pt}{\normalfont}{0pt}
+  {\headingfont\bfseries\color{madder}}{.}{0.5em}
+  {\thmname{#1}\thmnumber{ #2}\thmnote{ \normalfont\color{inkiron}(#3)}}
+
+\theoremstyle{loomplain}
+\newtheorem{theorem}{定理}[section]
+\newtheorem{lemma}[theorem]{引理}
+\newtheorem{proposition}[theorem]{命题}
+\newtheorem{corollary}[theorem]{推论}
+\theoremstyle{loomdefn}
+\newtheorem{definition}[theorem]{定义}
+\theoremstyle{loomexm}
+\newtheorem{example}[theorem]{例}
+\theoremstyle{loomrem}
+\newtheorem{remark}[theorem]{注}
+\newtheorem*{remark*}{注}
+
+% the binding-thread skin; a knot-tile hangs left onto the rail
+\tcbset{
+  knotcommon/.style={
+    enhanced, breakable, sharp corners, frame hidden, boxrule=0pt,
+    left=12pt, right=11pt, top=8pt, bottom=8pt,
+    before skip=10pt plus 2pt, after skip=10pt plus 2pt },
+  knotindigo/.style={knotcommon, colback=linen!60!white,
+    borderline west={2.2pt}{0pt}{indigo},
+    overlay unbroken and first={\node[anchor=north east,inner sep=0pt]
+      at ([xshift=-7pt,yshift=-7pt]frame.north west){\loomtile{indigo}};}},
+  knotmadder/.style={knotcommon, colback=madder!6!linen,
+    borderline west={2.2pt}{0pt}{madder},
+    overlay unbroken and first={\node[anchor=north east,inner sep=0pt]
+      at ([xshift=-7pt,yshift=-7pt]frame.north west){\loomtile{madder}};}},
+  knotweld/.style={knotcommon, colback=weld!10!linen,
+    borderline west={2.2pt}{0pt}{weld},
+    overlay unbroken and first={\node[anchor=north east,inner sep=0pt]
+      at ([xshift=-7pt,yshift=-7pt]frame.north west){\loomtile{weld}};}},
+}
+\tcolorboxenvironment{theorem}{knotindigo}
+\tcolorboxenvironment{lemma}{knotindigo}
+\tcolorboxenvironment{proposition}{knotindigo}
+\tcolorboxenvironment{corollary}{knotindigo}
+\tcolorboxenvironment{definition}{knotmadder}
+\tcolorboxenvironment{example}{knotweld}
+
+% proofs end on a tiny woven tile instead of the usual tombstone
+\renewcommand{\qedsymbol}{\loomtile{inkiron}}
+\renewcommand{\proofname}{\normalfont\headingfont\bfseries\color{selvage}证明}
+
+% optional inline knot-ID stamp (ties to an L01/L02 claim-DAG habit)
+\newcommand{\weaveid}[1]{\leavevmode
+  \llap{\raisebox{-0.8pt}{\loomtile{madder}}\hspace{4pt}}%
+  {\labelfont\footnotesize\color{selvage}#1\hspace{0.6em}}}
+
+% ===========================================================================
+%  THE INTUITION VOICE  (a strand running alongside the formal line)
+% ===========================================================================
+\newtcolorbox{strand}{
+  enhanced, breakable, sharp corners, frame hidden, boxrule=0pt,
+  colback=indigo!4, borderline west={1.6pt}{0pt}{indigo!55},
+  left=11pt, right=9pt, top=6pt, bottom=6pt,
+  before skip=8pt, after skip=8pt,
+  fontupper=\strandfont\small\color{inkiron!92!white}}
+
+\newcommand{\whisper}[1]{{\strandfont\small\color{indigo!78!black}#1}}
+\newcommand{\keyword}[1]{{\bfseries\color{madder}#1}}
+
+% ===========================================================================
+%  THE SELVAGE EDGE  (open threads + a warmth gauge)
+% ===========================================================================
+% a dangling yarn glyph
+\newcommand{\looseglyph}{\tikz[baseline=-0.6ex]{\draw[madder,line width=0.6pt,
+  decorate,decoration={snake,amplitude=1.1pt,segment length=4.2pt}](0,0)--(0.62cm,0);}}
+% a loose thread = an open question, in the right margin
+\newcommand{\loose}[1]{\marginnote{\raggedright\strandfont\footnotesize\color{selvage}%
+  \looseglyph\par\vspace{1pt}#1}}
+
+% warmth: how well do I grok this?  n filled weave squares out of 5
+\newcommand{\warmth}[1]{\,\begin{tikzpicture}[x=1pt,y=1pt,baseline=-0.4pt]
+  \foreach \i in {1,...,5}{%
+    \ifnum\i>#1
+      \draw[thread,line width=0.5pt] ({(\i-1)*5.0},0) rectangle +(3.4,3.4);
+    \else
+      \fill[weld] ({(\i-1)*5.0},0) rectangle +(3.4,3.4);
+    \fi}
+  \end{tikzpicture}\,}
+
+% warp / pick: declare a recurring thread, then pick it up later (cross-ref)
+\RequirePackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=indigo, citecolor=madder,
+            urlcolor=indigo, pdfborder={0 0 0}}
+\newcommand{\warp}[1]{\phantomsection\label{warp:#1}%
+  \marginnote{\raggedright\strandfont\scriptsize\color{indigo}$\rightsquigarrow$\,#1}}
+\newcommand{\pick}[1]{\hyperref[warp:#1]{%
+  {\strandfont\scriptsize\color{indigo}[\,#1\,$\hookleftarrow$]}}}
+
+% ===========================================================================
+%  THE COVER  (a woven plate)
+% ===========================================================================
+% \loomcover{title}{subtitle}{author}{date}   -- enables the rail afterwards
+\newcommand{\loomcovermotto}{以\textcolor{indigo}{靛蓝}、\textcolor{madder}{茜红}与\textcolor{weld}{木樨草黄}染就，铁胆墨勾线\quad 织于 \textsc{loom}}
+\newcommand{\loomcover}[4]{%
+  \begin{titlepage}\thispagestyle{empty}\centering
+    \vspace*{2.0cm}
+    {\weaveemblem{132}\par}%主图
+    \vspace{1.3cm}
+    {\headingfont\bfseries\fontsize{32}{36}\selectfont\color{indigo}%主标题
+      \addfontfeatures{LetterSpace=1.0}#1\par}
+    \vspace{0.55cm}
+    {\color{madder}\rule{4.2cm}{1.1pt}\par}%分割线
+    \vspace{0.5cm}
+    {\strandfont\large\color{inkiron!85!white}#2\par}
+    \vfill %全部往上
+    {\strandfont\color{inkiron}#3\par}
+    \vspace{0.25em}
+    {\strandfont\small\color{selvage}#4\par}
+    \vspace{1.1cm}
+    {\labelfont\footnotesize\color{selvage}%格言
+      \loomcovermotto\par}
+  \end{titlepage}%
+  \loomrail}
+
+% if you skip the cover, call \weave to start the rail
+\newcommand{\weave}{\loomrail}
+
+% ===========================================================================
+%  PEDAGOGY  --  fill-in study notes (passive read + active recall)
+%  The method: state results so they can be READ; leave the high-value steps,
+%  computations, and definition-clauses BLANK so they must be ACTIVELY recalled.
+% ===========================================================================
+\RequirePackage{booktabs}
+\RequirePackage{tabularx}
+\RequirePackage{array}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}   % wrapping table column
+
+% \block{...} -- a quiet sub-heading inside a section
+\newcommand{\block}[1]{\par\medskip\noindent
+  {\headingfont\bfseries\color{indigo}#1}\par\smallskip}
+
+% \trigger{...} -- a "when to reach for this" cue
+\newcommand{\trigger}[1]{\par\smallskip\noindent
+  {\headingfont\bfseries\color{madder}何时用}\enspace #1\par\smallskip}
+
+% \TODO{hint} -- a gap to fill inside a proof / derivation
+\newcommand{\TODO}[1]{{\strandfont\small\color{madder}〔请补全：#1〕}}
+
+% \fillin[width] -- an empty ruled blank to write the answer in
+\newcommand{\fillin}[1][2.2cm]{\,\underline{\hspace{#1}}\,}
+
+% \recall{question} -- a quick active-recall prompt in the margin
+\newcommand{\recall}[1]{\marginnote{\raggedright\strandfont\footnotesize\color{selvage}%
+  {\bfseries\color{indigo}?}\ #1}}
+
+% the active-input zone: a weld box you work inside
+\newtcolorbox{yourturn}{enhanced,breakable,sharp corners,boxrule=0pt,frame hidden,
+  colback=weld!9!linen, borderline west={2pt}{0pt}{weld},
+  left=11pt,right=10pt,top=7pt,bottom=8pt,before skip=9pt,after skip=9pt,
+  before upper={{\headingfont\bfseries\color{weld!60!inkiron}动手试试}\enspace}}
+
+% \workspace[n] -- n faint ruled lines to write on (handwriting; ignore if you type)
+\newcommand{\workspace}[1][3]{\par\vspace{1pt}%
+  \foreach \i in {1,...,#1}{\noindent{\color{thread}\rule{\linewidth}{0.3pt}}\par\vspace{9pt}}}
+
+
+
+\makeatother
+
+
+
+\usepackage{pifont}
+
+
+
+
+
+
+
+
+
+
+
+
+
+\newtcolorbox{problem}[1]{knotmadder, breakable=false,
+  before upper={{\headingfont\bfseries\color{madder}#1}\par\smallskip}
+
+}
+\newtcolorbox{solution}[1]{knotindigo,
+  before upper={{\headingfont\bfseries\color{indigo}#1}\par\smallskip}}
+
+\newcommand{\think}{\par\smallskip\noindent
+  {\headingfont\bfseries\color{indigo}〔怎么想〕}\enspace}
+\newcommand{\solve}{\par\smallskip\noindent
+  {\headingfont\bfseries\color{inkiron}〔解〕}\enspace}
+\newcommand{\solvehead}[1]{\par\smallskip\noindent
+  {\headingfont\bfseries\color{inkiron}〔#1〕}\enspace}
+\newcommand{\insight}[1]{\par\smallskip\noindent
+  {\headingfont\bfseries\color{weld!60!inkiron}〔方法点睛〕}\enspace
+  {\strandfont\small #1}\par}
+\newcommand{\hint}[1]{\par\smallskip\noindent
+  {\strandfont\small{\raisebox{-0.8pt}{\loomtile{weld}}\hspace{4pt}}
+  {\bfseries\color{weld!60!inkiron}入手提示}\enspace{\color{inkiron!85!white}#1}}\par}
+
+\newcommand{\sidenote}[1]{\marginnote{\raggedright\strandfont\footnotesize
+  \color{selvage}#1}}
+\newcommand{\starred}{{\color{weld!70!inkiron}\ding{72}}}
+
+\setlist[enumerate]{leftmargin=2.3em, itemsep=2pt, topsep=3pt}
+\setlist[itemize]{leftmargin=1.6em, itemsep=2pt, topsep=3pt}
+
+
+\usetikzlibrary{angles,quotes,arrows.meta}
+\newif\ifteachernotes\teachernotestrue
+\newif\ifshowhints\showhintstrue
+\let\originalhint\hint
+\renewcommand{\hint}[1]{\ifshowhints\originalhint{#1}\fi}
+\newcommand{\diagram}[1]{\par\smallskip\begin{center}#1\end{center}\smallskip}
+\hypersetup{pdftitle={双等腰模型（婆罗摩笈多模型）· 单章核对稿},pdfauthor={Hence},pdfsubject={初中几何模型培优讲义}}
+\renewcommand{\loomcovermotto}{从图形中发现关系，在推理中理解几何}
+\renewcommand{\contentsname}{目录}
+
+\newcommand{\diReview}{
+\begin{tikzpicture}[scale=1.2,line width=.7pt,every node/.style={font=\small,inner sep=2pt}]
+\coordinate (A) at (-1.00000000,0.00000000);
+\coordinate (B) at (0.00000000,0.00000000);
+\coordinate (C) at (2.00000000,0.00000000);
+\coordinate (D) at (-1.00000000,2.00000000);
+\coordinate (E) at (2.00000000,1.00000000);
+\draw[inkiron] (A) -- (C);
+\draw[inkiron] (A) -- (D);
+\draw[inkiron] (B) -- (D);
+\draw[inkiron] (B) -- (E);
+\draw[inkiron] (C) -- (E);
+\pic[draw=selvage,angle radius=2.2mm] {right angle=D--A--B};
+\pic[draw=selvage,angle radius=2.2mm] {right angle=D--B--E};
+\pic[draw=selvage,angle radius=2.2mm] {right angle=B--C--E};
+\draw[inkiron] ($(B)!0.50000000!(D)!2pt!90:(D)$) -- ($(B)!0.50000000!(D)!2pt!-90:(D)$);
+\draw[inkiron] ($(B)!0.50000000!(E)!2pt!90:(E)$) -- ($(B)!0.50000000!(E)!2pt!-90:(E)$);
+\fill[inkiron] (A) circle (1.05pt);
+\node at (-1.15000000,-0.27000000) {$A$};
+\fill[inkiron] (B) circle (1.05pt);
+\node at (0.00000000,-0.30000000) {$B$};
+\fill[inkiron] (C) circle (1.05pt);
+\node at (2.10000000,-0.27000000) {$C$};
+\fill[inkiron] (D) circle (1.05pt);
+\node at (-1.10000000,2.26000000) {$D$};
+\fill[inkiron] (E) circle (1.05pt);
+\node at (2.24000000,1.05000000) {$E$};
+\end{tikzpicture}}
+
+\newcommand{\diModel}{
+\begin{tikzpicture}[scale=0.47,line width=.7pt,every node/.style={font=\small,inner sep=2pt}]
+\coordinate (B) at (0.00000000,0.00000000);
+\coordinate (C) at (-6.00000000,2.00000000);
+\coordinate (Cp) at (-2.00000000,-6.00000000);
+\coordinate (D) at (3.00000000,1.00000000);
+\coordinate (Dp) at (-1.00000000,3.00000000);
+\fill[selvage!10] (C) -- (B) -- (Dp) -- cycle;
+\fill[madder!10] (Cp) -- (B) -- (D) -- cycle;
+\draw[inkiron] (B) -- (C);
+\draw[inkiron] (B) -- (Cp);
+\draw[inkiron] (B) -- (D);
+\draw[inkiron] (B) -- (Dp);
+\draw[inkiron] (C) -- (Dp);
+\draw[inkiron] (Cp) -- (D);
+\pic[draw=selvage,angle radius=2.2mm] {right angle=C--B--Cp};
+\pic[draw=selvage,angle radius=2.2mm] {right angle=D--B--Dp};
+\draw[inkiron] ($(B)!0.50000000!(C)!2pt!90:(C)$) -- ($(B)!0.50000000!(C)!2pt!-90:(C)$);
+\draw[inkiron] ($(B)!0.50000000!(Cp)!2pt!90:(Cp)$) -- ($(B)!0.50000000!(Cp)!2pt!-90:(Cp)$);
+\draw[inkiron] ($(B)!0.48260747!(D)!2pt!90:(D)$) -- ($(B)!0.48260747!(D)!2pt!-90:(D)$);
+\draw[inkiron] ($(B)!0.51739253!(D)!2pt!90:(D)$) -- ($(B)!0.51739253!(D)!2pt!-90:(D)$);
+\draw[inkiron] ($(B)!0.48260747!(Dp)!2pt!90:(Dp)$) -- ($(B)!0.48260747!(Dp)!2pt!-90:(Dp)$);
+\draw[inkiron] ($(B)!0.51739253!(Dp)!2pt!90:(Dp)$) -- ($(B)!0.51739253!(Dp)!2pt!-90:(Dp)$);
+\fill[inkiron] (B) circle (1.05pt);
+\node at (-0.46000000,-0.45000000) {$B$};
+\fill[inkiron] (C) circle (1.05pt);
+\node at (-6.45000000,2.10000000) {$C$};
+\fill[inkiron] (Cp) circle (1.05pt);
+\node at (-2.20000000,-6.42000000) {$C'$};
+\fill[inkiron] (D) circle (1.05pt);
+\node at (3.36000000,1.12000000) {$D$};
+\fill[inkiron] (Dp) circle (1.05pt);
+\node at (-0.68000000,3.26000000) {$D'$};
+\end{tikzpicture}}
+
+\newcommand{\diArea}{
+\begin{tikzpicture}[scale=0.47,line width=.7pt,every node/.style={font=\small,inner sep=2pt}]
+\coordinate (B) at (0.00000000,0.00000000);
+\coordinate (C) at (-6.00000000,2.00000000);
+\coordinate (Cp) at (-2.00000000,-6.00000000);
+\coordinate (D) at (3.00000000,1.00000000);
+\coordinate (Dp) at (-1.00000000,3.00000000);
+\fill[selvage!10] (C) -- (B) -- (Dp) -- cycle;
+\fill[madder!10] (Cp) -- (B) -- (D) -- cycle;
+\draw[inkiron] (B) -- (C);
+\draw[inkiron] (B) -- (Cp);
+\draw[inkiron] (B) -- (D);
+\draw[inkiron] (B) -- (Dp);
+\draw[inkiron] (C) -- (Dp);
+\draw[inkiron] (Cp) -- (D);
+\pic[draw=selvage,angle radius=2.2mm] {right angle=C--B--Cp};
+\pic[draw=selvage,angle radius=2.2mm] {right angle=D--B--Dp};
+\draw[inkiron] ($(B)!0.50000000!(C)!2pt!90:(C)$) -- ($(B)!0.50000000!(C)!2pt!-90:(C)$);
+\draw[inkiron] ($(B)!0.50000000!(Cp)!2pt!90:(Cp)$) -- ($(B)!0.50000000!(Cp)!2pt!-90:(Cp)$);
+\draw[inkiron] ($(B)!0.48260747!(D)!2pt!90:(D)$) -- ($(B)!0.48260747!(D)!2pt!-90:(D)$);
+\draw[inkiron] ($(B)!0.51739253!(D)!2pt!90:(D)$) -- ($(B)!0.51739253!(D)!2pt!-90:(D)$);
+\draw[inkiron] ($(B)!0.48260747!(Dp)!2pt!90:(Dp)$) -- ($(B)!0.48260747!(Dp)!2pt!-90:(Dp)$);
+\draw[inkiron] ($(B)!0.51739253!(Dp)!2pt!90:(Dp)$) -- ($(B)!0.51739253!(Dp)!2pt!-90:(Dp)$);
+\coordinate (M) at (-1.80000000,0.60000000);
+\coordinate (N) at (0.60000000,1.80000000);
+\draw[indigo,dashed] (Dp) -- (M);
+\draw[indigo,dashed] (D) -- (N);
+\draw[indigo,dashed] (B) -- (N);
+\pic[draw=selvage,angle radius=2.2mm] {right angle=B--M--Dp};
+\pic[draw=selvage,angle radius=2.2mm] {right angle=B--N--D};
+\fill[inkiron] (B) circle (1.05pt);
+\node at (-0.46000000,-0.45000000) {$B$};
+\fill[inkiron] (C) circle (1.05pt);
+\node at (-6.45000000,2.10000000) {$C$};
+\fill[inkiron] (Cp) circle (1.05pt);
+\node at (-2.20000000,-6.42000000) {$C'$};
+\fill[inkiron] (D) circle (1.05pt);
+\node at (3.36000000,1.12000000) {$D$};
+\fill[inkiron] (Dp) circle (1.05pt);
+\node at (-0.68000000,3.26000000) {$D'$};
+\fill[inkiron] (M) circle (1.05pt);
+\node at (-2.13000000,0.38000000) {$M$};
+\fill[inkiron] (N) circle (1.05pt);
+\node at (0.64000000,2.16000000) {$N$};
+\end{tikzpicture}}
+
+\newcommand{\diMidpoint}{
+\begin{tikzpicture}[scale=0.45,line width=.7pt,every node/.style={font=\small,inner sep=2pt}]
+\coordinate (B) at (0.00000000,0.00000000);
+\coordinate (C) at (-6.00000000,2.00000000);
+\coordinate (Cp) at (-2.00000000,-6.00000000);
+\coordinate (D) at (3.00000000,1.00000000);
+\coordinate (Dp) at (-1.00000000,3.00000000);
+\fill[selvage!10] (C) -- (B) -- (Dp) -- cycle;
+\fill[madder!10] (Cp) -- (B) -- (D) -- cycle;
+\draw[inkiron] (B) -- (C);
+\draw[inkiron] (B) -- (Cp);
+\draw[inkiron] (B) -- (D);
+\draw[inkiron] (B) -- (Dp);
+\draw[inkiron] (C) -- (Dp);
+\draw[inkiron] (Cp) -- (D);
+\pic[draw=selvage,angle radius=2.2mm] {right angle=C--B--Cp};
+\pic[draw=selvage,angle radius=2.2mm] {right angle=D--B--Dp};
+\draw[inkiron] ($(B)!0.50000000!(C)!2pt!90:(C)$) -- ($(B)!0.50000000!(C)!2pt!-90:(C)$);
+\draw[inkiron] ($(B)!0.50000000!(Cp)!2pt!90:(Cp)$) -- ($(B)!0.50000000!(Cp)!2pt!-90:(Cp)$);
+\draw[inkiron] ($(B)!0.48260747!(D)!2pt!90:(D)$) -- ($(B)!0.48260747!(D)!2pt!-90:(D)$);
+\draw[inkiron] ($(B)!0.51739253!(D)!2pt!90:(D)$) -- ($(B)!0.51739253!(D)!2pt!-90:(D)$);
+\draw[inkiron] ($(B)!0.48260747!(Dp)!2pt!90:(Dp)$) -- ($(B)!0.48260747!(Dp)!2pt!-90:(Dp)$);
+\draw[inkiron] ($(B)!0.51739253!(Dp)!2pt!90:(Dp)$) -- ($(B)!0.51739253!(Dp)!2pt!-90:(Dp)$);
+\coordinate (E) at (-3.50000000,2.50000000);
+\coordinate (G) at (-7.00000000,5.00000000);
+\coordinate (H) at (1.51351351,-1.08108108);
+\draw[indigo,dashed] (G) -- (H);
+\draw[indigo,dashed] (C) -- (G);
+\draw[indigo] ($(C)!0.45685445!(E)!2pt!90:(E)$) -- ($(C)!0.45685445!(E)!2pt!-90:(E)$);
+\draw[indigo] ($(C)!0.50000000!(E)!2pt!90:(E)$) -- ($(C)!0.50000000!(E)!2pt!-90:(E)$);
+\draw[indigo] ($(C)!0.54314555!(E)!2pt!90:(E)$) -- ($(C)!0.54314555!(E)!2pt!-90:(E)$);
+\draw[indigo] ($(E)!0.45685445!(Dp)!2pt!90:(Dp)$) -- ($(E)!0.45685445!(Dp)!2pt!-90:(Dp)$);
+\draw[indigo] ($(E)!0.50000000!(Dp)!2pt!90:(Dp)$) -- ($(E)!0.50000000!(Dp)!2pt!-90:(Dp)$);
+\draw[indigo] ($(E)!0.54314555!(Dp)!2pt!90:(Dp)$) -- ($(E)!0.54314555!(Dp)!2pt!-90:(Dp)$);
+\draw[madder] ($(B)!0.48721276!(E)!2pt!90:(E)$) -- ($(B)!0.48721276!(E)!2pt!-90:(E)$);
+\draw[madder] ($(B)!0.51278724!(E)!2pt!90:(E)$) -- ($(B)!0.51278724!(E)!2pt!-90:(E)$);
+\draw[madder] ($(E)!0.48721276!(G)!2pt!90:(G)$) -- ($(E)!0.48721276!(G)!2pt!-90:(G)$);
+\draw[madder] ($(E)!0.51278724!(G)!2pt!90:(G)$) -- ($(E)!0.51278724!(G)!2pt!-90:(G)$);
+\fill[inkiron] (B) circle (1.05pt);
+\node at (-0.46000000,-0.45000000) {$B$};
+\fill[inkiron] (C) circle (1.05pt);
+\node at (-6.45000000,2.10000000) {$C$};
+\fill[inkiron] (Cp) circle (1.05pt);
+\node at (-2.20000000,-6.42000000) {$C'$};
+\fill[inkiron] (D) circle (1.05pt);
+\node at (3.36000000,1.12000000) {$D$};
+\fill[inkiron] (Dp) circle (1.05pt);
+\node at (-0.68000000,3.26000000) {$D'$};
+\fill[inkiron] (E) circle (1.05pt);
+\node at (-3.45000000,2.93000000) {$E$};
+\fill[inkiron] (G) circle (1.05pt);
+\node at (-7.20000000,5.35000000) {$G$};
+\fill[inkiron] (H) circle (1.05pt);
+\node at (1.81351351,-1.31108108) {$H$};
+\end{tikzpicture}}
+
+\newcommand{\diConverse}{
+\begin{tikzpicture}[scale=0.52,line width=.7pt,every node/.style={font=\small,inner sep=2pt}]
+\coordinate (B) at (0.00000000,0.00000000);
+\coordinate (C) at (-6.00000000,2.00000000);
+\coordinate (Cp) at (-2.00000000,-6.00000000);
+\coordinate (D) at (3.00000000,1.00000000);
+\coordinate (Dp) at (-1.00000000,3.00000000);
+\fill[selvage!10] (C) -- (B) -- (Dp) -- cycle;
+\fill[madder!10] (Cp) -- (B) -- (D) -- cycle;
+\draw[inkiron] (B) -- (C);
+\draw[inkiron] (B) -- (Cp);
+\draw[inkiron] (B) -- (D);
+\draw[inkiron] (B) -- (Dp);
+\draw[inkiron] (C) -- (Dp);
+\draw[inkiron] (Cp) -- (D);
+\pic[draw=selvage,angle radius=2.2mm] {right angle=C--B--Cp};
+\pic[draw=selvage,angle radius=2.2mm] {right angle=D--B--Dp};
+\draw[inkiron] ($(B)!0.50000000!(C)!2pt!90:(C)$) -- ($(B)!0.50000000!(C)!2pt!-90:(C)$);
+\draw[inkiron] ($(B)!0.50000000!(Cp)!2pt!90:(Cp)$) -- ($(B)!0.50000000!(Cp)!2pt!-90:(Cp)$);
+\draw[inkiron] ($(B)!0.48260747!(D)!2pt!90:(D)$) -- ($(B)!0.48260747!(D)!2pt!-90:(D)$);
+\draw[inkiron] ($(B)!0.51739253!(D)!2pt!90:(D)$) -- ($(B)!0.51739253!(D)!2pt!-90:(D)$);
+\draw[inkiron] ($(B)!0.48260747!(Dp)!2pt!90:(Dp)$) -- ($(B)!0.48260747!(Dp)!2pt!-90:(Dp)$);
+\draw[inkiron] ($(B)!0.51739253!(Dp)!2pt!90:(Dp)$) -- ($(B)!0.51739253!(Dp)!2pt!-90:(Dp)$);
+\coordinate (E) at (-3.50000000,2.50000000);
+\coordinate (F) at (1.51351351,-1.08108108);
+\coordinate (M) at (-4.91891892,3.51351351);
+\coordinate (N) at (-2.08108108,1.48648649);
+\draw[indigo,dashed] (M) -- (F);
+\draw[indigo,dashed] (C) -- (M);
+\draw[indigo,dashed] (Dp) -- (N);
+\pic[draw=selvage,angle radius=2.2mm] {right angle=C--M--B};
+\pic[draw=selvage,angle radius=2.2mm] {right angle=Dp--N--B};
+\pic[draw=selvage,angle radius=2.2mm] {right angle=B--F--D};
+\fill[inkiron] (B) circle (1.05pt);
+\node at (-0.46000000,-0.45000000) {$B$};
+\fill[inkiron] (C) circle (1.05pt);
+\node at (-6.45000000,2.10000000) {$C$};
+\fill[inkiron] (Cp) circle (1.05pt);
+\node at (-2.20000000,-6.42000000) {$C'$};
+\fill[inkiron] (D) circle (1.05pt);
+\node at (3.36000000,1.12000000) {$D$};
+\fill[inkiron] (Dp) circle (1.05pt);
+\node at (-0.68000000,3.26000000) {$D'$};
+\fill[inkiron] (E) circle (1.05pt);
+\node at (-3.46000000,2.90000000) {$E$};
+\fill[inkiron] (F) circle (1.05pt);
+\node at (1.81351351,-1.31108108) {$F$};
+\fill[inkiron] (M) circle (1.05pt);
+\node at (-5.01891892,3.91351351) {$M$};
+\fill[inkiron] (N) circle (1.05pt);
+\node at (-2.20108108,1.12648649) {$N$};
+\end{tikzpicture}}
+
+
+\begin{document}
+\loomcover{双等腰模型}{婆罗摩笈多模型 · 单章核对稿}{Hence}{2026年10月}
+\clearpage
+{\small\tableofcontents}
+\clearpage
+\setcounter{section}{-1}
+\section{一线三等角：快速回顾}
+先看一幅熟悉的图：\(A\)、\(B\)、\(C\) 在同一直线上，\(B\) 在 \(A\)、\(C\) 之间；\(D\)、\(E\) 在直线 \(AC\) 的同侧，且
+\[
+\angle DAB=\angle DBE=\angle BCE=90^\circ,\qquad BD=BE.
+\]
+\diagram{\diReview}
+
+直线上的三个角满足
+\[
+\angle DBA+\angle DBE+\angle EBC=180^\circ,
+\]
+所以 \(\angle DBA+\angle EBC=90^\circ\)。而在直角三角形 \(DAB\) 中，
+\(\angle BDA+\angle DBA=90^\circ\)，故 \(\angle BDA=\angle EBC\)。
+
+再结合 \(\angle DAB=\angle BCE\) 和 \(BD=BE\)，得到
+\[
+\triangle DBA\cong\triangle BEC\quad(\mathrm{AAS}),
+\]
+于是 \(\boldsymbol{AB=CE}\)、\(\boldsymbol{AD=BC}\)。注意对应顺序：
+\(D\leftrightarrow B\)、\(B\leftrightarrow E\)、\(A\leftrightarrow C\)。
+
+\begin{strand}
+\textbf{识别顺序}\quad 一条直线 \(\longrightarrow\) 三个直角
+\(\longrightarrow\) 等斜边 \(\longrightarrow\) 全等后交换对应直角边。
+
+本章只回顾这一种直角全等型，下面“作双垂”的证明会连续用到它两次。
+\end{strand}
+\clearpage
+
+\section{双等腰模型的三项结论}
+\block{共用构型}
+如图，\(\triangle CBC'\) 和 \(\triangle DBD'\) 都是以 \(B\) 为直角顶点的等腰直角三角形，即
+\[
+BC=BC',\quad BD=BD',\quad
+\angle CBC'=\angle DBD'=90^\circ.
+\]
+各点方向按图取定：射线 \(BD\)、\(BD'\)、\(BC\)、\(BC'\) 绕 \(B\) 依次排列，\(\angle CBD'\) 为锐角。从 \(BC\) 到 \(BC'\)、从 \(BD\) 到 \(BD'\) 的 \(90^\circ\) 转动方向相同。以下三题共用这一构型，分别作辅助线。
+\diagram{\diModel}
+
+\begin{problem}{题 1 等面积从哪里来}
+求证：\(S_{\triangle CBD'}=S_{\triangle C'BD}\)。
+\hint{已经有 \(BC=BC'\)。分别以 \(BC\)、\(BC'\) 为底，试着比较两条高。}
+\end{problem}
+
+\begin{problem}{题 2 已知中点，证明垂直}
+\(E\) 是 \(CD'\) 的中点。连接 \(BE\)，求证：\(BE\perp C'D\)。
+\hint{中点条件能否通过倍长 \(BE\)，转化成一组八字形全等？}
+\end{problem}
+
+\begin{problem}{题 3 已知垂直，证明中点}
+过 \(B\) 作 \(BF\perp C'D\)，\(F\) 为垂足；直线 \(BF\) 与 \(CD'\) 相交于 \(E\)。求证：\(CE=ED'\)。
+\hint{还不知道 \(E\) 是中点。分别从 \(C\)、\(D'\) 向直线 \(BF\) 作垂线，看看会出现几组一线三等角。}
+\end{problem}
+\clearpage
+
+\section{集中解析}
+\begin{solution}{题 1 · 解析}
+\think 两个三角形不一定全等，等面积也不必比较三边。先用已知的 \(BC=BC'\) 作等底，再把问题转成等高。
+
+\solve 过 \(D'\) 作 \(D'M\perp BC\)，\(M\) 为垂足；过 \(D\) 作 \(DN\perp BC'\)，\(N\) 为垂足。本图中 \(M\) 在射线 \(BC\) 上，\(N\) 在 \(C'B\) 向 \(B\) 外的延长线上。
+\diagram{\diArea}
+
+由两个公共顶角都是直角，按图有
+\[
+\angle CBD'=180^\circ-\angle C'BD.
+\]
+由于 \(BM\) 与 \(BC\) 同向、\(BN\) 与 \(BC'\) 反向，
+\[
+\angle MBD'=\angle CBD',\qquad
+\angle NBD=180^\circ-\angle C'BD,
+\]
+所以 \(\angle MBD'=\angle NBD\)。结合 \(\angle BMD'=\angle BND=90^\circ\)、\(BD'=BD\)，得到
+\[
+\triangle BMD'\cong\triangle BND\quad(\mathrm{AAS}),\qquad D'M=DN.
+\]
+从而
+\[
+S_{\triangle CBD'}=\frac12 BC\cdot D'M
+=\frac12 BC'\cdot DN=S_{\triangle C'BD}.
+\]
+
+\insight{等面积先找等底；高不现成，就作垂线，把等高交给直角三角形全等。}
+\end{solution}
+\clearpage
+
+\begin{solution}{题 2 · 解析}
+\think \(E\) 是 \(CD'\) 的中点，但这个等长条件还不能和 \(BC=BC'\)、\(BD=BD'\) 放进同一组全等。倍长 \(BE\)，把 \(BD'\) 搬到 \(C\) 处，再比较一个大三角形。
+
+\solve 延长 \(BE\) 到 \(G\)，使 \(EG=EB\)，连接 \(CG\)。于是 \(B\)、\(E\)、\(G\) 共线，\(CE=ED'\)，\(\angle CEG=\angle D'EB\)。
+\diagram{\diMidpoint}
+
+\solvehead{第一步：用八字形全等搬运一条边}
+\[
+\triangle CEG\cong\triangle D'EB\quad(\mathrm{SAS}).
+\]
+因此 \(CG=D'B=DB\)，且 \(\angle ECG=\angle ED'B\)，故 \(CG\parallel BD'\)。按图，射线 \(CG\) 与 \(BD'\) 同向。
+
+\solvehead{第二步：比较一组大三角形}
+由于 \(CB\) 与 \(BC\) 反向，\(CG\) 与 \(BD'\) 同向，
+\[
+\angle GCB=180^\circ-\angle CBD'=\angle DBC'.
+\]
+结合 \(CG=DB\)、\(CB=BC'\)，得到
+\[
+\triangle GCB\cong\triangle DBC'\quad(\mathrm{SAS}).
+\]
+于是 \(\angle GBC=\angle DC'B\)。
+
+\solvehead{第三步：用对应角推出垂直}
+延长 \(EB\) 过 \(B\)，与 \(C'D\) 相交于 \(H\)。按图，\(BH\)、\(BG\) 是反向射线，\(\angle CBC'=90^\circ\)，所以
+\[
+\angle C'BH+\angle GBC=90^\circ.
+\]
+又因 \(H\) 在 \(C'D\) 上，\(\angle BC'H=\angle DC'B=\angle GBC\)。在 \(\triangle BC'H\) 中，\(B\)、\(C'\) 两个角之和为 \(90^\circ\)，故 \(\angle BHC'=90^\circ\)，即 \(BE\perp C'D\)。
+
+\solvehead{顺手得到的长度关系}
+第二次全等还给出 \(GB=DC'\)。因为 \(GB=2BE\)，故
+\[
+\boxed{2BE=C'D}.
+\]
+
+\insight{倍长中线先搬运等长边，再用大三角形全等同时取得角度与长度关系。}
+\end{solution}
+\clearpage
+
+\begin{solution}{题 3 · 解析}
+\think 这一题和题 2 的已知、结论交换了位置。现在 \(CE=ED'\) 还是待证，不能把它放进倍长后的全等条件。题目给出了垂直，便从 \(C\)、\(D'\) 向 \(BF\) 作双垂，连续用两次章首模型。
+
+\solve 过 \(C\) 作 \(CM\perp BF\)，过 \(D'\) 作 \(D'N\perp BF\)，\(M\)、\(N\) 为垂足。本题的 \(M\)、\(N\) 与题 1 的垂足不同。
+\diagram{\diConverse}
+
+\solvehead{第一步：用 \(BC=BC'\)，得到 \(CM=BF\)}
+\(M\)、\(B\)、\(F\) 共线，\(\angle CMB=\angle CBC'=\angle BFC'=90^\circ\)。由直线上的角和，
+\[
+\angle CBM+\angle C'BF=90^\circ.
+\]
+而在直角三角形 \(C'BF\) 中，\(\angle BC'F+\angle C'BF=90^\circ\)，故 \(\angle CBM=\angle BC'F\)。再结合 \(BC=BC'\)，得到
+\[
+\triangle BCM\cong\triangle C'BF\quad(\mathrm{AAS}),\qquad CM=BF.
+\]
+这正是章首的一线三等角：等斜边推出对应直角边相等。
+
+\solvehead{第二步：用 \(BD'=BD\)，得到 \(D'N=BF\)}
+\(N\)、\(B\)、\(F\) 共线，\(\angle D'NB=\angle D'BD=\angle BFD=90^\circ\)。同样，
+\begin{align*}
+\angle D'BN+\angle DBF&=90^\circ,\\
+\angle BDF+\angle DBF&=90^\circ,
+\end{align*}
+所以 \(\angle D'BN=\angle BDF\)。结合 \(BD'=BD\)，得到
+\[
+\triangle BD'N\cong\triangle DBF\quad(\mathrm{AAS}),\qquad D'N=BF.
+\]
+于是 \(CM=D'N\)。
+
+\solvehead{第三步：接上八字形全等，得到中点}
+按图，\(C\)、\(E\)、\(D'\) 共线，\(M\)、\(E\)、\(N\) 共线，\(\angle CME=\angle D'NE=90^\circ\)，\(\angle CEM=\angle D'EN\)。结合 \(CM=D'N\)，得到
+\[
+\triangle CME\cong\triangle D'NE\quad(\mathrm{AAS}),\qquad CE=ED'.
+\]
+所以 \(E\) 是 \(CD'\) 的中点。
+
+若 \(M\)、\(N\) 恰好都与 \(E\) 重合，则 \(CM=D'N\) 直接给出 \(CE=ED'\)，不再使用退化三角形的全等。
+
+\insight{要从垂直证明中点，先用双垂把同一条 \(BF\) 搬到两侧，再用八字形全等收尾。}
+\end{solution}
+\clearpage
+
+\section{模型总结与迁移}
+\ifteachernotes
+\block{三个条件，三条路线}
+\begin{center}\small
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\linewidth}{@{}p{.26\linewidth}p{.22\linewidth}X@{}}
+\toprule
+已知／目标 & 辅助线 & 真正起作用的关系\\
+\midrule
+两等腰直角，证明等面积 & 以等长边作底，分别作高 & 等底＋直角三角形全等得到等高\\
+\addlinespace
+已知中点，证明垂直 & 倍长 \(BE\) & 八字形全等搬运边，再比较大三角形\\
+\addlinespace
+已知垂直，证明中点 & 从 \(C\)、\(D'\) 向 \(BE\) 作双垂 & 两次一线三等角，再接八字形全等\\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+在本章构型下，可以把题 2、题 3 合起来记：
+\[
+E\in CD':\qquad CE=ED'\ \Longleftrightarrow\ BE\perp C'D.
+\]
+题 2 还告诉我们：当 \(E\) 是 \(CD'\) 的中点时，\textbf{\(BE\) 既垂直于 \(C'D\)，又等于 \(C'D\) 的一半}。
+
+\block{再看一次等面积}
+题 3 的两组全等给出 \(CM=D'N=BF\)。以 \(BE\) 为底，\(\triangle CBE\) 和 \(\triangle D'BE\) 的高都是 \(BF\)，所以
+\begin{align*}
+S_{\triangle CBD'}
+&=S_{\triangle CBE}+S_{\triangle D'BE}\\
+&=BE\cdot BF.
+\end{align*}
+而题 2 已经得到 \(2BE=C'D\)，故
+\[
+S_{\triangle CBD'}=\frac12 C'D\cdot BF=S_{\triangle C'BD}.
+\]
+这给出等面积的另一种看法：倍长中线得到的长度关系，和双垂得到的高度关系，最终在面积公式里相遇。
+
+\block{易错提醒}
+\begin{enumerate}
+\item 两个等腰直角三角形的方向要按图取定。只记两组等长和两个直角，不看方位，不能直接套用本章结论。
+\item 高是到\textbf{直线}的距离，垂足可能在边的延长线上；题 1 的 \(N\) 就在 \(BC'\) 的延长线上。
+\item 题 3 中的中点是结论，不能预先使用 \(CE=ED'\) 来证明全等。
+\item “两块面积始终相等”不表示“每块面积是一个固定值”；构型变化时，两块面积可以一起变化。
+\item 三题分别作图。题 1、题 3 的 \(M\)、\(N\) 含义不同；题 2 的 \(G\) 是倍长点，\(H\) 是交点。
+\end{enumerate}
+\else
+\block{学生自主总结}
+在每道题旁记录：已知条件、第一条辅助线、第一次全等搬运了什么、第二次全等得到什么。再尝试写出中点、垂直与长度之间的关系。
+\vspace{8\baselineskip}
+\fi
+
+\end{document}

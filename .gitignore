@@ -2,8 +2,9 @@
 /夹半角1.docx
 /夹半角1.pdf
 /手拉手/
-/chapters/02-hand-in-hand/assets/source/
-/chapters/02-hand-in-hand/work/
+/双等腰/
+/chapters/*/assets/source/
+/chapters/*/work/
 
 # 工作文件与检查用图片。
 /tmp/
