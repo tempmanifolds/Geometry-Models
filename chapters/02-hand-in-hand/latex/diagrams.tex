@@ -1,0 +1,239 @@
+% 重绘手拉手模型；辅助线为靛蓝虚线，数值长度留在题干中。
+\newcommand{\hhOne}{%
+\begin{tikzpicture}[scale=0.66,line width=.65pt,every node/.style={font=\small,inner sep=2pt}]
+\coordinate (A) at (0,4);
+\coordinate (B) at (0,0);
+\coordinate (C) at (4,0);
+\coordinate (D) at (-1,1);
+\coordinate (E) at (3,3);
+\coordinate (F) at (1,-1);
+\draw[inkiron] (A) -- (B);
+\draw[inkiron] (B) -- (C);
+\draw[inkiron] (A) -- (C);
+\draw[inkiron] (A) -- (D);
+\draw[inkiron] (A) -- (E);
+\draw[inkiron] (D) -- (E);
+\draw[inkiron] (D) -- (F);
+\draw[inkiron] (C) -- (F);
+\draw[inkiron] (C) -- (E);
+\pic[draw=selvage,angle radius=2.4mm] {right angle=D--A--E};
+\pic[draw=selvage,angle radius=2.4mm] {right angle=A--B--C};
+\draw[inkiron] ($(A)!0.5!(D)!2pt!90:(D)$) -- ($(A)!0.5!(D)!2pt!-90:(D)$);
+\draw[inkiron] ($(A)!0.5!(E)!2pt!90:(E)$) -- ($(A)!0.5!(E)!2pt!-90:(E)$);
+\draw[inkiron] ($(A)!0.4825!(B)!2pt!90:(B)$) -- ($(A)!0.4825!(B)!2pt!-90:(B)$);
+\draw[inkiron] ($(A)!0.5175!(B)!2pt!90:(B)$) -- ($(A)!0.5175!(B)!2pt!-90:(B)$);
+\draw[inkiron] ($(B)!0.4825!(C)!2pt!90:(C)$) -- ($(B)!0.4825!(C)!2pt!-90:(C)$);
+\draw[inkiron] ($(B)!0.5175!(C)!2pt!90:(C)$) -- ($(B)!0.5175!(C)!2pt!-90:(C)$);
+\draw[inkiron] ($(D)!0.46499999999999997!(B)!2pt!90:(B)$) -- ($(D)!0.46499999999999997!(B)!2pt!-90:(B)$);
+\draw[inkiron] ($(D)!0.5!(B)!2pt!90:(B)$) -- ($(D)!0.5!(B)!2pt!-90:(B)$);
+\draw[inkiron] ($(D)!0.535!(B)!2pt!90:(B)$) -- ($(D)!0.535!(B)!2pt!-90:(B)$);
+\draw[inkiron] ($(B)!0.46499999999999997!(F)!2pt!90:(F)$) -- ($(B)!0.46499999999999997!(F)!2pt!-90:(F)$);
+\draw[inkiron] ($(B)!0.5!(F)!2pt!90:(F)$) -- ($(B)!0.5!(F)!2pt!-90:(F)$);
+\draw[inkiron] ($(B)!0.535!(F)!2pt!90:(F)$) -- ($(B)!0.535!(F)!2pt!-90:(F)$);
+\node[above] at (A) {$A$};
+\node[left] at (B) {$B$};
+\node[right] at (C) {$C$};
+\node[left] at (D) {$D$};
+\node[right] at (E) {$E$};
+\node[below] at (F) {$F$};
+\end{tikzpicture}}
+
+\newcommand{\hhOneExtend}{%
+\begin{tikzpicture}[scale=0.5,line width=.65pt,every node/.style={font=\small,inner sep=2pt}]
+\coordinate (A) at (0,4);
+\coordinate (B) at (0,0);
+\coordinate (C) at (4,0);
+\coordinate (D) at (-1,1);
+\coordinate (E) at (3,3);
+\coordinate (F) at (1,-1);
+\coordinate (G) at (0,-4);
+\draw[inkiron] (A) -- (B);
+\draw[inkiron] (B) -- (C);
+\draw[inkiron] (A) -- (C);
+\draw[inkiron] (A) -- (D);
+\draw[inkiron] (A) -- (E);
+\draw[inkiron] (D) -- (E);
+\draw[inkiron] (D) -- (F);
+\draw[inkiron] (C) -- (F);
+\draw[inkiron] (C) -- (E);
+\draw[indigo,dashed] (B) -- (G);
+\draw[indigo,dashed] (G) -- (F);
+\draw[indigo,dashed] (G) -- (C);
+\pic[draw=selvage,angle radius=2.4mm] {right angle=D--A--E};
+\pic[draw=selvage,angle radius=2.4mm] {right angle=A--B--C};
+\pic[draw=selvage,angle radius=2.4mm] {right angle=A--C--G};
+\draw[inkiron] ($(A)!0.5!(D)!2pt!90:(D)$) -- ($(A)!0.5!(D)!2pt!-90:(D)$);
+\draw[inkiron] ($(A)!0.5!(E)!2pt!90:(E)$) -- ($(A)!0.5!(E)!2pt!-90:(E)$);
+\draw[inkiron] ($(A)!0.4825!(B)!2pt!90:(B)$) -- ($(A)!0.4825!(B)!2pt!-90:(B)$);
+\draw[inkiron] ($(A)!0.5175!(B)!2pt!90:(B)$) -- ($(A)!0.5175!(B)!2pt!-90:(B)$);
+\draw[inkiron] ($(B)!0.4825!(C)!2pt!90:(C)$) -- ($(B)!0.4825!(C)!2pt!-90:(C)$);
+\draw[inkiron] ($(B)!0.5175!(C)!2pt!90:(C)$) -- ($(B)!0.5175!(C)!2pt!-90:(C)$);
+\draw[inkiron] ($(D)!0.46499999999999997!(B)!2pt!90:(B)$) -- ($(D)!0.46499999999999997!(B)!2pt!-90:(B)$);
+\draw[inkiron] ($(D)!0.5!(B)!2pt!90:(B)$) -- ($(D)!0.5!(B)!2pt!-90:(B)$);
+\draw[inkiron] ($(D)!0.535!(B)!2pt!90:(B)$) -- ($(D)!0.535!(B)!2pt!-90:(B)$);
+\draw[inkiron] ($(B)!0.46499999999999997!(F)!2pt!90:(F)$) -- ($(B)!0.46499999999999997!(F)!2pt!-90:(F)$);
+\draw[inkiron] ($(B)!0.5!(F)!2pt!90:(F)$) -- ($(B)!0.5!(F)!2pt!-90:(F)$);
+\draw[inkiron] ($(B)!0.535!(F)!2pt!90:(F)$) -- ($(B)!0.535!(F)!2pt!-90:(F)$);
+\node[above] at (A) {$A$};
+\node[left] at (B) {$B$};
+\node[right] at (C) {$C$};
+\node[left] at (D) {$D$};
+\node[right] at (E) {$E$};
+\node[below] at (F) {$F$};
+\node[below] at (G) {$G$};
+\end{tikzpicture}}
+
+\newcommand{\hhOneRotate}{%
+\begin{tikzpicture}[scale=0.5,line width=.65pt,every node/.style={font=\small,inner sep=2pt}]
+\coordinate (A) at (0,4);
+\coordinate (B) at (0,0);
+\coordinate (C) at (4,0);
+\coordinate (D) at (-1,1);
+\coordinate (E) at (3,3);
+\coordinate (F) at (1,-1);
+\coordinate (G) at (-4,0);
+\draw[inkiron] (A) -- (B);
+\draw[inkiron] (B) -- (C);
+\draw[inkiron] (A) -- (C);
+\draw[inkiron] (A) -- (D);
+\draw[inkiron] (A) -- (E);
+\draw[inkiron] (D) -- (E);
+\draw[inkiron] (D) -- (F);
+\draw[inkiron] (C) -- (F);
+\draw[inkiron] (C) -- (E);
+\draw[indigo,dashed] (B) -- (G);
+\draw[indigo,dashed] (G) -- (A);
+\draw[indigo,dashed] (G) -- (D);
+\pic[draw=selvage,angle radius=2.4mm] {right angle=D--A--E};
+\pic[draw=selvage,angle radius=2.4mm] {right angle=A--B--C};
+\pic[draw=selvage,angle radius=2.4mm] {right angle=G--A--C};
+\draw[inkiron] ($(A)!0.5!(D)!2pt!90:(D)$) -- ($(A)!0.5!(D)!2pt!-90:(D)$);
+\draw[inkiron] ($(A)!0.5!(E)!2pt!90:(E)$) -- ($(A)!0.5!(E)!2pt!-90:(E)$);
+\draw[inkiron] ($(A)!0.4825!(B)!2pt!90:(B)$) -- ($(A)!0.4825!(B)!2pt!-90:(B)$);
+\draw[inkiron] ($(A)!0.5175!(B)!2pt!90:(B)$) -- ($(A)!0.5175!(B)!2pt!-90:(B)$);
+\draw[inkiron] ($(B)!0.4825!(C)!2pt!90:(C)$) -- ($(B)!0.4825!(C)!2pt!-90:(C)$);
+\draw[inkiron] ($(B)!0.5175!(C)!2pt!90:(C)$) -- ($(B)!0.5175!(C)!2pt!-90:(C)$);
+\draw[inkiron] ($(D)!0.46499999999999997!(B)!2pt!90:(B)$) -- ($(D)!0.46499999999999997!(B)!2pt!-90:(B)$);
+\draw[inkiron] ($(D)!0.5!(B)!2pt!90:(B)$) -- ($(D)!0.5!(B)!2pt!-90:(B)$);
+\draw[inkiron] ($(D)!0.535!(B)!2pt!90:(B)$) -- ($(D)!0.535!(B)!2pt!-90:(B)$);
+\draw[inkiron] ($(B)!0.46499999999999997!(F)!2pt!90:(F)$) -- ($(B)!0.46499999999999997!(F)!2pt!-90:(F)$);
+\draw[inkiron] ($(B)!0.5!(F)!2pt!90:(F)$) -- ($(B)!0.5!(F)!2pt!-90:(F)$);
+\draw[inkiron] ($(B)!0.535!(F)!2pt!90:(F)$) -- ($(B)!0.535!(F)!2pt!-90:(F)$);
+\node[above] at (A) {$A$};
+\node[left] at (B) {$B$};
+\node[right] at (C) {$C$};
+\node[left] at (D) {$D$};
+\node[right] at (E) {$E$};
+\node[below] at (F) {$F$};
+\node[left] at (G) {$G$};
+\end{tikzpicture}}
+
+\newcommand{\hhTwo}{%
+\begin{tikzpicture}[scale=0.59,line width=.65pt,every node/.style={font=\small,inner sep=2pt}]
+\coordinate (B) at (0,0);
+\coordinate (A) at (3,3);
+\coordinate (C) at (6,0);
+\coordinate (D) at (4.8,4.8);
+\coordinate (E) at (0,3.6);
+\draw[inkiron] (B) -- (D);
+\draw[inkiron] (A) -- (C);
+\draw[inkiron] (B) -- (C);
+\draw[inkiron] (D) -- (C);
+\draw[inkiron] (D) -- (E);
+\draw[inkiron] (C) -- (E);
+\draw[inkiron] (B) -- (E);
+\pic[draw=selvage,angle radius=2.4mm] {right angle=B--A--C};
+\pic[draw=selvage,angle radius=2.4mm] {right angle=C--D--E};
+\draw[inkiron] ($(A)!0.5!(B)!2pt!90:(B)$) -- ($(A)!0.5!(B)!2pt!-90:(B)$);
+\draw[inkiron] ($(A)!0.5!(C)!2pt!90:(C)$) -- ($(A)!0.5!(C)!2pt!-90:(C)$);
+\draw[inkiron] ($(D)!0.4825!(C)!2pt!90:(C)$) -- ($(D)!0.4825!(C)!2pt!-90:(C)$);
+\draw[inkiron] ($(D)!0.5175!(C)!2pt!90:(C)$) -- ($(D)!0.5175!(C)!2pt!-90:(C)$);
+\draw[inkiron] ($(D)!0.4825!(E)!2pt!90:(E)$) -- ($(D)!0.4825!(E)!2pt!-90:(E)$);
+\draw[inkiron] ($(D)!0.5175!(E)!2pt!90:(E)$) -- ($(D)!0.5175!(E)!2pt!-90:(E)$);
+\node[below left] at (B) {$B$};
+\node[below right] at (A) {$A$};
+\node[below right] at (C) {$C$};
+\node[above] at (D) {$D$};
+\node[left] at (E) {$E$};
+\end{tikzpicture}}
+
+\newcommand{\hhTwoHands}{%
+\begin{tikzpicture}[scale=0.46,line width=.65pt,every node/.style={font=\small,inner sep=2pt}]
+\coordinate (B) at (0,0);
+\coordinate (A) at (3,3);
+\coordinate (C) at (6,0);
+\coordinate (D) at (4.8,4.8);
+\coordinate (E) at (0,3.6);
+\coordinate (G) at (6,6);
+\coordinate (F) at (9.6,6);
+\draw[inkiron] (B) -- (D);
+\draw[inkiron] (A) -- (C);
+\draw[inkiron] (B) -- (C);
+\draw[inkiron] (D) -- (C);
+\draw[inkiron] (D) -- (E);
+\draw[inkiron] (C) -- (E);
+\draw[inkiron] (B) -- (E);
+\draw[indigo,dashed] (D) -- (F);
+\draw[indigo,dashed] (D) -- (G);
+\draw[indigo,dashed] (C) -- (F);
+\draw[indigo,dashed] (C) -- (G);
+\draw[indigo,dashed] (G) -- (F);
+\pic[draw=selvage,angle radius=2.4mm] {right angle=B--A--C};
+\pic[draw=selvage,angle radius=2.4mm] {right angle=C--D--E};
+\pic[draw=selvage,angle radius=2.4mm] {right angle=B--C--G};
+\pic[draw=selvage,angle radius=2.4mm] {right angle=E--C--F};
+\draw[inkiron] ($(A)!0.5!(B)!2pt!90:(B)$) -- ($(A)!0.5!(B)!2pt!-90:(B)$);
+\draw[inkiron] ($(A)!0.5!(C)!2pt!90:(C)$) -- ($(A)!0.5!(C)!2pt!-90:(C)$);
+\draw[inkiron] ($(D)!0.4825!(C)!2pt!90:(C)$) -- ($(D)!0.4825!(C)!2pt!-90:(C)$);
+\draw[inkiron] ($(D)!0.5175!(C)!2pt!90:(C)$) -- ($(D)!0.5175!(C)!2pt!-90:(C)$);
+\draw[inkiron] ($(D)!0.4825!(E)!2pt!90:(E)$) -- ($(D)!0.4825!(E)!2pt!-90:(E)$);
+\draw[inkiron] ($(D)!0.5175!(E)!2pt!90:(E)$) -- ($(D)!0.5175!(E)!2pt!-90:(E)$);
+\node[below left] at (B) {$B$};
+\node[below right] at (A) {$A$};
+\node[below right] at (C) {$C$};
+\node[above] at (D) {$D$};
+\node[left] at (E) {$E$};
+\node[above] at (G) {$G$};
+\node[right] at (F) {$F$};
+\end{tikzpicture}}
+
+\newcommand{\hhTwoParallel}{%
+\begin{tikzpicture}[scale=0.46,line width=.65pt,every node/.style={font=\small,inner sep=2pt}]
+\coordinate (B) at (0,0);
+\coordinate (A) at (3,3);
+\coordinate (C) at (6,0);
+\coordinate (D) at (4.8,4.8);
+\coordinate (E) at (0,3.6);
+\coordinate (G) at (6,6);
+\coordinate (F) at (9.6,6);
+\coordinate (P) at (3.6,3.6);
+\draw[inkiron] (B) -- (D);
+\draw[inkiron] (A) -- (C);
+\draw[inkiron] (B) -- (C);
+\draw[inkiron] (D) -- (C);
+\draw[inkiron] (D) -- (E);
+\draw[inkiron] (C) -- (E);
+\draw[inkiron] (B) -- (E);
+\draw[indigo,dashed] (D) -- (F);
+\draw[indigo,dashed] (D) -- (G);
+\draw[indigo,dashed] (C) -- (F);
+\draw[indigo,dashed] (C) -- (G);
+\draw[indigo,dashed] (G) -- (F);
+\draw[indigo,dashed] (E) -- (P);
+\pic[draw=selvage,angle radius=2.4mm] {right angle=B--A--C};
+\pic[draw=selvage,angle radius=2.4mm] {right angle=C--D--E};
+\draw[inkiron] ($(A)!0.5!(B)!2pt!90:(B)$) -- ($(A)!0.5!(B)!2pt!-90:(B)$);
+\draw[inkiron] ($(A)!0.5!(C)!2pt!90:(C)$) -- ($(A)!0.5!(C)!2pt!-90:(C)$);
+\draw[inkiron] ($(D)!0.4825!(C)!2pt!90:(C)$) -- ($(D)!0.4825!(C)!2pt!-90:(C)$);
+\draw[inkiron] ($(D)!0.5175!(C)!2pt!90:(C)$) -- ($(D)!0.5175!(C)!2pt!-90:(C)$);
+\draw[inkiron] ($(D)!0.4825!(E)!2pt!90:(E)$) -- ($(D)!0.4825!(E)!2pt!-90:(E)$);
+\draw[inkiron] ($(D)!0.5175!(E)!2pt!90:(E)$) -- ($(D)!0.5175!(E)!2pt!-90:(E)$);
+\node[below left] at (B) {$B$};
+\node[below right] at (A) {$A$};
+\node[below right] at (C) {$C$};
+\node[above] at (D) {$D$};
+\node[left] at (E) {$E$};
+\node[above] at (G) {$G$};
+\node[right] at (F) {$F$};
+\node[below right] at (P) {$P$};
+\end{tikzpicture}}

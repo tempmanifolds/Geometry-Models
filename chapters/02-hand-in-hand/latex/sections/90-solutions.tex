@@ -1,0 +1,249 @@
+\section{集中解析}
+\begin{solution}{题 1 · 解析}
+\think
+
+原图的两个等腰直角三角形是“手拉脚”：\(A\) 是 \(\triangle ADE\) 的直角顶点，却是 \(\triangle ABC\) 的底角顶点。\(BF=BD\) 提供了中心 \(B\) 的对称关系。把另一个点也关于 \(B\) 对称，就能利用一组“八字形”全等搬运线段。
+
+下面两种方法使用不同的 \(G\)，分别作图，不共用辅助点。
+
+\block{方法一 倍长 \(AB\)，把公共直角顶点搬到 \(C\)}
+
+\diagram{\hhOneExtend}
+
+\solve
+
+延长 \(AB\) 到 \(G\)，使 \(BG=AB\)，连接 \(FG\)、\(CG\)。
+
+第一步，用中点搬运 \(AD\)。
+
+\(AB=GB\)，\(BD=BF\)，\(\angle ABD=\angle GBF\)，所以
+
+\[
+\triangle ABD\cong\triangle GBF\quad(\mathrm{SAS}).
+\]
+
+因此 \(AD=GF\)，且 \(AD\parallel GF\)。这里的平行由对应角相等得到；也可以看成把 \(\triangle ABD\) 绕 \(B\) 旋转 \(180^\circ\)，得到 \(\triangle GBF\)。
+
+又 \(AD=AE\)，\(AD\perp AE\)，故
+
+\[
+GF=AE,\qquad GF\perp AE.
+\]
+
+第二步，补出以 \(C\) 为直角顶点的等腰直角三角形。
+
+\(AB=BC=BG\)，\(BC\perp AG\)，所以 \(\triangle ABC\)、\(\triangle GBC\) 都是等腰直角三角形。于是
+
+\[
+CA=CG,\qquad
+\angle ACG=\angle ACB+\angle BCG=45^\circ+45^\circ=90^\circ.
+\]
+
+第三步，证明第二组全等。
+
+\(CA\perp CG\)，\(AE\perp GF\)。按图中射线的位置，\(\angle CAE\)、\(\angle CGF\) 是两边分别垂直的锐角，因此相等。结合 \(CA=CG\)、\(AE=GF\)，有
+
+\[
+\triangle ACE\cong\triangle GCF\quad(\mathrm{SAS}).
+\]
+
+所以 \(CE=CF\)，\(\angle ACE=\angle GCF\)。再按图中射线的次序，有
+
+\[
+\angle ECF
+=\angle ACE+\angle ACG-\angle GCF
+=90^\circ.
+\]
+
+故 \(CF=CE\)，\(CF\perp CE\)。
+
+\block{方法二 旋转 \(AC\)，在 \(A\) 处直接补成手拉手}
+
+\diagram{\hhOneRotate}
+
+\solve
+
+过 \(A\) 作 \(AG\perp AC\)，交 \(CB\) 向 \(B\) 外的延长线于 \(G\)，连接 \(DG\)。
+
+第一步，说明 \(G\) 为什么正好是旋转后的 \(C\)。
+
+\(\triangle ABC\) 是等腰直角三角形，\(\angle BAC=45^\circ\)。由 \(AG\perp AC\)，得 \(\angle BAG=45^\circ\)；又 \(\angle ABG=90^\circ\)，所以 \(\triangle ABG\) 也是等腰直角三角形。因此
+
+\[
+BG=AB=BC,\qquad AG=AC.
+\]
+
+可见“过 \(A\) 作 \(AC\) 的垂线”与“延长 \(CB\)，使 \(BG=BC\)”确定的是同一个 \(G\)。
+
+第二步，建立旋转型全等。
+
+把 \(\triangle AEC\) 绕 \(A\) 顺时针旋转 \(90^\circ\)。因为 \(AE=AD\)、\(AE\perp AD\)，\(E\) 落到 \(D\)；因为 \(AC=AG\)、\(AC\perp AG\)，\(C\) 落到 \(G\)。所以旋转后的三角形是 \(\triangle ADG\)，从而
+
+\[
+DG=CE,\qquad DG\perp CE.
+\]
+
+若写成全等证明：\(AD=AE\)，\(AG=AC\)，且按图有 \(\angle DAG=\angle EAC\)，故 \(\triangle ADG\cong \triangle AEC\)（\(\mathrm{SAS}\)）。垂直关系则由上述旋转对应得到。
+
+第三步，再用中点把 \(DG\) 搬成 \(CF\)。
+
+\(BD=BF\)，\(BG=BC\)，\(\angle DBG=\angle FBC\)，故
+
+\[
+\triangle DBG\cong\triangle FBC\quad(\mathrm{SAS}).
+\]
+
+这组全等也是中心 \(B\) 的半转：\(D\) 对应 \(F\)，\(G\) 对应 \(C\)。因此 \(DG=CF\)，\(DG\parallel CF\)。结合 \(DG=CE\)、\(DG\perp CE\)，得到
+
+\[
+CF=CE,\qquad CF\perp CE.
+\]
+
+如果采用对应角相加的写法：第一组全等给出 \(\angle ECA=\angle DGA\)，第二组全等给出 \(\angle BCF=\angle BGD\)。按图，\(GD\) 在 \(\angle BGA\) 内，所以
+
+\[
+\angle ECA+\angle BCF
+=\angle DGA+\angle BGD
+=\angle BGA=45^\circ.
+\]
+
+再加上 \(\angle ACB=45^\circ\)，同样得到 \(\angle ECF=90^\circ\)。
+
+\checkup
+
+取 \(A(0,4)\)、\(B(0,0)\)、\(C(4,0)\)、\(D(-1,1)\)、\(E(3,3)\)、\(F(1,-1)\)。这些点满足原题的等长、直角和中点条件。\(CE\) 的水平、竖直变化是 −1、3，\(CF\) 的水平、竖直变化是 −3、−1；前一组变化顺时针转 \(90^\circ\)，正好成为后一组。因此 \(CE=CF=\sqrt{10}\)，且 \(CE\perp CF\)。坐标只作核验，正式证明仍用旋转与全等。
+
+\insight{中点先提供一次半转，等腰直角三角形再提供一次四分之一转；两次搬运把待证的线段连接起来。}
+
+\end{solution}
+\clearpage
+\begin{solution}{题 2 · 解析}
+\think
+
+\(C\) 是两个原三角形的底角顶点，属于“脚拉脚”。从底角顶点到直角顶点的那条腰，延长一倍后，连接新的端点与 \(C\)，就能把 \(C\) 补成直角顶点。本题需要对两个三角形各做一次。
+
+初二可沿“倍长、旋转型全等、中点构造、等腰倒角”完成。初三学过相似后，则可以直接比较两组相差 \(\sqrt{2}\) 倍的边。
+
+\block{方法一 两次倍长，再作平行线}
+
+\diagram{\hhTwoHands}
+
+\solve
+
+第一步，分别补出两个新等腰直角三角形。
+
+延长 \(ED\) 到 \(F\)，使 \(DF=DE\)，连接 \(CF\)。因为 \(DC=DE=DF\)，\(CD\perp EF\)，\(\triangle CDE\)、\(\triangle CDF\) 全等，得
+
+\[
+CE=CF,\qquad
+\angle ECF=\angle ECD+\angle DCF=45^\circ+45^\circ=90^\circ.
+\]
+
+延长 \(BA\) 到 \(G\)，使 \(AG=AB\)，连接 \(CG\)。同理，由 \(CA=AB=AG\)、\(CA\perp BG\)，得到
+
+\[
+CB=CG,\qquad \angle BCG=90^\circ.
+\]
+
+此时 \(\triangle ECF\)、\(\triangle BCG\) 的直角顶点都是 \(C\)，“脚拉脚”已经补成“手拉手”。
+
+第二步，用旋转型全等得到 \(BE=GF\)。
+
+以 \(C\) 为中心顺时针旋转 \(90^\circ\)，\(B\) 落到 \(G\)，\(E\) 落到 \(F\)。因此 \(\triangle BCE\) 对应 \(\triangle GCF\)，得到
+
+\[
+\triangle BCE\cong\triangle GCF\quad(\mathrm{SAS}),
+\]
+
+于是
+
+\[
+BE=GF,\qquad \angle EBC=\angle CGF.
+\]
+
+第三步，把 \(GF\) 的长度搬到 \(E\)，构造等腰三角形。
+
+\diagram{\hhTwoParallel}
+
+将 \(G\) 关于 \(D\) 对称到 \(P\)，连接 \(EP\)。\(D\) 是 \(EF\) 的中点，半转使 \(F\) 对应 \(E\)、\(G\) 对应 \(P\)，因此
+
+\[
+EP=GF,\qquad EP\parallel GF.
+\]
+
+这也就是过 \(E\) 作 \(GF\) 的平行线，与直线 \(BD\) 相交的构造。按所画的内部位置，可写成 \(\triangle EPD\cong \triangle FGD\)（\(\mathrm{ASA}\)）；用半转说明则能同时处理其他 \(D\) 的位置。
+
+\(A\) 是 \(BG\) 的中点，\(D\) 在 \(BA\) 向 \(A\) 外的延长线上，故 \(P\) 在射线 \(BA\) 上，并且 \(BP=2AD>0\)。由 \(BE=GF=EP\)，\(\triangle BEP\) 为等腰三角形。设
+
+\[
+\angle EBP=\angle BPE=\alpha.
+\]
+
+第四步，用两种角度表达求 \(\alpha \)。
+
+\(P\) 在射线 \(BA\) 上，\(\angle PBC=45^\circ\)，故
+
+\[
+\angle EBC=\alpha+45^\circ.
+\]
+
+又 \(EP\parallel GF\)，\(PB\) 与 \(GB\) 同向，所以 \(\angle BGF=180^\circ-\alpha \)。\(\triangle BCG\) 为等腰直角三角形，\(\angle BGC=45^\circ\)；按对应的射线方向，\(GC\) 在 \(\angle BGF\) 内。因此
+
+\[
+\angle CGF
+=\angle BGF-\angle BGC
+=180^\circ-\alpha-45^\circ
+=135^\circ-\alpha.
+\]
+
+由第二步的对应角相等，得
+
+\[
+\alpha+45^\circ=135^\circ-\alpha.
+\]
+
+所以 \(\alpha =45^\circ\)，\(\angle EBC=90^\circ\)，即 \(BE\perp BC\)。
+
+\textbf{位置补充}
+
+题目没有规定 \(AD<AB\)，所以 \(D\) 不一定在 \(AG\) 内。上面的半转构造仍然适用：
+
+\begin{itemize}
+\item \(D\) 在 \(AG\) 内时，\(BP=BD-DG=2BD-BG=2AD\)。
+\item \(D\) 在 \(G\) 及其外侧时，\(BP=BD+DG=2BD-BG=2AD\)。
+\end{itemize}
+
+两种情况下 \(P\) 都在射线 \(BA\) 上，倒角时使用的是 \(\angle BGF\)，避免把 \(\angle DGF\) 误当成同一个角。若 \(D=G\)，则 \(P=D\)；此时 \(\triangle EPD\)、\(\triangle FGD\) 退化，不能再称为全等三角形，但半转仍给出 \(EP=GF\)、\(EP\parallel GF\)，其余推理照常成立。
+
+\block{方法二 用 \(\sqrt{2}\) 倍关系直接证明相似}
+
+\solve
+
+\(\triangle ABC\) 是等腰直角三角形，所以 \(BC=\sqrt{2}\cdot AC\)；\(\triangle DCE\) 是等腰直角三角形，所以 \(CE=\sqrt{2}\cdot CD\)。因此
+
+\[
+\frac{AC}{BC}=\frac{CD}{CE}=\frac1{\sqrt2}.
+\]
+
+又 \(\angle BCA=\angle DCE=45^\circ\)。按原图的方向，\(CA\)、\(CE\) 都位于 \(\angle BCD\) 内，并分别从它的两侧截去 \(45^\circ\)，所以
+
+\[
+\angle ACD=\angle BCD-45^\circ
+=\angle BCE.
+\]
+
+由两边成比例且夹角相等，得
+
+\[
+\triangle ADC\sim\triangle BEC.
+\]
+
+对应顶点为 \(A\leftrightarrow B\)、\(D\leftrightarrow E\)、\(C\leftrightarrow C\)，因此 \(\angle EBC=\angle DAC\)。\(D\) 在 \(BA\) 的延长线上，而 \(AC\perp AB\)，所以 \(\angle DAC=90^\circ\)。故 \(BE\perp BC\)。
+
+\checkup
+
+取 \(B(0,0)\)、\(A(2,2)\)、\(C(4,0)\)、\(D(3,3)\)、\(E(0,2)\)，满足 \(AB=AC\)、\(DC=DE\)、两个直角以及原图方位。\(BE=2\)、\(BC=4\)，\(BE\) 为竖直线段，\(BC\) 为水平线段。另有 \(AC=2\sqrt{2}\)、\(CD=\sqrt{10}\)、\(CE=2\sqrt{5}\)，两组边的比均为 1/\(\sqrt{2}\)，与相似证明一致。
+
+\insight{初二用倍长把两个底角补成直角，初三用共同的 \(\sqrt{2}\) 倍关系直接建立相似。}
+
+\end{solution}

@@ -359,6 +359,7 @@
 %  THE COVER  (a woven plate)
 % ===========================================================================
 % \loomcover{title}{subtitle}{author}{date}   -- enables the rail afterwards
+\newcommand{\loomcovermotto}{以\textcolor{indigo}{靛蓝}、\textcolor{madder}{茜红}与\textcolor{weld}{木樨草黄}染就，铁胆墨勾线\quad 织于 \textsc{loom}}
 \newcommand{\loomcover}[4]{%
   \begin{titlepage}\thispagestyle{empty}\centering
     \vspace*{2.0cm}
@@ -376,7 +377,7 @@
     {\strandfont\small\color{selvage}#4\par}
     \vspace{1.1cm}
     {\labelfont\footnotesize\color{selvage}%格言
-      以\textcolor{indigo}{靛蓝}、\textcolor{madder}{茜红}与\textcolor{weld}{木樨草黄}染就，铁胆墨勾线\quad 织于 \textsc{loom}\par}
+      \loomcovermotto\par}
   \end{titlepage}%
   \loomrail}
 

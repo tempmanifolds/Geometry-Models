@@ -1,56 +1,54 @@
 # geometry Models
 
-初中几何模型总结与培优讲义。各专题保留模型识别、入手提示、规范证明与可迁移结论，题目区与解析区分开。
+Hence 的初中几何模型总结与培优讲义。面向初二、初三培优学生，先做原题，再阅读提示和完整解析，最后归纳可迁移的模型结论。
 
-## 第一部分 夹半角
+## 阅读与编辑
 
-- [阅读讲义 PDF](output/pdf/geometry-Models-01-夹半角讲义.pdf)
-- [编辑内容稿](chapters/01-half-angle/content.md)
-- [LaTeX 主文件](chapters/01-half-angle/latex/main.tex)
-- [专题说明与原稿对应表](chapters/01-half-angle/README.md)
+- [完整讲义 PDF](output/pdf/geometry-Models-讲义.pdf)：夹半角与手拉手合编，共用封面和目录，各章保留自己的题号。
+- [全书 Markdown](content.md)：由各章内容稿汇总。
+- [全书 LaTeX 主文件](latex/main.tex)：可编辑正文、显示开关与编译入口。
+- [夹半角单章 PDF](output/pdf/geometry-Models-01-夹半角讲义.pdf)：保留单章使用方式。
 
-本讲面向初二、初三培优学生，包含 10 道题、4 种识别构型和旋转、翻折、延长构造等方法。拓展部分讨论条件等价、定高、定周长、乘积关系、线段长度范围及内部/外部构型的加减变化。
+## 章节
 
-原始 Word 与 PDF 只保留在本地，已从版本管理中排除。
+| 章节 | 内容 | 内容稿 | 维护说明 |
+| --- | --- | --- | --- |
+| 第一章 夹半角 | 10 道题、4 种识别构型；旋转、翻折、延长、矩形迁移及和差变化 | [Markdown](chapters/01-half-angle/content.md) | [专题说明](chapters/01-half-angle/README.md) |
+| 第二章 手拉手模型 | 2 道原题，每题两种解法；手拉脚、脚拉脚、倍长及中点搬运 | [Markdown](chapters/02-hand-in-hand/content.md) | [专题说明](chapters/02-hand-in-hand/README.md) |
 
-## 文件结构
-
-```text
-chapters/
-  01-half-angle/
-    content.md          内容稿
-    README.md           专题维护说明
-    latex/
-      main.tex          主文件与显示开关
-      loom.cls          Loom 排版模板
-      diagrams.tex      可编辑几何图
-      sections/         导读、题目、解析、总结
-output/pdf/             正式 PDF
-scripts/
-  build.py              两遍编译并导出 PDF
-  check_math.py         数值及模型关系核验
-```
+原始 Word、PDF、视频、字幕及提取截图只保留在本地，均从版本管理和交付项目包中排除。GitHub 保存整理后的讲义、可编辑源文件和重绘图。
 
 ## 编译
 
 安装有 XeLaTeX 的 TeX Live 环境后，在项目根目录执行：
 
-```text
-python scripts/build.py
-```
+    python scripts/build.py
 
-如果 XeLaTeX 不在环境路径中，用 `--xelatex` 指定可执行文件路径，例如：
+脚本默认各编译两遍，生成完整讲义与夹半角单章 PDF，同时更新全书 Markdown。单独编译全书可增加参数：
 
-```text
-python scripts/build.py --xelatex "D:/texlive/2026/bin/windows/xelatex.exe"
-```
+    python scripts/build.py --target book
 
-脚本执行两遍 XeLaTeX，检查编译错误、版面溢出、缺字及未定义引用，再将 PDF 导出到 `output/pdf/`。几何图由 TikZ 绘制，随 LaTeX 源文件一起编辑，不依赖原始材料中的截图。
+如果 XeLaTeX 不在环境路径中，用参数指定位置：
 
-## 编辑与版本切换
+    python scripts/build.py --xelatex "D:/texlive/2026/bin/windows/xelatex.exe"
 
-在 `content.md` 中讨论内容；最终排版文件按板块放在 `latex/sections/`，修改内容时同步更新两者。调整几何图时编辑 `diagrams.tex` 并重新核验位置与角度。
+编译前递归检查输入文件、题目与解析配对；编译后检查错误、版面溢出、缺字、未定义引用及目录。正式输出位于 output/pdf/。
 
-`main.tex` 中的 `\showhintstrue` 可改成 `\showhintsfalse`，隐藏入手提示；`\teachernotestrue` 可改成 `\teachernotesfalse`，将总结部分切换为学生自主总结区。原有内容保留在开关内，方便继续修订。
+## 维护方式
+
+各章内容稿位于 chapters/ 下的 content.md，排版正文按导入、题目、解析、总结保存在各章的 latex/sections/ 中。内容修改时同步更新这两种格式；根目录 content.md 是自动汇总稿，下一次编译会重新生成。
+
+全书主文件引入 latex/sections/ 中的章节入口。以后增加章节时，保持各章独立，更新章节入口和编译检查中的题目总数即可。全书和夹半角单章共用第一章目录中的 Loom 类文件。
+
+几何图由 TikZ 绘制，可在各章的 diagrams.tex 中修改。图中保留点名、角度、等长记号及必要的变量；数值长度写在题干或推导中。
+
+主文件中的显示开关可以隐藏入手提示，或将模型总结切换为学生自主总结区。原有讲解内容保留在开关内。
+
+## 数学核验
+
+    python scripts/check_math.py
+    python scripts/check_hand_in_hand.py
+
+前者验证夹半角数值题和拓展公式；后者以精确分数验证手拉手两题的旋转、等长、平行、垂直与相似，包括位置变化和退化情形。最终 PDF 还需逐页检查。
 
 Loom 模板由 Polaris（北极甜虾）提供，类文件头保留原作者与 MIT 许可说明。

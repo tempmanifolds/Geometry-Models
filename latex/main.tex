@@ -58,19 +58,19 @@
 \let\originalhint\hint
 \renewcommand{\hint}[1]{\ifshowhints\originalhint{#1}\fi}
 \newcommand{\diagram}[1]{\par\smallskip\begin{center}#1\end{center}\smallskip}
-\hypersetup{pdftitle={geometry Models 第一部分 夹半角},pdfauthor={Hence},pdfsubject={初中几何模型培优讲义}}
+\let\originalblock\block
+\renewcommand{\block}[1]{\needspace{4\baselineskip}\originalblock{#1}}
+\hypersetup{pdftitle={geometry Models},pdfauthor={Hence},pdfsubject={初中几何模型培优讲义：夹半角、手拉手}}
 \renewcommand{\loomcovermotto}{从图形中发现关系，在推理中理解几何}
 \renewcommand{\contentsname}{目录}
-\input{diagrams}
+\input{../chapters/01-half-angle/latex/diagrams}
+\input{../chapters/02-hand-in-hand/latex/diagrams}
 \begin{document}
 \loomcover{geometry Models}{}{Hence}{2026年10月}
 \clearpage
 {\small\tableofcontents}
 \clearpage
-\input{sections/00-guide}
-\input{sections/01-problems}
+\input{sections/01-half-angle}
 \clearpage
-\input{sections/90-solutions}
-\clearpage
-\input{sections/95-summary}
+\input{sections/02-hand-in-hand}
 \end{document}

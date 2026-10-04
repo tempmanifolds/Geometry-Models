@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="650" viewBox="0 0 880 650">
+<rect width="100%" height="100%" fill="white"/>
+<line x1="95.000" y1="540.625" x2="440.000" y2="195.625" stroke="#20252b" stroke-width="3"/>
+<line x1="310.625" y1="325.000" x2="526.250" y2="540.625" stroke="#20252b" stroke-width="3"/>
+<line x1="95.000" y1="540.625" x2="526.250" y2="540.625" stroke="#20252b" stroke-width="3"/>
+<line x1="440.000" y1="195.625" x2="526.250" y2="540.625" stroke="#20252b" stroke-width="3"/>
+<line x1="440.000" y1="195.625" x2="95.000" y2="281.875" stroke="#20252b" stroke-width="3"/>
+<line x1="526.250" y1="540.625" x2="95.000" y2="281.875" stroke="#20252b" stroke-width="3"/>
+<line x1="95.000" y1="540.625" x2="95.000" y2="281.875" stroke="#20252b" stroke-width="3"/>
+<line x1="440.000" y1="195.625" x2="785.000" y2="109.375" stroke="#326b9c" stroke-width="3" stroke-dasharray="10 7"/>
+<line x1="440.000" y1="195.625" x2="526.250" y2="109.375" stroke="#326b9c" stroke-width="3" stroke-dasharray="10 7"/>
+<line x1="526.250" y1="540.625" x2="785.000" y2="109.375" stroke="#326b9c" stroke-width="3" stroke-dasharray="10 7"/>
+<line x1="526.250" y1="540.625" x2="526.250" y2="109.375" stroke="#326b9c" stroke-width="3" stroke-dasharray="10 7"/>
+<line x1="526.250" y1="109.375" x2="785.000" y2="109.375" stroke="#326b9c" stroke-width="3" stroke-dasharray="10 7"/>
+<line x1="298.604" y1="337.021" x2="310.625" y2="349.042" stroke="#8e969e" stroke-width="2"/>
+<line x1="310.625" y1="349.042" x2="322.646" y2="337.021" stroke="#8e969e" stroke-width="2"/>
+<line x1="444.123" y1="212.117" x2="427.631" y2="216.241" stroke="#8e969e" stroke-width="2"/>
+<line x1="427.631" y1="216.241" x2="423.508" y2="199.748" stroke="#8e969e" stroke-width="2"/>
+<line x1="509.250" y1="540.625" x2="509.250" y2="523.625" stroke="#8e969e" stroke-width="2"/>
+<line x1="509.250" y1="523.625" x2="526.250" y2="523.625" stroke="#8e969e" stroke-width="2"/>
+<line x1="197.863" y1="427.863" x2="207.762" y2="437.762" stroke="#20252b" stroke-width="2"/>
+<line x1="413.488" y1="437.762" x2="423.387" y2="427.863" stroke="#20252b" stroke-width="2"/>
+<line x1="475.485" y1="366.427" x2="489.067" y2="363.032" stroke="#20252b" stroke-width="2"/>
+<line x1="477.183" y1="373.218" x2="490.765" y2="369.823" stroke="#20252b" stroke-width="2"/>
+<line x1="269.198" y1="231.110" x2="272.593" y2="244.692" stroke="#20252b" stroke-width="2"/>
+<line x1="262.407" y1="232.808" x2="265.802" y2="246.390" stroke="#20252b" stroke-width="2"/>
+<text x="66.000" y="581.625" font-family="Arial, sans-serif" font-size="30" font-style="italic" fill="#20252b">B</text>
+<text x="288.625" y="362.000" font-family="Arial, sans-serif" font-size="30" font-style="italic" fill="#20252b">A</text>
+<text x="534.250" y="581.625" font-family="Arial, sans-serif" font-size="30" font-style="italic" fill="#20252b">C</text>
+<text x="427.000" y="183.625" font-family="Arial, sans-serif" font-size="30" font-style="italic" fill="#20252b">D</text>
+<text x="59.000" y="300.875" font-family="Arial, sans-serif" font-size="30" font-style="italic" fill="#20252b">E</text>
+<text x="514.250" y="97.375" font-family="Arial, sans-serif" font-size="30" font-style="italic" fill="#20252b">G</text>
+<text x="798.000" y="126.375" font-family="Arial, sans-serif" font-size="30" font-style="italic" fill="#20252b">F</text>
+</svg>

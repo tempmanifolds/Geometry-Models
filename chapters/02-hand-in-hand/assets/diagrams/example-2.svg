@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="650" viewBox="0 0 880 650">
+<rect width="100%" height="100%" fill="white"/>
+<line x1="127.500" y1="575.000" x2="627.500" y2="75.000" stroke="#20252b" stroke-width="3"/>
+<line x1="440.000" y1="262.500" x2="752.500" y2="575.000" stroke="#20252b" stroke-width="3"/>
+<line x1="127.500" y1="575.000" x2="752.500" y2="575.000" stroke="#20252b" stroke-width="3"/>
+<line x1="627.500" y1="75.000" x2="752.500" y2="575.000" stroke="#20252b" stroke-width="3"/>
+<line x1="627.500" y1="75.000" x2="127.500" y2="200.000" stroke="#20252b" stroke-width="3"/>
+<line x1="752.500" y1="575.000" x2="127.500" y2="200.000" stroke="#20252b" stroke-width="3"/>
+<line x1="127.500" y1="575.000" x2="127.500" y2="200.000" stroke="#20252b" stroke-width="3"/>
+<line x1="427.979" y1="274.521" x2="440.000" y2="286.542" stroke="#8e969e" stroke-width="2"/>
+<line x1="440.000" y1="286.542" x2="452.021" y2="274.521" stroke="#8e969e" stroke-width="2"/>
+<line x1="631.623" y1="91.492" x2="615.131" y2="95.616" stroke="#8e969e" stroke-width="2"/>
+<line x1="615.131" y1="95.616" x2="611.008" y2="79.123" stroke="#8e969e" stroke-width="2"/>
+<line x1="278.800" y1="413.800" x2="288.700" y2="423.700" stroke="#20252b" stroke-width="2"/>
+<line x1="591.300" y1="423.700" x2="601.200" y2="413.800" stroke="#20252b" stroke-width="2"/>
+<line x1="682.360" y1="323.302" x2="695.942" y2="319.907" stroke="#20252b" stroke-width="2"/>
+<line x1="684.058" y1="330.093" x2="697.640" y2="326.698" stroke="#20252b" stroke-width="2"/>
+<line x1="379.198" y1="129.860" x2="382.593" y2="143.442" stroke="#20252b" stroke-width="2"/>
+<line x1="372.407" y1="131.558" x2="375.802" y2="145.140" stroke="#20252b" stroke-width="2"/>
+<text x="98.500" y="616.000" font-family="Arial, sans-serif" font-size="30" font-style="italic" fill="#20252b">B</text>
+<text x="418.000" y="299.500" font-family="Arial, sans-serif" font-size="30" font-style="italic" fill="#20252b">A</text>
+<text x="760.500" y="616.000" font-family="Arial, sans-serif" font-size="30" font-style="italic" fill="#20252b">C</text>
+<text x="614.500" y="63.000" font-family="Arial, sans-serif" font-size="30" font-style="italic" fill="#20252b">D</text>
+<text x="91.500" y="219.000" font-family="Arial, sans-serif" font-size="30" font-style="italic" fill="#20252b">E</text>
+</svg>

@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="880" height="650" viewBox="0 0 880 650">
+<rect width="100%" height="100%" fill="white"/>
+<line x1="290.000" y1="75.000" x2="290.000" y2="475.000" stroke="#20252b" stroke-width="3"/>
+<line x1="290.000" y1="475.000" x2="690.000" y2="475.000" stroke="#20252b" stroke-width="3"/>
+<line x1="290.000" y1="75.000" x2="690.000" y2="475.000" stroke="#20252b" stroke-width="3"/>
+<line x1="290.000" y1="75.000" x2="190.000" y2="375.000" stroke="#20252b" stroke-width="3"/>
+<line x1="290.000" y1="75.000" x2="590.000" y2="175.000" stroke="#20252b" stroke-width="3"/>
+<line x1="190.000" y1="375.000" x2="590.000" y2="175.000" stroke="#20252b" stroke-width="3"/>
+<line x1="190.000" y1="375.000" x2="390.000" y2="575.000" stroke="#20252b" stroke-width="3"/>
+<line x1="690.000" y1="475.000" x2="390.000" y2="575.000" stroke="#20252b" stroke-width="3"/>
+<line x1="690.000" y1="475.000" x2="590.000" y2="175.000" stroke="#20252b" stroke-width="3"/>
+<line x1="284.624" y1="91.128" x2="300.752" y2="96.503" stroke="#8e969e" stroke-width="2"/>
+<line x1="300.752" y1="96.503" x2="306.128" y2="80.376" stroke="#8e969e" stroke-width="2"/>
+<line x1="290.000" y1="458.000" x2="307.000" y2="458.000" stroke="#8e969e" stroke-width="2"/>
+<line x1="307.000" y1="458.000" x2="307.000" y2="475.000" stroke="#8e969e" stroke-width="2"/>
+<line x1="233.359" y1="222.786" x2="246.641" y2="227.214" stroke="#20252b" stroke-width="2"/>
+<line x1="437.786" y1="131.641" x2="442.214" y2="118.359" stroke="#20252b" stroke-width="2"/>
+<line x1="283.000" y1="271.500" x2="297.000" y2="271.500" stroke="#20252b" stroke-width="2"/>
+<line x1="283.000" y1="278.500" x2="297.000" y2="278.500" stroke="#20252b" stroke-width="2"/>
+<line x1="486.500" y1="482.000" x2="486.500" y2="468.000" stroke="#20252b" stroke-width="2"/>
+<line x1="493.500" y1="482.000" x2="493.500" y2="468.000" stroke="#20252b" stroke-width="2"/>
+<line x1="230.101" y1="425.000" x2="240.000" y2="415.101" stroke="#20252b" stroke-width="2"/>
+<line x1="235.050" y1="429.950" x2="244.950" y2="420.050" stroke="#20252b" stroke-width="2"/>
+<line x1="240.000" y1="434.899" x2="249.899" y2="425.000" stroke="#20252b" stroke-width="2"/>
+<line x1="330.101" y1="525.000" x2="340.000" y2="515.101" stroke="#20252b" stroke-width="2"/>
+<line x1="335.050" y1="529.950" x2="344.950" y2="520.050" stroke="#20252b" stroke-width="2"/>
+<line x1="340.000" y1="534.899" x2="349.899" y2="525.000" stroke="#20252b" stroke-width="2"/>
+<text x="278.000" y="64.000" font-family="Arial, sans-serif" font-size="30" font-style="italic" fill="#20252b">A</text>
+<text x="256.000" y="496.000" font-family="Arial, sans-serif" font-size="30" font-style="italic" fill="#20252b">B</text>
+<text x="703.000" y="495.000" font-family="Arial, sans-serif" font-size="30" font-style="italic" fill="#20252b">C</text>
+<text x="150.000" y="386.000" font-family="Arial, sans-serif" font-size="30" font-style="italic" fill="#20252b">D</text>
+<text x="602.000" y="182.000" font-family="Arial, sans-serif" font-size="30" font-style="italic" fill="#20252b">E</text>
+<text x="377.000" y="615.000" font-family="Arial, sans-serif" font-size="30" font-style="italic" fill="#20252b">F</text>
+</svg>
