@@ -1,0 +1,663 @@
+% 可编辑的几何题图；所有坐标与数值已核验。
+\newcommand{\figOne}{%
+\begin{tikzpicture}[scale=0.95,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\coordinate (A) at (0,3);
+\coordinate (B) at (0,0);
+\coordinate (C) at (3,0);
+\coordinate (D) at (3,3);
+\coordinate (E) at (1,0);
+\coordinate (F) at (3,1.5);
+\draw[inkiron] (A) -- (B) -- (C) -- (D) -- (A);
+\draw[inkiron] (A) -- (E) -- (F) -- (A);
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=E--A--F};
+\node[above left] at (A) {$A$};
+\node[below left] at (B) {$B$};
+\node[below right] at (C) {$C$};
+\node[above right] at (D) {$D$};
+\node[below] at (E) {$E$};
+\node[right] at (F) {$F$};
+\end{tikzpicture}}
+
+\newcommand{\figIntroA}{%
+\begin{tikzpicture}[scale=0.73,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\coordinate (A) at (0,3);
+\coordinate (B) at (0,0);
+\coordinate (C) at (3,0);
+\coordinate (D) at (3,3);
+\coordinate (E) at (1,0);
+\coordinate (F) at (3,1.5);
+\draw[inkiron] (A) -- (B) -- (C) -- (D) -- (A);
+\draw[inkiron] (A) -- (E) -- (F) -- (A);
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=E--A--F};
+\node[above left] at (A) {$A$};
+\node[below left] at (B) {$B$};
+\node[below right] at (C) {$C$};
+\node[above right] at (D) {$D$};
+\node[below] at (E) {$E$};
+\node[right] at (F) {$F$};
+\node[font=\small] at (current bounding box.south) [below=6pt] {图 A 顶点夹半角};
+\end{tikzpicture}}
+
+\newcommand{\figOneSolve}{%
+\begin{tikzpicture}[scale=0.76,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\coordinate (A) at (0,3);
+\coordinate (B) at (0,0);
+\coordinate (C) at (3,0);
+\coordinate (D) at (3,3);
+\coordinate (E) at (1,0);
+\coordinate (F) at (3,1.5);
+\coordinate (G) at (3,4);
+\draw[inkiron] (A) -- (B) -- (C) -- (D) -- (A);
+\draw[inkiron] (A) -- (E) -- (F) -- (A);
+\draw[indigo,dashed] (D) -- (G) -- (A);
+\draw[indigo,dashed] (F) -- (G);
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=E--A--F};
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=F--A--G};
+\node[above left] at (A) {$A$};
+\node[below left] at (B) {$B$};
+\node[below right] at (C) {$C$};
+\node[above right] at (D) {$D$};
+\node[below] at (E) {$E$};
+\node[right] at (F) {$F$};
+\node[above right] at (G) {$G$};
+\path (D) -- node[right,fill=white] {$BE$} (G);
+\end{tikzpicture}}
+
+\newcommand{\figIntroB}{%
+\begin{tikzpicture}[scale=0.73,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\coordinate (A) at (0,3);
+\coordinate (B) at (0,0);
+\coordinate (C) at (3,0);
+\coordinate (D) at (3,3);
+\coordinate (E) at (1,0);
+\coordinate (F) at (0,1.5);
+\coordinate (P) at (0.6,1.2);
+\draw[inkiron] (A) -- (B) -- (C) -- (D) -- (A);
+\draw[inkiron] (A) -- (E);
+\draw[inkiron] (F) -- (C);
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=E--P--C};
+\node[above left] at (A) {$A$};
+\node[below left] at (B) {$B$};
+\node[below right] at (C) {$C$};
+\node[above right] at (D) {$D$};
+\node[below] at (E) {$E$};
+\node[left] at (F) {$F$};
+\node[above right] at (P) {$P$};
+\node[font=\small] at (current bounding box.south) [below=6pt] {图 B 交叉角与平行转移};
+\end{tikzpicture}}
+
+\newcommand{\figIntroC}{%
+\begin{tikzpicture}[scale=0.73,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\coordinate (A) at (0,3);
+\coordinate (B) at (0,0);
+\coordinate (C) at (3,0);
+\coordinate (D) at (3,3);
+\coordinate (E) at (1,0);
+\coordinate (F) at (1.5,3);
+\coordinate (P) at (0.6,1.2);
+\draw[inkiron] (A) -- (B) -- (C) -- (D) -- (A);
+\draw[inkiron] (A) -- (E);
+\draw[inkiron] (B) -- (F);
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=F--P--A};
+\node[above left] at (A) {$A$};
+\node[below left] at (B) {$B$};
+\node[below right] at (C) {$C$};
+\node[above right] at (D) {$D$};
+\node[below] at (E) {$E$};
+\node[above] at (F) {$F$};
+\node[left] at (P) {$P$};
+\node[font=\small] at (current bounding box.south) [below=6pt] {图 C 交叉角与垂直转移};
+\end{tikzpicture}}
+
+\newcommand{\figIntroD}{%
+\begin{tikzpicture}[scale=0.73,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\coordinate (A) at (0,3);
+\coordinate (B) at (0,0);
+\coordinate (C) at (3,0);
+\coordinate (D) at (3,3);
+\coordinate (E) at (0.3,3);
+\coordinate (F) at (1.3,0);
+\coordinate (M) at (0,2.2);
+\coordinate (N) at (3,0.7);
+\coordinate (P) at (0.68,1.86);
+\draw[inkiron] (A) -- (B) -- (C) -- (D) -- (A);
+\draw[inkiron] (E) -- (F);
+\draw[inkiron] (M) -- (N);
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=F--P--N};
+\node[above left] at (A) {$A$};
+\node[below left] at (B) {$B$};
+\node[below right] at (C) {$C$};
+\node[above right] at (D) {$D$};
+\node[above] at (E) {$E$};
+\node[below] at (F) {$F$};
+\node[left] at (M) {$M$};
+\node[right] at (N) {$N$};
+\node[above right] at (P) {$P$};
+\node[font=\small] at (current bounding box.south) [below=6pt] {图 D 两条线同时平移};
+\end{tikzpicture}}
+
+\newcommand{\figTwo}{%
+\begin{tikzpicture}[scale=0.36,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\coordinate (A) at (0,9);
+\coordinate (B) at (0,0);
+\coordinate (C) at (9,0);
+\coordinate (D) at (9,9);
+\coordinate (M) at (3,9);
+\coordinate (N) at (9,4.5);
+\draw[inkiron] (A) -- (B) -- (C) -- (D) -- (A);
+\draw[inkiron] (B) -- (M) -- (N) -- (B);
+\node[above left] at (A) {$A$};
+\node[below left] at (B) {$B$};
+\node[below right] at (C) {$C$};
+\node[above right] at (D) {$D$};
+\node[above] at (M) {$M$};
+\node[right] at (N) {$N$};
+\end{tikzpicture}}
+
+\newcommand{\figTwoSolve}{%
+\begin{tikzpicture}[scale=0.34,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\coordinate (A) at (0,9);
+\coordinate (B) at (0,0);
+\coordinate (C) at (9,0);
+\coordinate (D) at (9,9);
+\coordinate (M) at (3,9);
+\coordinate (N) at (9,4.5);
+\coordinate (P) at (9,-3);
+\coordinate (Q) at (5.4,7.2);
+\draw[inkiron] (A) -- (B) -- (C) -- (D) -- (A);
+\draw[inkiron] (B) -- (M) -- (N) -- (B);
+\draw[indigo,dashed] (C) -- (P) -- (B);
+\draw[indigo,dashed] (P) -- (N);
+\draw[indigo,dashed] (B) -- (Q);
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=N--B--M};
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=P--B--N};
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$90^\circ$"] {angle=B--Q--N};
+\node[above left] at (A) {$A$};
+\node[below left] at (B) {$B$};
+\node[below right] at (C) {$C$};
+\node[above right] at (D) {$D$};
+\node[above] at (M) {$M$};
+\node[right] at (N) {$N$};
+\node[below right] at (P) {$P$};
+\node[above right] at (Q) {$Q$};
+\end{tikzpicture}}
+
+\newcommand{\figThree}{%
+\begin{tikzpicture}[scale=0.36,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\coordinate (A) at (0,9);
+\coordinate (B) at (0,0);
+\coordinate (C) at (9,0);
+\coordinate (D) at (9,9);
+\coordinate (M) at (3,9);
+\coordinate (N) at (9,4.5);
+\draw[inkiron] (A) -- (B) -- (C) -- (D) -- (A);
+\draw[inkiron] (B) -- (M) -- (N);
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$\alpha$"] {angle=B--M--N};
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$\alpha$"] {angle=C--B--M};
+\node[above left] at (A) {$A$};
+\node[below left] at (B) {$B$};
+\node[below right] at (C) {$C$};
+\node[above right] at (D) {$D$};
+\node[above] at (M) {$M$};
+\node[right] at (N) {$N$};
+\path (A) -- node[left,fill=white] {$9$} (B);
+\path (M) -- node[above,fill=white] {$6$} (D);
+\end{tikzpicture}}
+
+\newcommand{\figFour}{%
+\begin{tikzpicture}[scale=0.78,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\coordinate (A) at (0,4);
+\coordinate (B) at (0,0);
+\coordinate (C) at (4,0);
+\coordinate (D) at (4,4);
+\coordinate (E) at (1,3);
+\coordinate (N) at (4,2);
+\draw[inkiron] (A) -- (B) -- (C) -- (D) -- (A);
+\draw[inkiron] (A) -- (C);
+\draw[inkiron] (B) -- (E) -- (N);
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$90^\circ$"] {angle=B--E--N};
+\node[above left] at (A) {$A$};
+\node[below left] at (B) {$B$};
+\node[below right] at (C) {$C$};
+\node[above right] at (D) {$D$};
+\node[above right] at (E) {$E$};
+\node[right] at (N) {$N$};
+\end{tikzpicture}}
+
+\newcommand{\figFourSolve}{%
+\begin{tikzpicture}[scale=0.78,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\coordinate (A) at (0,4);
+\coordinate (B) at (0,0);
+\coordinate (C) at (4,0);
+\coordinate (D) at (4,4);
+\coordinate (E) at (1,3);
+\coordinate (N) at (4,2);
+\draw[inkiron] (A) -- (B) -- (C) -- (D) -- (A);
+\draw[inkiron] (A) -- (C);
+\draw[inkiron] (B) -- (E) -- (N);
+\draw[indigo,dashed] (E) -- (D);
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$90^\circ$"] {angle=B--E--N};
+\node[above left] at (A) {$A$};
+\node[below left] at (B) {$B$};
+\node[below right] at (C) {$C$};
+\node[above right] at (D) {$D$};
+\node[above right] at (E) {$E$};
+\node[right] at (N) {$N$};
+\end{tikzpicture}}
+
+\newcommand{\figFive}{%
+\begin{tikzpicture}[scale=0.47,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\coordinate (A) at (0,6);
+\coordinate (B) at (-3,0);
+\coordinate (D) at (0,0);
+\coordinate (C) at (2,0);
+\draw[inkiron] (A) -- (B) -- (C) -- (A);
+\draw[inkiron] (A) -- (D);
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=B--A--C};
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$90^\circ$"] {angle=C--D--A};
+\node[above] at (A) {$A$};
+\node[below left] at (B) {$B$};
+\node[below] at (D) {$D$};
+\node[below right] at (C) {$C$};
+\path (A) -- node[right,fill=white] {$6$} (D);
+\path (B) -- node[below,fill=white] {$3$} (D);
+\end{tikzpicture}}
+
+\newcommand{\figFiveSolve}{%
+\begin{tikzpicture}[scale=0.4,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\coordinate (A) at (0,6);
+\coordinate (B) at (-3,0);
+\coordinate (D) at (0,0);
+\coordinate (C) at (2,0);
+\coordinate (E) at (-6,0);
+\coordinate (F) at (6,0);
+\coordinate (H) at (6,6);
+\coordinate (G) at (6,3);
+\draw[inkiron] (A) -- (B) -- (C) -- (A);
+\draw[inkiron] (A) -- (D);
+\draw[indigo,dashed] (E) -- (A) -- (F);
+\draw[indigo,dashed] (E) -- (B);
+\draw[indigo,dashed] (C) -- (F) -- (H) -- (A);
+\draw[indigo,dashed] (A) -- (G) -- (C);
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=B--A--C};
+\node[above] at (A) {$A$};
+\node[below left] at (B) {$B$};
+\node[below] at (D) {$D$};
+\node[below right] at (C) {$C$};
+\node[below left] at (E) {$E$};
+\node[below right] at (F) {$F$};
+\node[above right] at (H) {$H$};
+\node[right] at (G) {$G$};
+\path (F) -- node[right,fill=white] {$3$} (G);
+\path (G) -- node[right,fill=white] {$3$} (H);
+\end{tikzpicture}}
+
+\newcommand{\figFiveSquareSolve}{%
+\begin{tikzpicture}[scale=0.42,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\coordinate (A) at (0,6);
+\coordinate (B) at (-3,0);
+\coordinate (D) at (0,0);
+\coordinate (C) at (2,0);
+\coordinate (M) at (-6,0);
+\coordinate (N) at (-6,6);
+\coordinate (G) at (-6,4);
+\draw[inkiron] (A) -- (B) -- (C) -- (A);
+\draw[inkiron] (A) -- (D);
+\draw[indigo,dashed] (A) -- (N) -- (M) -- (B);
+\draw[indigo,dashed] (A) -- (G) -- (B);
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=B--A--C};
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=G--A--B};
+\node[above] at (A) {$A$};
+\node[below left] at (B) {$B$};
+\node[below] at (D) {$D$};
+\node[below right] at (C) {$C$};
+\node[below left] at (M) {$M$};
+\node[above left] at (N) {$N$};
+\node[left] at (G) {$G$};
+\path (M) -- node[left,fill=white] {$6-x$} (G);
+\path (G) -- node[left,fill=white] {$x$} (N);
+\path (M) -- node[below,fill=white] {$3$} (B);
+\end{tikzpicture}}
+
+\newcommand{\figFold}{%
+\begin{tikzpicture}[scale=0.44,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\coordinate (A) at (0,6);
+\coordinate (B) at (-3,0);
+\coordinate (D) at (0,0);
+\coordinate (C) at (2,0);
+\coordinate (E) at (-4.8,2.4);
+\coordinate (F) at (3.6,1.2);
+\coordinate (P) at (-1.2,-2.4);
+\draw[inkiron] (A) -- (B) -- (C) -- (A);
+\draw[inkiron] (A) -- (D);
+\draw[indigo,dashed] (A) -- (E) -- (P) -- (F) -- (A);
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$90^\circ$"] {angle=E--A--F};
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$90^\circ$"] {angle=F--P--E};
+\node[above] at (A) {$A$};
+\node[below left] at (B) {$B$};
+\node[below] at (D) {$D$};
+\node[below right] at (C) {$C$};
+\node[left] at (E) {$E_1$};
+\node[right] at (F) {$F_1$};
+\node[below] at (P) {$P$};
+\path (A) -- node[above left,fill=white] {$6$} (E);
+\path (A) -- node[above right,fill=white] {$6$} (F);
+\end{tikzpicture}}
+
+\newcommand{\figSix}{%
+\begin{tikzpicture}[scale=0.38,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\coordinate (A) at (0,6);
+\coordinate (B) at (12,6);
+\coordinate (C) at (12,0);
+\coordinate (D) at (0,0);
+\coordinate (F) at (3,0);
+\coordinate (E) at (12,2);
+\draw[inkiron] (A) -- (B) -- (C) -- (D) -- (A);
+\draw[inkiron] (A) -- (E);
+\draw[inkiron] (A) -- (F);
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=F--A--E};
+\node[above left] at (A) {$A$};
+\node[above right] at (B) {$B$};
+\node[below right] at (C) {$C$};
+\node[below left] at (D) {$D$};
+\node[below] at (F) {$F$};
+\node[right] at (E) {$E$};
+\path (A) -- node[above,fill=white] {$12$} (B);
+\path (A) -- node[left,fill=white] {$6$} (D);
+\path (D) -- node[below,fill=white] {$3$} (F);
+\end{tikzpicture}}
+
+\newcommand{\figSixSolve}{%
+\begin{tikzpicture}[scale=0.38,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\coordinate (A) at (0,6);
+\coordinate (B) at (12,6);
+\coordinate (C) at (12,0);
+\coordinate (D) at (0,0);
+\coordinate (F) at (3,0);
+\coordinate (E) at (12,2);
+\coordinate (M) at (6,6);
+\coordinate (Q) at (6,0);
+\coordinate (N) at (6,4);
+\draw[inkiron] (A) -- (B) -- (C) -- (D) -- (A);
+\draw[inkiron] (A) -- (E);
+\draw[inkiron] (A) -- (F);
+\draw[indigo,dashed] (M) -- (Q);
+\draw[indigo,dashed] (F) -- (N);
+\node[above left] at (A) {$A$};
+\node[above right] at (B) {$B$};
+\node[below right] at (C) {$C$};
+\node[below left] at (D) {$D$};
+\node[below] at (F) {$F$};
+\node[right] at (E) {$E$};
+\node[above] at (M) {$M$};
+\node[below] at (Q) {$Q$};
+\node[above right] at (N) {$N$};
+\path (M) -- node[right,fill=white] {$x$} (N);
+\path (N) -- node[right,fill=white] {$6-x$} (Q);
+\path (F) -- node[below,fill=white] {$3$} (Q);
+\end{tikzpicture}}
+
+\newcommand{\figSeven}{%
+\begin{tikzpicture}[scale=0.48,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\coordinate (A) at (0,6);
+\coordinate (B) at (8,0);
+\coordinate (C) at (0,0);
+\coordinate (D) at (0,3);
+\coordinate (E) at (2.72727273,0);
+\coordinate (F) at (1.64383562,2.38356164);
+\draw[inkiron] (A) -- (C) -- (B) -- (A);
+\draw[inkiron] (D) -- (B);
+\draw[inkiron] (A) -- (E);
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=E--F--B};
+\node[above] at (A) {$A$};
+\node[below right] at (B) {$B$};
+\node[below left] at (C) {$C$};
+\node[left] at (D) {$D$};
+\node[below] at (E) {$E$};
+\node[above right] at (F) {$F$};
+\path (A) -- node[left=14pt,fill=white] {$6$} (C);
+\path (C) -- node[below,fill=white] {$8$} (B);
+\end{tikzpicture}}
+
+\newcommand{\figSevenSolve}{%
+\begin{tikzpicture}[scale=0.43,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\coordinate (A) at (0,6);
+\coordinate (B) at (8,0);
+\coordinate (C) at (0,0);
+\coordinate (D) at (0,3);
+\coordinate (E) at (2.72727273,0);
+\coordinate (F) at (1.64383562,2.38356164);
+\coordinate (G) at (-2.25,0);
+\draw[inkiron] (A) -- (C) -- (B) -- (A);
+\draw[inkiron] (D) -- (B);
+\draw[inkiron] (A) -- (E);
+\draw[indigo,dashed] (A) -- (G) -- (C);
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=G--A--E};
+\node[above] at (A) {$A$};
+\node[below right] at (B) {$B$};
+\node[below left] at (C) {$C$};
+\node[left] at (D) {$D$};
+\node[below] at (E) {$E$};
+\node[above right] at (F) {$F$};
+\node[below left] at (G) {$G$};
+\path (G) -- node[below,fill=white] {$\frac94$} (C);
+\end{tikzpicture}}
+
+\newcommand{\figEight}{%
+\begin{tikzpicture}[scale=0.42,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\coordinate (A) at (0,8);
+\coordinate (B) at (0,0);
+\coordinate (C) at (9,0);
+\coordinate (D) at (9,8);
+\coordinate (E) at (4,0);
+\coordinate (F) at (9,5);
+\draw[inkiron] (A) -- (B) -- (C) -- (D) -- (A);
+\draw[inkiron] (A) -- (E) -- (F) -- (A);
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=E--A--F};
+\node[above left] at (A) {$A$};
+\node[below left] at (B) {$B$};
+\node[below right] at (C) {$C$};
+\node[above right] at (D) {$D$};
+\node[below] at (E) {$E$};
+\node[right] at (F) {$F$};
+\path (B) -- node[below,fill=white] {$4$} (E);
+\path (D) -- node[right,fill=white] {$3$} (F);
+\path (E) -- node[below,fill=white] {$x$} (C);
+\path (C) -- node[right,fill=white] {$x$} (F);
+\end{tikzpicture}}
+
+\newcommand{\figEightSolve}{%
+\begin{tikzpicture}[scale=0.32,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\coordinate (A) at (0,8);
+\coordinate (B) at (0,0);
+\coordinate (C) at (9,0);
+\coordinate (D) at (9,8);
+\coordinate (E) at (4,0);
+\coordinate (F) at (9,5);
+\coordinate (G) at (8,12);
+\coordinate (H) at (9,12);
+\draw[inkiron] (A) -- (B) -- (C) -- (D) -- (A);
+\draw[inkiron] (A) -- (E) -- (F) -- (A);
+\draw[indigo,dashed] (A) -- (G) -- (H) -- (F);
+\draw[indigo,dashed] (F) -- (G);
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=E--A--F};
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=F--A--G};
+\node[above left] at (A) {$A$};
+\node[below left] at (B) {$B$};
+\node[below right] at (C) {$C$};
+\node[above right] at (D) {$D$};
+\node[below] at (E) {$E$};
+\node[right] at (F) {$F$};
+\node[above left] at (G) {$G$};
+\node[above right] at (H) {$H$};
+\path (G) -- node[above=10pt,fill=white] {$1$} (H);
+\path (F) -- node[right,fill=white] {$7$} (H);
+\end{tikzpicture}}
+
+\newcommand{\figNineIn}{%
+\begin{tikzpicture}[scale=0.68,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\coordinate (A) at (0,0);
+\coordinate (B) at (3,0);
+\coordinate (C) at (3,3);
+\coordinate (D) at (0,3);
+\coordinate (M) at (3,1);
+\coordinate (N) at (1.5,3);
+\draw[inkiron] (A) -- (B) -- (C) -- (D) -- (A);
+\draw[inkiron] (A) -- (M) -- (N) -- (A);
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=M--A--N};
+\node[below left] at (A) {$A$};
+\node[below right] at (B) {$B$};
+\node[above right] at (C) {$C$};
+\node[above left] at (D) {$D$};
+\node[right] at (M) {$M$};
+\node[above] at (N) {$N$};
+\node[font=\small] at (current bounding box.south) [below=6pt] {（1）内部构型};
+\end{tikzpicture}}
+
+\newcommand{\figNineOut}{%
+\begin{tikzpicture}[scale=0.43,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\coordinate (A) at (0,0);
+\coordinate (B) at (3,0);
+\coordinate (C) at (3,3);
+\coordinate (D) at (0,3);
+\coordinate (M) at (3,6);
+\coordinate (N) at (-1,3);
+\draw[inkiron] (A) -- (B) -- (C) -- (D) -- (A);
+\draw[inkiron] (A) -- (M) -- (N) -- (A);
+\draw[inkiron] (C) -- (M);
+\draw[inkiron] (D) -- (N);
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=M--A--N};
+\node[below left] at (A) {$A$};
+\node[below right] at (B) {$B$};
+\node[above right] at (C) {$C$};
+\node[above left] at (D) {$D$};
+\node[right] at (M) {$M$};
+\node[above left] at (N) {$N$};
+\node[font=\small] at (current bounding box.south) [below=6pt] {（2）外部构型};
+\end{tikzpicture}}
+
+\newcommand{\figNine}{\figNineIn\hspace{1.2cm}\figNineOut}
+
+\newcommand{\figNineInSolve}{%
+\begin{tikzpicture}[scale=0.62,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\coordinate (A) at (0,0);
+\coordinate (B) at (3,0);
+\coordinate (C) at (3,3);
+\coordinate (D) at (0,3);
+\coordinate (M) at (3,1);
+\coordinate (N) at (1.5,3);
+\coordinate (P) at (-1,3);
+\draw[inkiron] (A) -- (B) -- (C) -- (D) -- (A);
+\draw[inkiron] (A) -- (M) -- (N) -- (A);
+\draw[indigo,dashed] (A) -- (P) -- (D);
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=M--A--N};
+\node[below left] at (A) {$A$};
+\node[below right] at (B) {$B$};
+\node[above right] at (C) {$C$};
+\node[above left] at (D) {$D$};
+\node[right] at (M) {$M$};
+\node[above] at (N) {$N$};
+\node[above left] at (P) {$P$};
+\node[font=\small] at (current bounding box.south) [below=6pt] {PN＝PD＋DN};
+\end{tikzpicture}}
+
+\newcommand{\figNineOutSolve}{%
+\begin{tikzpicture}[scale=0.35,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\coordinate (A) at (0,0);
+\coordinate (B) at (3,0);
+\coordinate (C) at (3,3);
+\coordinate (D) at (0,3);
+\coordinate (M) at (3,6);
+\coordinate (N) at (-1,3);
+\coordinate (P) at (-6,3);
+\draw[inkiron] (A) -- (B) -- (C) -- (D) -- (A);
+\draw[inkiron] (A) -- (M) -- (N) -- (A);
+\draw[inkiron] (C) -- (M);
+\draw[inkiron] (D) -- (N);
+\draw[indigo,dashed] (A) -- (P) -- (N);
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=M--A--N};
+\node[below left] at (A) {$A$};
+\node[below right] at (B) {$B$};
+\node[above right] at (C) {$C$};
+\node[above left] at (D) {$D$};
+\node[right] at (M) {$M$};
+\node[above] at (N) {$N$};
+\node[above left] at (P) {$P$};
+\node[font=\small] at (current bounding box.south) [below=6pt] {PN＝PD−DN};
+\end{tikzpicture}}
+
+\newcommand{\figNineSolve}{\figNineInSolve\hspace{.7cm}\figNineOutSolve}
+
+\newcommand{\figTen}{%
+\begin{tikzpicture}[scale=0.48,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\coordinate (B) at (0,0);
+\coordinate (D) at (4,0);
+\coordinate (C) at (9,0);
+\coordinate (A) at (6,6);
+\draw[inkiron] (A) -- (B) -- (C) -- (A);
+\draw[inkiron] (A) -- (D);
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=D--A--C};
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=C--B--A};
+\node[below left] at (B) {$B$};
+\node[below] at (D) {$D$};
+\node[below right] at (C) {$C$};
+\node[above] at (A) {$A$};
+\path (B) -- node[below,fill=white] {$4$} (D);
+\path (D) -- node[below,fill=white] {$5$} (C);
+\end{tikzpicture}}
+
+\newcommand{\figTenSmall}{%
+\begin{tikzpicture}[scale=0.37,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\coordinate (B) at (0,0);
+\coordinate (D) at (4,0);
+\coordinate (C) at (9,0);
+\coordinate (A) at (3,3);
+\coordinate (H) at (3,0);
+\coordinate (K) at (6,0);
+\coordinate (G) at (6,4);
+\draw[inkiron] (A) -- (B) -- (C) -- (A);
+\draw[inkiron] (A) -- (D);
+\draw[indigo,dashed] (A) -- (H);
+\draw[indigo,dashed] (A) -- (G) -- (C);
+\draw[indigo,dashed] (A) -- (K) -- (G);
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=D--A--C};
+\node[below left] at (B) {$B$};
+\node[below] at (D) {$D$};
+\node[below right] at (C) {$C$};
+\node[above] at (A) {$A$};
+\node[below] at (H) {$H$};
+\node[below] at (K) {$K$};
+\node[above] at (G) {$G$};
+\path (G) -- node[right,fill=white] {$4$} (K);
+\path (G) -- node[above right,fill=white] {$5$} (C);
+\node[font=\small] at (current bounding box.south) [below=6pt] {构型一 H 在 BD 内部};
+\end{tikzpicture}}
+
+\newcommand{\figTenLarge}{%
+\begin{tikzpicture}[scale=0.37,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\coordinate (B) at (0,0);
+\coordinate (D) at (4,0);
+\coordinate (C) at (9,0);
+\coordinate (A) at (6,6);
+\coordinate (H) at (6,0);
+\coordinate (K) at (12,0);
+\coordinate (G) at (12,4);
+\draw[inkiron] (A) -- (B) -- (C) -- (A);
+\draw[inkiron] (A) -- (D);
+\draw[indigo,dashed] (A) -- (H);
+\draw[indigo,dashed] (A) -- (G) -- (C);
+\draw[indigo,dashed] (A) -- (K) -- (G);
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=D--A--C};
+\node[below left] at (B) {$B$};
+\node[below] at (D) {$D$};
+\node[below right] at (C) {$C$};
+\node[above] at (A) {$A$};
+\node[below] at (H) {$H$};
+\node[below] at (K) {$K$};
+\node[above] at (G) {$G$};
+\path (G) -- node[right,fill=white] {$4$} (K);
+\path (G) -- node[above right,fill=white] {$5$} (C);
+\node[font=\small] at (current bounding box.south) [below=6pt] {构型二 H 在 DC 内部};
+\end{tikzpicture}}
+
+\newcommand{\figTenSolve}{\figTenSmall\hspace{.8cm}\figTenLarge}

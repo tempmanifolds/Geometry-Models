@@ -1,0 +1,22 @@
+# 教师提供的原始材料仅保留本地。
+/夹半角1.docx
+/夹半角1.pdf
+
+# 工作文件与检查用图片。
+/tmp/
+__pycache__/
+*.pyc
+
+# LaTeX 编译中间文件；正式讲义 PDF 位于 output/pdf/。
+*.aux
+*.log
+*.toc
+*.out
+*.synctex.gz
+*.fls
+*.fdb_latexmk
+**/latex/main.pdf
+**/latex/build-pass-*.txt
+
+# 本地下载用项目包；GitHub 中直接保存可编辑源文件。
+/output/*.zip

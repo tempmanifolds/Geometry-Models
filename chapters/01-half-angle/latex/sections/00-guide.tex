@@ -1,0 +1,25 @@
+\setcounter{section}{-1}
+\section{基础知识与模型识别}
+面向初二、初三培优学生。先从一道正方形题观察“\(45^\circ \)怎样把两段线段接起来”，再学习旋转、翻折与延长构造，最后处理交叉角、矩形和外部构型。建议分两次课使用：第一次完成题 \(1\) 至 \(5\)，第二次完成题 \(6\) 至 \(10\)。题目与解析分开，先独立尝试，再阅读提示。
+
+\block{从一幅图开始}
+
+正方形 \(ABCD\) 中，\(E\) 在 \(BC\) 上，\(F\) 在 \(CD\) 上，\(\angle EAF=45^\circ \)。图中没有现成的全等三角形，但 \(AB=AD\)，\(\angle BAD=90^\circ \)，而 \(45^\circ \)正好是它的一半。把 \(\triangle ABE\) 绕 \(A\) 逆时针旋转 \(90^\circ \)，\(E\) 会落到 \(CD\) 向 \(D\) 外的延长线上。这样，\(BE\) 被搬到 \(DF\) 所在的直线上；原来的 \(45^\circ \)则提供第二次全等所需的相等夹角。
+
+夹半角的识别重点是：一个大角、一半大小的小角、可以对应的两条等长边。\(45^\circ \)最常见，真正起作用的是“半角＋等长＋位置”。仅看到 \(45^\circ \)，不能直接套线段和结论。
+
+先试题 \(1\)，再读下面的四幅识别图。四种常见构型均保留，交点统一记为 \(P\)。
+\diagram{\figOne}
+\clearpage
+\block{四种常见构型}
+\diagram{\figIntroA\hspace{1cm}\figIntroB}
+\diagram{\figIntroC\hspace{1cm}\figIntroD}
+\begin{itemize}
+\item 图 \(A\)：\(E\in BC\)、\(F\in CD\)，\(\angle EAF=45^\circ \)。这是顶点夹半角。
+\item 图 \(B\)：\(E\in BC\)、\(F\in AB\)，\(AE\) 与 \(CF\) 交于 \(P\)，\(\angle EPC=45^\circ \)。过 \(A\) 作 \(AG\parallel CF\)，\(G\in CD\)，则 \(\angle EAG=45^\circ \)；由直角三角形全等可得 \(DG=BF\)。
+\item 图 \(C\)：\(E\in BC\)、\(F\in AD\)，\(AE\) 与 \(BF\) 交于 \(P\)，\(\angle APF=45^\circ \)。过 \(A\) 作 \(AG\perp BF\)，\(G\in CD\)，则 \(\angle EAG=45^\circ \)，且 \(DG=AF\)。
+\item 图 \(D\)：\(E\in AD\)、\(F\in BC\)、\(M\in AB\)、\(N\in CD\)，\(EF\) 与 \(MN\) 交于 \(P\)，\(\angle FPN=45^\circ \)。按图示点序 \(BF>AE\)、\(DN>AM\)，过 \(A\) 作 \(AT\parallel EF\)、\(AU\parallel MN\)，\(T\in BC\)、\(U\in CD\)，把交叉角搬到 \(A\)。此时 \(BT=BF-AE\)，\(DU=DN-AM\)。
+\end{itemize}
+
+图 \(B\)、\(C\)、\(D\) 的新增辅助线把交叉角转为图 \(A\) 的顶点角。上述位置条件保证交点在相应边内；换点序时，应重新判断射线方向和线段加减。
+\clearpage

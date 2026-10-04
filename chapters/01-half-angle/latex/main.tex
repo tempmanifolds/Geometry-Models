@@ -1,0 +1,76 @@
+% !TEX program = xelatex
+% ===========================================================================
+%  《主题》—— 中文数学习题课讲义（Loom 模板 · 课前自学版）
+%  必须用 XeLaTeX 编译两遍；QA 用 scripts/qa_check.py。
+%  第一行的魔法注释让 VS Code (LaTeX Workshop) 走 XeLaTeX——别删（默认是
+%  pdfLaTeX，会报 xeCJK requires XeTeX）。
+% ===========================================================================
+\documentclass{loom}
+
+% 挑战题 ★ 用 Zapf Dingbats 绘制，不依赖系统字体（Optima 等）是否含 U+2605
+\usepackage{pifont}
+
+% 页眉线（可选）；老师偏好极简时可整行注释掉
+%\runningthread{《主题》 · 课前自学讲义}
+
+% ---------------------------------------------------------------------------
+%  讲义专用组件：题面（茜红结）、解析（靛蓝结）、四段式解答标签
+%  —— 这些宏定义住在 main.tex（不在 cls），以便随讲义微调。
+% ---------------------------------------------------------------------------
+% 题目框：breakable=false 保证一题不跨页。默认不留答题空白区（老师偏好）。
+% —— 若要做「打印作答版」，取消下面 \answerspace 定义与 problem 框 after upper
+%    一行的注释即可，题末会追加一块纯白书写面板（默认 5 行，可 \answerspace[8]）。
+% \newcommand{\answerspace}[1][5]{\par\medskip\noindent
+%   \colorbox{white}{\parbox[t][#1\baselineskip][t]{\dimexpr\linewidth-2\fboxsep\relax}{\strut}}}
+\newtcolorbox{problem}[1]{knotmadder, breakable=false,
+  before upper={{\headingfont\bfseries\color{madder}#1}\par\smallskip}%
+  % , after upper={\answerspace}   % 打印作答版：取消本行注释
+}
+\newtcolorbox{solution}[1]{knotindigo,
+  before upper={{\headingfont\bfseries\color{indigo}#1}\par\smallskip}}
+
+\newcommand{\think}{\par\smallskip\noindent
+  {\headingfont\bfseries\color{indigo}〔怎么想〕}\enspace}
+\newcommand{\solve}{\par\smallskip\noindent
+  {\headingfont\bfseries\color{inkiron}〔解〕}\enspace}
+\newcommand{\solvehead}[1]{\par\smallskip\noindent
+  {\headingfont\bfseries\color{inkiron}〔#1〕}\enspace}
+\newcommand{\checkup}{\par\smallskip\noindent
+  {\headingfont\bfseries\color{selvage}〔检验〕}\enspace}
+\newcommand{\insight}[1]{\par\smallskip\noindent
+  {\headingfont\bfseries\color{weld!60!inkiron}〔方法点睛〕}\enspace
+  {\strandfont\small #1}\par}
+\newcommand{\hint}[1]{\par\smallskip\noindent
+  {\strandfont\small{\raisebox{-0.8pt}{\loomtile{weld}}\hspace{4pt}}%
+  {\bfseries\color{weld!60!inkiron}入手提示}\enspace{\color{inkiron!85!white}#1}}\par}
+% 页边旁批：放"想一想/追问"、∑/∏ 记号说明，不打断正文
+\newcommand{\sidenote}[1]{\marginnote{\raggedright\strandfont\footnotesize
+  \color{selvage}#1}}
+\newcommand{\starred}{{\color{weld!70!inkiron}\ding{72}}}
+
+\setlist[enumerate]{leftmargin=2.3em, itemsep=2pt, topsep=3pt}
+\setlist[itemize]{leftmargin=1.6em, itemsep=2pt, topsep=3pt}
+
+
+\usetikzlibrary{angles,quotes,arrows.meta}
+\newif\ifteachernotes\teachernotestrue
+\newif\ifshowhints\showhintstrue
+\let\originalhint\hint
+\renewcommand{\hint}[1]{\ifshowhints\originalhint{#1}\fi}
+\newcommand{\diagram}[1]{\par\smallskip\begin{center}#1\end{center}\smallskip}
+\hypersetup{pdftitle={geometry Models 第一部分 夹半角},pdfsubject={初中几何模型培优讲义}}
+\runningthread{geometry Models · 夹半角}
+\renewcommand{\contentsname}{目录}
+\input{diagrams}
+\begin{document}
+\loomcover{geometry Models}{第一部分\quad 夹半角}{初二\,初三培优讲义}{2026年10月}
+\clearpage
+{\small\tableofcontents}
+\clearpage
+\input{sections/00-guide}
+\input{sections/01-problems}
+\clearpage
+\input{sections/90-solutions}
+\clearpage
+\input{sections/95-summary}
+\end{document}
