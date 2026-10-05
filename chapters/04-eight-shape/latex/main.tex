@@ -1,0 +1,42 @@
+% !TEX program = xelatex
+\documentclass{loom}
+\usepackage{adjustbox}
+\usetikzlibrary{calc,angles,quotes}
+\definecolor{esblue}{HTML}{355C86}
+\definecolor{esorange}{HTML}{B76543}
+% Draw condition labels because the heading font has no circled-number glyphs.
+\DeclareRobustCommand{\escond}[1]{\tikz[baseline=(n.base)]
+  \node[draw,circle,inner sep=.65pt,line width=.35pt,font=\footnotesize] (n) {#1};}
+\newcommand{\esdiagram}[1]{\par\smallskip{\centering
+  \adjustbox{max width=.84\linewidth,max height=5.8cm}{#1}
+  \par}\smallskip}
+\newcommand{\think}{\par\smallskip\noindent
+  {\headingfont\bfseries\color{indigo}〔怎么想〕}\enspace}
+\newcommand{\insight}[1]{\par\smallskip\noindent
+  {\headingfont\bfseries\color{weld!60!inkiron}〔方法点睛〕}\enspace
+  {\strandfont\small #1}\par}
+\newif\ifteachernotes\teachernotestrue
+\setlist[enumerate]{leftmargin=2.3em,itemsep=2pt,topsep=3pt}
+\setlist[itemize]{leftmargin=1.6em,itemsep=2pt,topsep=3pt}
+\setcounter{secnumdepth}{0}
+\setcounter{tocdepth}{1}
+\hypersetup{pdftitle={八字形模型 · 单章核对稿},pdfauthor={Hence},
+  pdfsubject={共斜边、外角平分线与辅助线}}
+\renewcommand{\loomcovermotto}{从图形中发现关系，在推理中理解几何}
+\renewcommand{\contentsname}{目录}
+\input{diagrams}
+\begin{document}
+\setlength{\abovedisplayskip}{7pt plus 2pt minus 1pt}
+\setlength{\belowdisplayskip}{7pt plus 2pt minus 1pt}
+\setlength{\abovedisplayshortskip}{4pt plus 1pt}
+\setlength{\belowdisplayshortskip}{4pt plus 1pt}
+\loomcover{八字形模型}{共斜边、外角平分线与辅助线}{Hence}{2026年10月}
+\clearpage
+{\small\tableofcontents}
+\clearpage
+\input{sections/00-key-model}
+\input{sections/01-example-one}
+\newpage
+\input{sections/02-example-two}
+\input{sections/95-summary}
+\end{document}

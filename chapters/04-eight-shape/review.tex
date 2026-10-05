@@ -1,0 +1,1357 @@
+% !TEX program = xelatex
+%% loom.cls -- a WOVEN notebook class for handwritten LaTeX notes
+%% ===========================================================================
+%%  OVERLEAF EDITION.  Same class name (\documentclass{loom}) and same command
+%%  set as the local loom.cls, but every font ships with TeX Live / Overleaf,
+%%  so there is NOTHING to upload -- just drop this file next to your main.tex.
+%%
+%%    Body + math : Libertinus Serif + Libertinus Math   (the original look)
+%%    Display     : Libertinus Sans   (humanist sans, in the spirit of Optima)
+%%    Mono        : Libertinus Mono
+%%    Chinese     : Noto CJK SC        (bundled on Overleaf; macOS fallback)
+%% ---------------------------------------------------------------------------
+%%  Concept:  A page is cloth on a loom.  You don't just typeset the maths,
+%%            you typeset the WEAVE of your own understanding.
+%%
+%%              warp   = threads currently in play (left selvage rail)
+%%              knot   = a result that binds threads together (theorem boxes)
+%%              loose  = an open question / confusion (dangling margin thread)
+%%              warmth = a gauge of how well you actually grok a block
+%%
+%%  Fill-in study notes (built in):  \fillin blanks · \TODO proof gaps ·
+%%            yourturn boxes · \recall margin prompts · \workspace ruled lines.
+%%
+%%  Palette:  natural dyes -- indigo, madder, weld -- ruled in iron-gall.
+%%  Engine:   XeLaTeX  (Libertinus text+math + Libertinus Sans display).
+%%  Author:   北极甜虾 (Polaris), 2026.   MIT-licensed.
+%% ---------------------------------------------------------------------------
+
+\documentclass[11pt]{article}
+\makeatletter
+\newif\ifloom@letter\loom@letterfalse
+\newif\ifloom@cjk\loom@cjktrue
+\RequirePackage{geometry}
+\ifloom@letter
+  \geometry{letterpaper}
+\else
+  \geometry{a4paper}
+\fi
+\geometry{top=2.0cm, bottom=2.3cm, left=2.9cm, right=3.1cm,
+          marginparwidth=2.35cm, marginparsep=0.35cm, headsep=14pt}
+
+% ----- fonts: three-platform adaptive (macOS / Windows / TeXLive container) --
+%   Latin+math: libertinus-otf when installed (full TeX Live / Overleaf), else
+%   fontspec+unicode-math with Latin Modern Math (slim container).
+%   Every family degrades gracefully: macOS native -> Windows lookalike ->
+%   bundled fallback.  Each branch logs a "loom-cn:" line into the .log so a
+%   compile can always be audited for which fonts were actually used.
+\newif\ifloom@haslib
+\IfFileExists{libertinus-otf.sty}{\loom@haslibtrue}{\loom@haslibfalse}
+\ifloom@haslib
+  \RequirePackage{libertinus-otf}% loads fontspec + unicode-math
+  \IfFileExists{microtype.sty}{\RequirePackage{microtype}}{}%
+  \typeout{loom-cn: latin/math = Libertinus}
+\else
+  \RequirePackage{fontspec}
+  \RequirePackage{unicode-math}
+  \IfFileExists{microtype.sty}{\RequirePackage{microtype}}{}%
+  \setmathfont{Latin Modern Math}
+  \typeout{loom-cn: latin/math = Latin Modern (container)}
+\fi
+
+%   Display faces: Optima -> Candara -> \sffamily ; Avenir Next -> Segoe UI -> \sffamily
+\IfFontExistsTF{Optima}{%
+  \newfontfamily\headingfont{Optima}\typeout{loom-cn: heading = Optima}%
+}{%
+  \IfFontExistsTF{Candara}{%
+    \newfontfamily\headingfont{Candara}\typeout{loom-cn: heading = Candara}%
+  }{%
+    \newcommand{\headingfont}{\sffamily}\typeout{loom-cn: heading = sffamily}%
+  }%
+}
+\IfFontExistsTF{Avenir Next}{%
+  \newfontfamily\strandfont{Avenir Next}\typeout{loom-cn: strand = Avenir Next}%
+}{%
+  \IfFontExistsTF{Segoe UI}{%
+    \newfontfamily\strandfont{Segoe UI}\typeout{loom-cn: strand = Segoe UI}%
+  }{%
+    \newcommand{\strandfont}{\sffamily}\typeout{loom-cn: strand = sffamily}%
+  }%
+}
+\newcommand{\labelfont}{\strandfont}
+
+%   Mono: Menlo -> Consolas -> Noto Sans Mono CJK SC -> DejaVu -> (keep default)
+\IfFontExistsTF{Menlo}{\setmonofont{Menlo}[Scale=0.92]}{%
+  \IfFontExistsTF{Consolas}{\setmonofont{Consolas}[Scale=0.92]}{%
+    \IfFontExistsTF{Noto Sans Mono CJK SC}{\setmonofont{Noto Sans Mono CJK SC}[Scale=0.92]}{%
+      \IfFontExistsTF{DejaVu Sans Mono}{\setmonofont{DejaVu Sans Mono}[Scale=0.90]}{}}}}
+
+%   CJK: with xeCJK -> Noto CJK -> SimSun/DengXian (Windows) -> Songti/PingFang
+%   (macOS); without xeCJK (slim container) -> Noto as main text + ICU breaking.
+\IfFileExists{xeCJK.sty}{%
+  \RequirePackage{xeCJK}%
+  \IfFontExistsTF{Noto Serif CJK SC}{%
+    \setCJKmainfont{Noto Serif CJK SC}[BoldFont={Noto Serif CJK SC Bold}]%
+    \setCJKmonofont{Noto Sans Mono CJK SC}%
+    \typeout{loom-cn: cjk main = Noto Serif CJK SC}%
+  }{%
+    \IfFontExistsTF{SimSun}{%
+      \setCJKmainfont{SimSun}[BoldFont={SimHei}, ItalicFont={KaiTi}, BoldItalicFont={SimHei}]%
+      \setCJKmonofont{SimSun}%
+      \typeout{loom-cn: cjk main = SimSun}%
+    }{%
+      \setCJKmainfont{Songti SC}[ItalicFont={Kaiti SC}]%
+      \setCJKmonofont{Songti SC}%
+      \typeout{loom-cn: cjk main = Songti SC}%
+    }%
+  }%
+  \IfFontExistsTF{Noto Sans CJK SC}{%
+    \setCJKsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]%
+    \typeout{loom-cn: cjk sans = Noto Sans CJK SC}%
+  }{%
+    \IfFontExistsTF{DengXian}{%
+      \setCJKsansfont{DengXian}[BoldFont={DengXian Bold}, ItalicFont={KaiTi}, BoldItalicFont={DengXian Bold}]%
+      \typeout{loom-cn: cjk sans = DengXian}%
+    }{%
+      \IfFontExistsTF{Microsoft YaHei}{%
+        \setCJKsansfont{Microsoft YaHei}[BoldFont={Microsoft YaHei Bold}, ItalicFont={KaiTi}, BoldItalicFont={Microsoft YaHei Bold}]%
+        \typeout{loom-cn: cjk sans = Microsoft YaHei}%
+      }{%
+        \setCJKsansfont{PingFang SC}%
+        \typeout{loom-cn: cjk sans = PingFang SC}%
+      }%
+    }%
+  }%
+  \xeCJKsetup{CJKmath=true}%
+  \linespread{1.06}%
+}{%
+  \IfFontExistsTF{Noto Serif CJK SC}{%
+    \setmainfont{Noto Serif CJK SC}[BoldFont={Noto Serif CJK SC Bold}]%
+  }{}%
+  \IfFontExistsTF{Noto Sans CJK SC}{%
+    \setsansfont{Noto Sans CJK SC}[BoldFont={Noto Sans CJK SC Bold}]%
+  }{}%
+  \typeout{loom-cn: cjk via ICU line breaking (no xeCJK)}%
+  \linespread{1.12}%
+  \XeTeXlinebreaklocale "zh"%
+  \XeTeXlinebreakskip = 0pt plus 1pt minus 0.1pt%
+}
+
+% ----- the dye-pot ----------------------------------------------------------
+\RequirePackage{xcolor}
+\definecolor{inkiron}{HTML}{211C17}   % iron-gall: warm near-black body ink
+\definecolor{indigo}{HTML}{27406B}   % indigo: structure, headings, knots
+\definecolor{madder}{HTML}{9C2B2E}   % madder red: definitions, emphasis
+\definecolor{weld}{HTML}{BE8A20}   % weld gold: examples, warmth
+\definecolor{linen}{HTML}{F5EFE2}   % undyed cloth: rail + soft box fills
+\definecolor{thread}{HTML}{C7BBA1}   % the faint warp hairlines
+\definecolor{selvage}{HTML}{8A7F6B}   % muted edge text in the margins
+\color{inkiron}
+
+% ----- maths & theorem machinery -------------------------------------------
+\RequirePackage{amsmath,mathtools}   % NB: unicode-math already supplies amssymb glyphs
+\RequirePackage{amsthm}
+\RequirePackage[most]{tcolorbox}
+\tcbuselibrary{skins,breakable}
+\RequirePackage{enumitem}
+\RequirePackage{needspace}
+\RequirePackage{marginnote}
+\RequirePackage{eso-pic}
+\usetikzlibrary{calc,decorations.pathmorphing}
+\RequirePackage{titlesec}
+\RequirePackage{fancyhdr}
+
+% page furniture: a quiet selvage footer
+\pagestyle{fancy}\fancyhf{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\fancyfoot[R]{\strandfont\footnotesize\color{selvage}\thepage}
+\fancyfoot[L]{\strandfont\footnotesize\color{selvage}\MakeLowercase{\loom@runtitle}}
+\def\loom@runtitle{}
+\newcommand{\runningthread}[1]{\def\loom@runtitle{#1}}
+
+% loose page layout for notes
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.45em plus 0.2em minus 0.1em}
+
+% ===========================================================================
+%  WOVEN PRIMITIVES
+% ===========================================================================
+
+% a 2x2 plain-weave tile -- the "knot" emblem (arg: dye colour)
+\newcommand{\loomtile}[1]{%
+  \begin{tikzpicture}[x=1pt,y=1pt,baseline=-0.4pt]
+    \fill[#1]            (0,0) rectangle (3,3);
+    \fill[#1]            (3,3) rectangle (6,6);
+    \fill[#1!28!linen]   (3,0) rectangle (6,3);
+    \fill[#1!28!linen]   (0,3) rectangle (3,6);
+  \end{tikzpicture}}
+
+% a procedural tri-colour plain-weave swatch (arg: side length in pt)
+\newcommand{\weaveemblem}[1]{%
+  \begin{tikzpicture}[x=1pt,y=1pt]
+    \pgfmathsetmacro{\cell}{#1/8}%
+    \foreach \c in {0,...,7}{%
+      \foreach \r in {0,...,7}{%
+        \pgfmathtruncatemacro{\warpover}{mod(\c+\r,2)}%
+        \pgfmathtruncatemacro{\warpcol}{mod(\c,3)}%
+        \def\wcolor{indigo}\ifnum\warpcol=2\def\wcolor{weld}\fi
+        \coordinate (o) at (\c*\cell,\r*\cell);
+        \def\drawwarp{\fill[\wcolor,rounded corners=0.8pt]
+            ($(o)+(0.17*\cell,-0.03*\cell)$) rectangle ($(o)+(0.83*\cell,1.03*\cell)$);}%
+        \def\drawweft{\fill[madder,rounded corners=0.8pt]
+            ($(o)+(-0.03*\cell,0.17*\cell)$) rectangle ($(o)+(1.03*\cell,0.83*\cell)$);}%
+        \ifnum\warpover=1 \drawweft\drawwarp \else \drawwarp\drawweft \fi
+      }}%
+  \end{tikzpicture}}
+
+% the persistent SELVAGE RAIL, painted into every page background
+\newcommand{\loomrail}{%
+  \AddToShipoutPictureBG{%
+    \begin{tikzpicture}[remember picture,overlay]
+      \fill[linen]
+        ([xshift=1.05cm,yshift=-1.9cm]current page.north west) rectangle
+        ([xshift=1.55cm,yshift= 2.0cm]current page.south west);
+      \foreach \i in {0,1,2,3}{%
+        \draw[thread,line width=0.4pt]
+          ([xshift={1.10cm+\i*0.13cm},yshift=-1.9cm]current page.north west) --
+          ([xshift={1.10cm+\i*0.13cm},yshift= 2.0cm]current page.south west);}
+    \end{tikzpicture}}}
+
+% ===========================================================================
+%  HEADINGS  (number hangs onto the rail as a woven knot)
+% ===========================================================================
+\newcommand{\sectionheadfont}{\headingfont\bfseries\fontsize{15}{18}\selectfont
+  \color{indigo}\addfontfeatures{LetterSpace=3.0}}
+\titleformat{\section}[block]
+  {\sectionheadfont}
+  {\llap{\raisebox{-1.2pt}{\loomtile{indigo}}\hspace{7pt}}\textcolor{selvage}{\thesection}\hspace{0.7em}}
+  {0pt}
+  {\MakeUppercase}
+  [\vspace{1pt}{\color{madder}\rule{\linewidth}{1.1pt}}]
+\titlespacing*{\section}{0pt}{20pt plus 4pt}{8pt}
+
+\titleformat{\subsection}[runin]
+  {\headingfont\bfseries\color{madder}}
+  {\thesubsection}{0.55em}{}
+\titlespacing*{\subsection}{0pt}{11pt plus 2pt}{0.7em}
+
+\titleformat{\subsubsection}[runin]
+  {\strandfont\bfseries\color{indigo}}
+  {}{0pt}{}
+\titlespacing*{\subsubsection}{0pt}{8pt}{0.6em}
+
+% ===========================================================================
+%  KNOTS  (theorem-likes: amsthm head + tcolorbox skin)
+% ===========================================================================
+% 括号注记一律用正体：中文斜体在 Windows 会映射成楷体，看着"歪"（见 pitfalls）。
+\newtheoremstyle{loomplain}{6pt}{6pt}{\normalfont}{0pt}
+  {\headingfont\bfseries\color{indigo}}{.}{0.5em}
+  {\thmname{#1}\thmnumber{ #2}\thmnote{ \normalfont\color{inkiron}(#3)}}
+\newtheoremstyle{loomdefn}{6pt}{6pt}{\normalfont}{0pt}
+  {\headingfont\bfseries\color{madder}}{.}{0.5em}
+  {\thmname{#1}\thmnumber{ #2}\thmnote{ \normalfont\color{inkiron}(#3)}}
+\newtheoremstyle{loomexm}{6pt}{6pt}{\normalfont}{0pt}
+  {\headingfont\bfseries\color{weld!75!inkiron}}{.}{0.5em}
+  {\thmname{#1}\thmnumber{ #2}\thmnote{ \normalfont\color{inkiron}(#3)}}
+\newtheoremstyle{loomrem}{6pt}{6pt}{\normalfont}{0pt}
+  {\headingfont\bfseries\color{madder}}{.}{0.5em}
+  {\thmname{#1}\thmnumber{ #2}\thmnote{ \normalfont\color{inkiron}(#3)}}
+
+\theoremstyle{loomplain}
+\newtheorem{theorem}{定理}[section]
+\newtheorem{lemma}[theorem]{引理}
+\newtheorem{proposition}[theorem]{命题}
+\newtheorem{corollary}[theorem]{推论}
+\theoremstyle{loomdefn}
+\newtheorem{definition}[theorem]{定义}
+\theoremstyle{loomexm}
+\newtheorem{example}[theorem]{例}
+\theoremstyle{loomrem}
+\newtheorem{remark}[theorem]{注}
+\newtheorem*{remark*}{注}
+
+% the binding-thread skin; a knot-tile hangs left onto the rail
+\tcbset{
+  knotcommon/.style={
+    enhanced, breakable, sharp corners, frame hidden, boxrule=0pt,
+    left=12pt, right=11pt, top=8pt, bottom=8pt,
+    before skip=10pt plus 2pt, after skip=10pt plus 2pt },
+  knotindigo/.style={knotcommon, colback=linen!60!white,
+    borderline west={2.2pt}{0pt}{indigo},
+    overlay unbroken and first={\node[anchor=north east,inner sep=0pt]
+      at ([xshift=-7pt,yshift=-7pt]frame.north west){\loomtile{indigo}};}},
+  knotmadder/.style={knotcommon, colback=madder!6!linen,
+    borderline west={2.2pt}{0pt}{madder},
+    overlay unbroken and first={\node[anchor=north east,inner sep=0pt]
+      at ([xshift=-7pt,yshift=-7pt]frame.north west){\loomtile{madder}};}},
+  knotweld/.style={knotcommon, colback=weld!10!linen,
+    borderline west={2.2pt}{0pt}{weld},
+    overlay unbroken and first={\node[anchor=north east,inner sep=0pt]
+      at ([xshift=-7pt,yshift=-7pt]frame.north west){\loomtile{weld}};}},
+}
+\tcolorboxenvironment{theorem}{knotindigo}
+\tcolorboxenvironment{lemma}{knotindigo}
+\tcolorboxenvironment{proposition}{knotindigo}
+\tcolorboxenvironment{corollary}{knotindigo}
+\tcolorboxenvironment{definition}{knotmadder}
+\tcolorboxenvironment{example}{knotweld}
+
+% proofs end on a tiny woven tile instead of the usual tombstone
+\renewcommand{\qedsymbol}{\loomtile{inkiron}}
+\renewcommand{\proofname}{\normalfont\headingfont\bfseries\color{selvage}证明}
+
+% optional inline knot-ID stamp (ties to an L01/L02 claim-DAG habit)
+\newcommand{\weaveid}[1]{\leavevmode
+  \llap{\raisebox{-0.8pt}{\loomtile{madder}}\hspace{4pt}}%
+  {\labelfont\footnotesize\color{selvage}#1\hspace{0.6em}}}
+
+% ===========================================================================
+%  THE INTUITION VOICE  (a strand running alongside the formal line)
+% ===========================================================================
+\newtcolorbox{strand}{
+  enhanced, breakable, sharp corners, frame hidden, boxrule=0pt,
+  colback=indigo!4, borderline west={1.6pt}{0pt}{indigo!55},
+  left=11pt, right=9pt, top=6pt, bottom=6pt,
+  before skip=8pt, after skip=8pt,
+  fontupper=\strandfont\small\color{inkiron!92!white}}
+
+\newcommand{\whisper}[1]{{\strandfont\small\color{indigo!78!black}#1}}
+\newcommand{\keyword}[1]{{\bfseries\color{madder}#1}}
+
+% ===========================================================================
+%  THE SELVAGE EDGE  (open threads + a warmth gauge)
+% ===========================================================================
+% a dangling yarn glyph
+\newcommand{\looseglyph}{\tikz[baseline=-0.6ex]{\draw[madder,line width=0.6pt,
+  decorate,decoration={snake,amplitude=1.1pt,segment length=4.2pt}](0,0)--(0.62cm,0);}}
+% a loose thread = an open question, in the right margin
+\newcommand{\loose}[1]{\marginnote{\raggedright\strandfont\footnotesize\color{selvage}%
+  \looseglyph\par\vspace{1pt}#1}}
+
+% warmth: how well do I grok this?  n filled weave squares out of 5
+\newcommand{\warmth}[1]{\,\begin{tikzpicture}[x=1pt,y=1pt,baseline=-0.4pt]
+  \foreach \i in {1,...,5}{%
+    \ifnum\i>#1
+      \draw[thread,line width=0.5pt] ({(\i-1)*5.0},0) rectangle +(3.4,3.4);
+    \else
+      \fill[weld] ({(\i-1)*5.0},0) rectangle +(3.4,3.4);
+    \fi}
+  \end{tikzpicture}\,}
+
+% warp / pick: declare a recurring thread, then pick it up later (cross-ref)
+\RequirePackage{hyperref}
+\hypersetup{colorlinks=true, linkcolor=indigo, citecolor=madder,
+            urlcolor=indigo, pdfborder={0 0 0}}
+\newcommand{\warp}[1]{\phantomsection\label{warp:#1}%
+  \marginnote{\raggedright\strandfont\scriptsize\color{indigo}$\rightsquigarrow$\,#1}}
+\newcommand{\pick}[1]{\hyperref[warp:#1]{%
+  {\strandfont\scriptsize\color{indigo}[\,#1\,$\hookleftarrow$]}}}
+
+% ===========================================================================
+%  THE COVER  (a woven plate)
+% ===========================================================================
+% \loomcover{title}{subtitle}{author}{date}   -- enables the rail afterwards
+\newcommand{\loomcovermotto}{以\textcolor{indigo}{靛蓝}、\textcolor{madder}{茜红}与\textcolor{weld}{木樨草黄}染就，铁胆墨勾线\quad 织于 \textsc{loom}}
+\newcommand{\loomcover}[4]{%
+  \begin{titlepage}\thispagestyle{empty}\centering
+    \vspace*{2.0cm}
+    {\weaveemblem{132}\par}%主图
+    \vspace{1.3cm}
+    {\headingfont\bfseries\fontsize{32}{36}\selectfont\color{indigo}%主标题
+      \addfontfeatures{LetterSpace=1.0}#1\par}
+    \vspace{0.55cm}
+    {\color{madder}\rule{4.2cm}{1.1pt}\par}%分割线
+    \vspace{0.5cm}
+    {\strandfont\large\color{inkiron!85!white}#2\par}
+    \vfill %全部往上
+    {\strandfont\color{inkiron}#3\par}
+    \vspace{0.25em}
+    {\strandfont\small\color{selvage}#4\par}
+    \vspace{1.1cm}
+    {\labelfont\footnotesize\color{selvage}%格言
+      \loomcovermotto\par}
+  \end{titlepage}%
+  \loomrail}
+
+% if you skip the cover, call \weave to start the rail
+\newcommand{\weave}{\loomrail}
+
+% ===========================================================================
+%  PEDAGOGY  --  fill-in study notes (passive read + active recall)
+%  The method: state results so they can be READ; leave the high-value steps,
+%  computations, and definition-clauses BLANK so they must be ACTIVELY recalled.
+% ===========================================================================
+\RequirePackage{booktabs}
+\RequirePackage{tabularx}
+\RequirePackage{array}
+\newcolumntype{L}{>{\raggedright\arraybackslash}X}   % wrapping table column
+
+% \block{...} -- a quiet sub-heading inside a section
+\newcommand{\block}[1]{\par\medskip\noindent
+  {\headingfont\bfseries\color{indigo}#1}\par\smallskip}
+
+% \trigger{...} -- a "when to reach for this" cue
+\newcommand{\trigger}[1]{\par\smallskip\noindent
+  {\headingfont\bfseries\color{madder}何时用}\enspace #1\par\smallskip}
+
+% \TODO{hint} -- a gap to fill inside a proof / derivation
+\newcommand{\TODO}[1]{{\strandfont\small\color{madder}〔请补全：#1〕}}
+
+% \fillin[width] -- an empty ruled blank to write the answer in
+\newcommand{\fillin}[1][2.2cm]{\,\underline{\hspace{#1}}\,}
+
+% \recall{question} -- a quick active-recall prompt in the margin
+\newcommand{\recall}[1]{\marginnote{\raggedright\strandfont\footnotesize\color{selvage}%
+  {\bfseries\color{indigo}?}\ #1}}
+
+% the active-input zone: a weld box you work inside
+\newtcolorbox{yourturn}{enhanced,breakable,sharp corners,boxrule=0pt,frame hidden,
+  colback=weld!9!linen, borderline west={2pt}{0pt}{weld},
+  left=11pt,right=10pt,top=7pt,bottom=8pt,before skip=9pt,after skip=9pt,
+  before upper={{\headingfont\bfseries\color{weld!60!inkiron}动手试试}\enspace}}
+
+% \workspace[n] -- n faint ruled lines to write on (handwriting; ignore if you type)
+\newcommand{\workspace}[1][3]{\par\vspace{1pt}%
+  \foreach \i in {1,...,#1}{\noindent{\color{thread}\rule{\linewidth}{0.3pt}}\par\vspace{9pt}}}
+
+
+
+\makeatother
+
+\usepackage{adjustbox}
+\usetikzlibrary{calc,angles,quotes}
+\definecolor{esblue}{HTML}{355C86}
+\definecolor{esorange}{HTML}{B76543}
+% Draw condition labels because the heading font has no circled-number glyphs.
+\DeclareRobustCommand{\escond}[1]{\tikz[baseline=(n.base)]
+  \node[draw,circle,inner sep=.65pt,line width=.35pt,font=\footnotesize] (n) {#1};}
+\newcommand{\esdiagram}[1]{\par\smallskip{\centering
+  \adjustbox{max width=.84\linewidth,max height=5.8cm}{#1}
+  \par}\smallskip}
+\newcommand{\think}{\par\smallskip\noindent
+  {\headingfont\bfseries\color{indigo}〔怎么想〕}\enspace}
+\newcommand{\insight}[1]{\par\smallskip\noindent
+  {\headingfont\bfseries\color{weld!60!inkiron}〔方法点睛〕}\enspace
+  {\strandfont\small #1}\par}
+\newif\ifteachernotes\teachernotestrue
+\setlist[enumerate]{leftmargin=2.3em,itemsep=2pt,topsep=3pt}
+\setlist[itemize]{leftmargin=1.6em,itemsep=2pt,topsep=3pt}
+\setcounter{secnumdepth}{0}
+\setcounter{tocdepth}{1}
+\hypersetup{pdftitle={八字形模型 · 单章核对稿},pdfauthor={Hence},
+  pdfsubject={共斜边、外角平分线与辅助线}}
+\renewcommand{\loomcovermotto}{从图形中发现关系，在推理中理解几何}
+\renewcommand{\contentsname}{目录}
+% Generated from the same coordinates as PNG/SVG.
+\newcommand{\esdiModel}{%
+\begin{tikzpicture}[scale=.8,line width=.7pt,every node/.style={font=\small,inner sep=2pt}]
+\coordinate (A) at (4.00000000,4.00000000);
+\coordinate (B) at (0.00000000,0.00000000);
+\coordinate (C) at (8.00000000,0.00000000);
+\coordinate (D) at (7.20000000,2.40000000);
+\coordinate (O) at (6.00000000,2.00000000);
+\draw[inkiron] (A) -- (B);
+\draw[inkiron] (B) -- (C);
+\draw[inkiron] (C) -- (D);
+\draw[inkiron] (D) -- (A);
+\draw[inkiron] (A) -- (C);
+\draw[inkiron] (B) -- (D);
+\filldraw[fill=esblue!18,draw=esblue,line width=1pt] (A) -- (B) -- (O) -- cycle;
+\filldraw[fill=esorange!18,draw=esorange,line width=1pt] (D) -- (C) -- (O) -- cycle;
+\draw[selvage] (3.87979185,3.87979185) -- (4.00000000,3.75958369) -- (4.12020815,3.87979185);
+\draw[selvage] (7.03872384,2.34624128) -- (7.09248256,2.18496512) -- (7.25375872,2.23872384);
+\fill[inkiron] (A) circle (1pt);
+\node at (3.85000000,4.28000000) {$A$};
+\fill[inkiron] (B) circle (1pt);
+\node at (-0.25000000,-0.25000000) {$B$};
+\fill[inkiron] (C) circle (1pt);
+\node at (8.25000000,-0.25000000) {$C$};
+\fill[inkiron] (D) circle (1pt);
+\node at (7.55000000,2.43000000) {$D$};
+\fill[inkiron] (O) circle (1pt);
+\node at (5.70000000,1.75000000) {$O$};
+\end{tikzpicture}}
+
+\newcommand{\esdiExterior}{%
+\begin{tikzpicture}[scale=.8,line width=.7pt,every node/.style={font=\small,inner sep=2pt}]
+\coordinate (A) at (4.00000000,4.00000000);
+\coordinate (B) at (0.00000000,0.00000000);
+\coordinate (C) at (8.00000000,0.00000000);
+\coordinate (D) at (7.20000000,2.40000000);
+\coordinate (X) at (6.08000000,5.76000000);
+\draw[inkiron] (A) -- (B);
+\draw[inkiron] (B) -- (C);
+\draw[inkiron] (C) -- (D);
+\draw[inkiron] (D) -- (A);
+\draw[inkiron] (A) -- (C);
+\draw[inkiron] (B) -- (D);
+\draw[esblue,dashed] (D) -- (X);
+\draw[esblue] (6.67822419,2.22607473) -- (6.67490997,2.23635264) -- (6.67179818,2.24669364) -- (6.66889003,2.25709374) -- (6.66618663,2.26754894) -- (6.66368902,2.27805520) -- (6.66139817,2.28860847) -- (6.65931497,2.29920468) -- (6.65744021,2.30983976) -- (6.65577461,2.32050959) -- (6.65431882,2.33121007) -- (6.65307341,2.34193706) -- (6.65203885,2.35268644) -- (6.65121553,2.36345406) -- (6.65060378,2.37423577) -- (6.65020384,2.38502742) -- (6.65001585,2.39582483) -- (6.65003989,2.40662386) -- (6.65027595,2.41742033) -- (6.65072394,2.42821008) -- (6.65138369,2.43898896) -- (6.65225493,2.44975281) -- (6.65333735,2.46049748) -- (6.65463051,2.47121882) -- (6.65613392,2.48191271) -- (6.65784701,2.49257502) -- (6.65976910,2.50320164) -- (6.66189947,2.51378848) -- (6.66423728,2.52433144) -- (6.66678164,2.53482648) -- (6.66953156,2.54526953) -- (6.67248599,2.55565658) -- (6.67564379,2.56598363) -- (6.67900374,2.57624668) -- (6.68256454,2.58644179) -- (6.68632482,2.59656502) -- (6.69028313,2.60661247) -- (6.69443795,2.61658027) -- (6.69878767,2.62646457) -- (6.70333062,2.63626157) -- (6.70806504,2.64596748);
+\draw[esblue] (6.70806504,2.64596748) -- (6.71298912,2.65557856) -- (6.71810095,2.66509112) -- (6.72339855,2.67450148) -- (6.72887990,2.68380601) -- (6.73454287,2.69300113) -- (6.74038529,2.70208330) -- (6.74640490,2.71104900) -- (6.75259937,2.71989479) -- (6.75896633,2.72861725) -- (6.76550331,2.73721303) -- (6.77220780,2.74567880) -- (6.77907721,2.75401131) -- (6.78610890,2.76220734) -- (6.79330015,2.77026373) -- (6.80064819,2.77817738) -- (6.80815019,2.78594523) -- (6.81580325,2.79356430) -- (6.82360443,2.80103164) -- (6.83155071,2.80834437) -- (6.83963904,2.81549968) -- (6.84786630,2.82249480) -- (6.85622931,2.82932704) -- (6.86472485,2.83599378) -- (6.87334964,2.84249242) -- (6.88210037,2.84882048) -- (6.89097365,2.85497551) -- (6.89996607,2.86095514) -- (6.90907415,2.86675706) -- (6.91829440,2.87237904) -- (6.92762324,2.87781890) -- (6.93705710,2.88307456) -- (6.94659232,2.88814398) -- (6.95622523,2.89302522) -- (6.96595213,2.89771638) -- (6.97576925,2.90221566) -- (6.98567282,2.90652133) -- (6.99565902,2.91063173) -- (7.00572400,2.91454527) -- (7.01586387,2.91826044) -- (7.02607473,2.92177581);
+\draw[selvage] (3.87979185,3.87979185) -- (4.00000000,3.75958369) -- (4.12020815,3.87979185);
+\draw[selvage] (7.03872384,2.34624128) -- (7.09248256,2.18496512) -- (7.25375872,2.23872384);
+\draw[inkiron] ($(A)!0.50000000!(B)!3pt!90:(B)$) -- ($(A)!0.50000000!(B)!3pt!-90:(B)$);
+\draw[inkiron] ($(A)!0.30000000!(C)!3pt!90:(C)$) -- ($(A)!0.30000000!(C)!3pt!-90:(C)$);
+\fill[inkiron] (A) circle (1pt);
+\node at (3.85000000,4.28000000) {$A$};
+\fill[inkiron] (B) circle (1pt);
+\node at (-0.25000000,-0.25000000) {$B$};
+\fill[inkiron] (C) circle (1pt);
+\node at (8.25000000,-0.25000000) {$C$};
+\fill[inkiron] (D) circle (1pt);
+\node at (7.55000000,2.43000000) {$D$};
+\fill[inkiron] (X) circle (1pt);
+\node at (6.08000000,6.01000000) {$X$};
+\end{tikzpicture}}
+
+\newcommand{\esdiSharedHypotenuse}{%
+\begin{tikzpicture}[scale=.8,line width=.7pt,every node/.style={font=\small,inner sep=2pt}]
+\coordinate (A) at (4.00000000,4.00000000);
+\coordinate (B) at (0.00000000,0.00000000);
+\coordinate (C) at (8.00000000,0.00000000);
+\coordinate (D) at (7.20000000,2.40000000);
+\draw[inkiron] (A) -- (B);
+\draw[inkiron] (B) -- (C);
+\draw[inkiron] (C) -- (D);
+\draw[inkiron] (D) -- (A);
+\draw[inkiron] (A) -- (C);
+\draw[inkiron] (B) -- (D);
+\draw[selvage] (3.87979185,3.87979185) -- (4.00000000,3.75958369) -- (4.12020815,3.87979185);
+\draw[selvage] (7.03872384,2.34624128) -- (7.09248256,2.18496512) -- (7.25375872,2.23872384);
+\draw[inkiron] ($(A)!0.50000000!(B)!3pt!90:(B)$) -- ($(A)!0.50000000!(B)!3pt!-90:(B)$);
+\draw[inkiron] ($(A)!0.30000000!(C)!3pt!90:(C)$) -- ($(A)!0.30000000!(C)!3pt!-90:(C)$);
+\fill[inkiron] (A) circle (1pt);
+\node at (3.85000000,4.28000000) {$A$};
+\fill[inkiron] (B) circle (1pt);
+\node at (-0.25000000,-0.25000000) {$B$};
+\fill[inkiron] (C) circle (1pt);
+\node at (8.25000000,-0.25000000) {$C$};
+\fill[inkiron] (D) circle (1pt);
+\node at (7.55000000,2.43000000) {$D$};
+\end{tikzpicture}}
+
+\newcommand{\esdiDoublePerpendicular}{%
+\begin{tikzpicture}[scale=.8,line width=.7pt,every node/.style={font=\small,inner sep=2pt}]
+\coordinate (A) at (4.00000000,4.00000000);
+\coordinate (B) at (0.00000000,0.00000000);
+\coordinate (C) at (8.00000000,0.00000000);
+\coordinate (D) at (7.20000000,2.40000000);
+\coordinate (M) at (4.80000000,1.60000000);
+\coordinate (N) at (6.40000000,4.80000000);
+\draw[inkiron] (A) -- (B);
+\draw[inkiron] (B) -- (C);
+\draw[inkiron] (C) -- (D);
+\draw[inkiron] (D) -- (A);
+\draw[inkiron] (A) -- (C);
+\draw[inkiron] (B) -- (D);
+\draw[esblue,dashed] (A) -- (M);
+\draw[esblue,dashed] (A) -- (N);
+\draw[esblue,dashed] (D) -- (N);
+\draw[selvage] (4.74624128,1.76127616) -- (4.58496512,1.70751744) -- (4.63872384,1.54624128);
+\draw[selvage] (6.23872384,4.74624128) -- (6.29248256,4.58496512) -- (6.45375872,4.63872384);
+\fill[inkiron] (A) circle (1pt);
+\node at (3.85000000,4.28000000) {$A$};
+\fill[inkiron] (B) circle (1pt);
+\node at (-0.25000000,-0.25000000) {$B$};
+\fill[inkiron] (C) circle (1pt);
+\node at (8.25000000,-0.25000000) {$C$};
+\fill[inkiron] (D) circle (1pt);
+\node at (7.55000000,2.43000000) {$D$};
+\fill[inkiron] (M) circle (1pt);
+\node at (4.80000000,1.25000000) {$M$};
+\fill[inkiron] (N) circle (1pt);
+\node at (6.65000000,5.05000000) {$N$};
+\end{tikzpicture}}
+
+\newcommand{\esdiExtendCd}{%
+\begin{tikzpicture}[scale=.8,line width=.7pt,every node/.style={font=\small,inner sep=2pt}]
+\coordinate (A) at (4.00000000,4.00000000);
+\coordinate (B) at (0.00000000,0.00000000);
+\coordinate (C) at (8.00000000,0.00000000);
+\coordinate (D) at (7.20000000,2.40000000);
+\coordinate (E) at (4.80000000,9.60000000);
+\draw[inkiron] (A) -- (B);
+\draw[inkiron] (B) -- (C);
+\draw[inkiron] (C) -- (D);
+\draw[inkiron] (D) -- (A);
+\draw[inkiron] (A) -- (C);
+\draw[inkiron] (B) -- (D);
+\draw[esblue,dashed] (D) -- (E);
+\draw[esblue,dashed] (A) -- (E);
+\draw[inkiron] ($(D)!0.49275311!(E)!3pt!90:(E)$) -- ($(D)!0.49275311!(E)!3pt!-90:(E)$);
+\draw[inkiron] ($(D)!0.50724689!(E)!3pt!90:(E)$) -- ($(D)!0.50724689!(E)!3pt!-90:(E)$);
+\draw[inkiron] ($(D)!0.49275311!(B)!3pt!90:(B)$) -- ($(D)!0.49275311!(B)!3pt!-90:(B)$);
+\draw[inkiron] ($(D)!0.50724689!(B)!3pt!90:(B)$) -- ($(D)!0.50724689!(B)!3pt!-90:(B)$);
+\fill[inkiron] (A) circle (1pt);
+\node at (3.85000000,4.28000000) {$A$};
+\fill[inkiron] (B) circle (1pt);
+\node at (-0.25000000,-0.25000000) {$B$};
+\fill[inkiron] (C) circle (1pt);
+\node at (8.25000000,-0.25000000) {$C$};
+\fill[inkiron] (D) circle (1pt);
+\node at (7.55000000,2.43000000) {$D$};
+\fill[inkiron] (E) circle (1pt);
+\node at (4.80000000,9.85000000) {$E$};
+\end{tikzpicture}}
+
+\newcommand{\esdiExtendBd}{%
+\begin{tikzpicture}[scale=.8,line width=.7pt,every node/.style={font=\small,inner sep=2pt}]
+\coordinate (A) at (4.00000000,4.00000000);
+\coordinate (B) at (0.00000000,0.00000000);
+\coordinate (C) at (8.00000000,0.00000000);
+\coordinate (D) at (7.20000000,2.40000000);
+\coordinate (F) at (9.60000000,3.20000000);
+\draw[inkiron] (A) -- (B);
+\draw[inkiron] (B) -- (C);
+\draw[inkiron] (C) -- (D);
+\draw[inkiron] (D) -- (A);
+\draw[inkiron] (A) -- (C);
+\draw[inkiron] (B) -- (D);
+\draw[esblue,dashed] (D) -- (F);
+\draw[esblue,dashed] (A) -- (F);
+\draw[inkiron] ($(D)!0.47825934!(F)!3pt!90:(F)$) -- ($(D)!0.47825934!(F)!3pt!-90:(F)$);
+\draw[inkiron] ($(D)!0.52174066!(F)!3pt!90:(F)$) -- ($(D)!0.52174066!(F)!3pt!-90:(F)$);
+\draw[inkiron] ($(D)!0.47825934!(C)!3pt!90:(C)$) -- ($(D)!0.47825934!(C)!3pt!-90:(C)$);
+\draw[inkiron] ($(D)!0.52174066!(C)!3pt!90:(C)$) -- ($(D)!0.52174066!(C)!3pt!-90:(C)$);
+\fill[inkiron] (A) circle (1pt);
+\node at (3.85000000,4.28000000) {$A$};
+\fill[inkiron] (B) circle (1pt);
+\node at (-0.25000000,-0.25000000) {$B$};
+\fill[inkiron] (C) circle (1pt);
+\node at (8.25000000,-0.25000000) {$C$};
+\fill[inkiron] (D) circle (1pt);
+\node at (7.55000000,2.43000000) {$D$};
+\fill[inkiron] (F) circle (1pt);
+\node at (9.60000000,3.45000000) {$F$};
+\end{tikzpicture}}
+
+\newcommand{\esdiHandLower}{%
+\begin{tikzpicture}[scale=.8,line width=.7pt,every node/.style={font=\small,inner sep=2pt}]
+\coordinate (A) at (4.00000000,4.00000000);
+\coordinate (B) at (0.00000000,0.00000000);
+\coordinate (C) at (8.00000000,0.00000000);
+\coordinate (D) at (7.20000000,2.40000000);
+\coordinate (P) at (2.40000000,0.80000000);
+\draw[inkiron] (A) -- (B);
+\draw[inkiron] (B) -- (C);
+\draw[inkiron] (C) -- (D);
+\draw[inkiron] (D) -- (A);
+\draw[inkiron] (A) -- (C);
+\draw[inkiron] (B) -- (D);
+\draw[esblue,dashed] (A) -- (P);
+\draw[selvage] (3.92397369,3.84794738) -- (4.07602631,3.77192107) -- (4.15205262,3.92397369);
+\draw[inkiron] ($(A)!0.48462703!(P)!3pt!90:(P)$) -- ($(A)!0.48462703!(P)!3pt!-90:(P)$);
+\draw[inkiron] ($(A)!0.51537297!(P)!3pt!90:(P)$) -- ($(A)!0.51537297!(P)!3pt!-90:(P)$);
+\draw[inkiron] ($(A)!0.48462703!(D)!3pt!90:(D)$) -- ($(A)!0.48462703!(D)!3pt!-90:(D)$);
+\draw[inkiron] ($(A)!0.51537297!(D)!3pt!90:(D)$) -- ($(A)!0.51537297!(D)!3pt!-90:(D)$);
+\fill[inkiron] (A) circle (1pt);
+\node at (3.85000000,4.28000000) {$A$};
+\fill[inkiron] (B) circle (1pt);
+\node at (-0.25000000,-0.25000000) {$B$};
+\fill[inkiron] (C) circle (1pt);
+\node at (8.25000000,-0.25000000) {$C$};
+\fill[inkiron] (D) circle (1pt);
+\node at (7.55000000,2.43000000) {$D$};
+\fill[inkiron] (P) circle (1pt);
+\node at (2.40000000,0.45000000) {$P$};
+\end{tikzpicture}}
+
+\newcommand{\esdiHandUpper}{%
+\begin{tikzpicture}[scale=.8,line width=.7pt,every node/.style={font=\small,inner sep=2pt}]
+\coordinate (A) at (4.00000000,4.00000000);
+\coordinate (B) at (0.00000000,0.00000000);
+\coordinate (C) at (8.00000000,0.00000000);
+\coordinate (D) at (7.20000000,2.40000000);
+\coordinate (Q) at (5.60000000,7.20000000);
+\draw[inkiron] (A) -- (B);
+\draw[inkiron] (B) -- (C);
+\draw[inkiron] (C) -- (D);
+\draw[inkiron] (D) -- (A);
+\draw[inkiron] (A) -- (C);
+\draw[inkiron] (B) -- (D);
+\draw[esblue,dashed] (D) -- (Q);
+\draw[esblue,dashed] (A) -- (Q);
+\draw[selvage] (4.07602631,4.15205262) -- (4.22807893,4.07602631) -- (4.15205262,3.92397369);
+\draw[inkiron] ($(A)!0.48462703!(Q)!3pt!90:(Q)$) -- ($(A)!0.48462703!(Q)!3pt!-90:(Q)$);
+\draw[inkiron] ($(A)!0.51537297!(Q)!3pt!90:(Q)$) -- ($(A)!0.51537297!(Q)!3pt!-90:(Q)$);
+\draw[inkiron] ($(A)!0.48462703!(D)!3pt!90:(D)$) -- ($(A)!0.48462703!(D)!3pt!-90:(D)$);
+\draw[inkiron] ($(A)!0.51537297!(D)!3pt!90:(D)$) -- ($(A)!0.51537297!(D)!3pt!-90:(D)$);
+\fill[inkiron] (A) circle (1pt);
+\node at (3.85000000,4.28000000) {$A$};
+\fill[inkiron] (B) circle (1pt);
+\node at (-0.25000000,-0.25000000) {$B$};
+\fill[inkiron] (C) circle (1pt);
+\node at (8.25000000,-0.25000000) {$C$};
+\fill[inkiron] (D) circle (1pt);
+\node at (7.55000000,2.43000000) {$D$};
+\fill[inkiron] (Q) circle (1pt);
+\node at (5.60000000,7.45000000) {$Q$};
+\end{tikzpicture}}
+
+\newcommand{\esdiKPerpendicular}{%
+\begin{tikzpicture}[scale=.8,line width=.7pt,every node/.style={font=\small,inner sep=2pt}]
+\coordinate (A) at (4.00000000,4.00000000);
+\coordinate (B) at (0.00000000,0.00000000);
+\coordinate (C) at (8.00000000,0.00000000);
+\coordinate (D) at (7.20000000,2.40000000);
+\coordinate (M) at (2.40000000,4.80000000);
+\coordinate (N) at (8.80000000,1.60000000);
+\draw[inkiron] (A) -- (B);
+\draw[inkiron] (B) -- (C);
+\draw[inkiron] (C) -- (D);
+\draw[inkiron] (D) -- (A);
+\draw[inkiron] (A) -- (C);
+\draw[inkiron] (B) -- (D);
+\draw[esblue,dashed] (B) -- (M);
+\draw[esblue,dashed] (M) -- (A);
+\draw[esblue,dashed] (C) -- (N);
+\draw[esblue,dashed] (D) -- (N);
+\draw[selvage] (2.32397369,4.64794738) -- (2.47602631,4.57192107) -- (2.55205262,4.72397369);
+\draw[selvage] (8.72397369,1.44794738) -- (8.57192107,1.52397369) -- (8.64794738,1.67602631);
+\fill[inkiron] (A) circle (1pt);
+\node at (3.85000000,4.28000000) {$A$};
+\fill[inkiron] (B) circle (1pt);
+\node at (-0.25000000,-0.25000000) {$B$};
+\fill[inkiron] (C) circle (1pt);
+\node at (8.25000000,-0.25000000) {$C$};
+\fill[inkiron] (D) circle (1pt);
+\node at (7.55000000,2.43000000) {$D$};
+\fill[inkiron] (M) circle (1pt);
+\node at (2.20000000,5.05000000) {$M$};
+\fill[inkiron] (N) circle (1pt);
+\node at (9.10000000,1.65000000) {$N$};
+\end{tikzpicture}}
+
+\newcommand{\esdiExample}{%
+\begin{tikzpicture}[scale=.8,line width=.7pt,every node/.style={font=\small,inner sep=2pt}]
+\coordinate (A) at (4.00000000,4.00000000);
+\coordinate (B) at (0.00000000,0.00000000);
+\coordinate (C) at (8.00000000,0.00000000);
+\coordinate (D) at (5.65685425,2.34314575);
+\coordinate (E) at (6.82842712,2.82842712);
+\draw[inkiron] (A) -- (B);
+\draw[inkiron] (B) -- (C);
+\draw[inkiron] (A) -- (C);
+\draw[inkiron] (B) -- (E);
+\draw[inkiron] (C) -- (E);
+\draw[selvage] (3.87979185,3.87979185) -- (4.00000000,3.75958369) -- (4.12020815,3.87979185);
+\draw[selvage] (6.67136760,2.76337094) -- (6.73642379,2.60631142) -- (6.89348331,2.67136760);
+\draw[inkiron] ($(A)!0.50000000!(B)!3pt!90:(B)$) -- ($(A)!0.50000000!(B)!3pt!-90:(B)$);
+\draw[inkiron] ($(A)!0.50000000!(C)!3pt!90:(C)$) -- ($(A)!0.50000000!(C)!3pt!-90:(C)$);
+\draw[esblue] (0.77781746,0.77781746) -- (0.78541606,0.77014389) -- (0.79293896,0.76239610) -- (0.80038543,0.75457482) -- (0.80775476,0.74668082) -- (0.81504624,0.73871485) -- (0.82225916,0.73067768) -- (0.82939283,0.72257009) -- (0.83644656,0.71439285) -- (0.84341968,0.70614676) -- (0.85031150,0.69783261) -- (0.85712137,0.68945120) -- (0.86384862,0.68100334) -- (0.87049262,0.67248985) -- (0.87705272,0.66391154) -- (0.88352828,0.65526923) -- (0.88991869,0.64656378) -- (0.89622333,0.63779600) -- (0.90244159,0.62896676) -- (0.90857287,0.62007689) -- (0.91461657,0.61112726) -- (0.92057213,0.60211872) -- (0.92643896,0.59305216) -- (0.93221649,0.58392843) -- (0.93790418,0.57474842) -- (0.94350147,0.56551302) -- (0.94900782,0.55622311) -- (0.95442271,0.54687959) -- (0.95974561,0.53748337) -- (0.96497600,0.52803533) -- (0.97011339,0.51853641) -- (0.97515728,0.50898751) -- (0.98010718,0.49938955) -- (0.98496261,0.48974346) -- (0.98972311,0.48005016) -- (0.99438822,0.47031060) -- (0.99895749,0.46052571) -- (1.00343048,0.45069643) -- (1.00780675,0.44082372) -- (1.01208589,0.43090851) -- (1.01626749,0.42095178);
+\draw[esblue] (1.01626749,0.42095178) -- (1.02035113,0.41095447) -- (1.02433643,0.40091755) -- (1.02822300,0.39084199) -- (1.03201047,0.38072876) -- (1.03569847,0.37057884) -- (1.03928665,0.36039320) -- (1.04277466,0.35017282) -- (1.04616217,0.33991869) -- (1.04944884,0.32963180) -- (1.05263437,0.31931314) -- (1.05571844,0.30896371) -- (1.05870076,0.29858449) -- (1.06158104,0.28817650) -- (1.06435900,0.27774073) -- (1.06703438,0.26727820) -- (1.06960691,0.25678990) -- (1.07207636,0.24627685) -- (1.07444247,0.23574007) -- (1.07670503,0.22518056) -- (1.07886381,0.21459935) -- (1.08091861,0.20399746) -- (1.08286922,0.19337591) -- (1.08471547,0.18273572) -- (1.08645717,0.17207791) -- (1.08809416,0.16140352) -- (1.08962627,0.15071358) -- (1.09105337,0.14000910) -- (1.09237530,0.12929114) -- (1.09359195,0.11856071) -- (1.09470320,0.10781885) -- (1.09570894,0.09706661) -- (1.09660907,0.08630501) -- (1.09740350,0.07553508) -- (1.09809217,0.06475788) -- (1.09867500,0.05397444) -- (1.09915194,0.04318580) -- (1.09952294,0.03239299) -- (1.09978796,0.02159706) -- (1.09994699,0.01079905) -- (1.10000000,-0.00000000);
+\fill[inkiron] (A) circle (1pt);
+\node at (3.90000000,4.28000000) {$A$};
+\fill[inkiron] (B) circle (1pt);
+\node at (-0.25000000,-0.25000000) {$B$};
+\fill[inkiron] (C) circle (1pt);
+\node at (8.25000000,-0.25000000) {$C$};
+\fill[inkiron] (D) circle (1pt);
+\node at (6.00685425,2.69314575) {$D$};
+\fill[inkiron] (E) circle (1pt);
+\node at (7.12842712,3.00842712) {$E$};
+\end{tikzpicture}}
+
+\newcommand{\esdiExampleExtend}{%
+\begin{tikzpicture}[scale=.8,line width=.7pt,every node/.style={font=\small,inner sep=2pt}]
+\coordinate (A) at (4.00000000,4.00000000);
+\coordinate (B) at (0.00000000,0.00000000);
+\coordinate (C) at (8.00000000,0.00000000);
+\coordinate (D) at (5.65685425,2.34314575);
+\coordinate (E) at (6.82842712,2.82842712);
+\coordinate (F) at (5.65685425,5.65685425);
+\draw[inkiron] (A) -- (B);
+\draw[inkiron] (B) -- (C);
+\draw[inkiron] (A) -- (C);
+\draw[inkiron] (B) -- (E);
+\draw[inkiron] (C) -- (E);
+\draw[selvage] (3.87979185,3.87979185) -- (4.00000000,3.75958369) -- (4.12020815,3.87979185);
+\draw[selvage] (6.67136760,2.76337094) -- (6.73642379,2.60631142) -- (6.89348331,2.67136760);
+\draw[inkiron] ($(A)!0.50000000!(B)!3pt!90:(B)$) -- ($(A)!0.50000000!(B)!3pt!-90:(B)$);
+\draw[inkiron] ($(A)!0.50000000!(C)!3pt!90:(C)$) -- ($(A)!0.50000000!(C)!3pt!-90:(C)$);
+\draw[esblue] (0.77781746,0.77781746) -- (0.78541606,0.77014389) -- (0.79293896,0.76239610) -- (0.80038543,0.75457482) -- (0.80775476,0.74668082) -- (0.81504624,0.73871485) -- (0.82225916,0.73067768) -- (0.82939283,0.72257009) -- (0.83644656,0.71439285) -- (0.84341968,0.70614676) -- (0.85031150,0.69783261) -- (0.85712137,0.68945120) -- (0.86384862,0.68100334) -- (0.87049262,0.67248985) -- (0.87705272,0.66391154) -- (0.88352828,0.65526923) -- (0.88991869,0.64656378) -- (0.89622333,0.63779600) -- (0.90244159,0.62896676) -- (0.90857287,0.62007689) -- (0.91461657,0.61112726) -- (0.92057213,0.60211872) -- (0.92643896,0.59305216) -- (0.93221649,0.58392843) -- (0.93790418,0.57474842) -- (0.94350147,0.56551302) -- (0.94900782,0.55622311) -- (0.95442271,0.54687959) -- (0.95974561,0.53748337) -- (0.96497600,0.52803533) -- (0.97011339,0.51853641) -- (0.97515728,0.50898751) -- (0.98010718,0.49938955) -- (0.98496261,0.48974346) -- (0.98972311,0.48005016) -- (0.99438822,0.47031060) -- (0.99895749,0.46052571) -- (1.00343048,0.45069643) -- (1.00780675,0.44082372) -- (1.01208589,0.43090851) -- (1.01626749,0.42095178);
+\draw[esblue] (1.01626749,0.42095178) -- (1.02035113,0.41095447) -- (1.02433643,0.40091755) -- (1.02822300,0.39084199) -- (1.03201047,0.38072876) -- (1.03569847,0.37057884) -- (1.03928665,0.36039320) -- (1.04277466,0.35017282) -- (1.04616217,0.33991869) -- (1.04944884,0.32963180) -- (1.05263437,0.31931314) -- (1.05571844,0.30896371) -- (1.05870076,0.29858449) -- (1.06158104,0.28817650) -- (1.06435900,0.27774073) -- (1.06703438,0.26727820) -- (1.06960691,0.25678990) -- (1.07207636,0.24627685) -- (1.07444247,0.23574007) -- (1.07670503,0.22518056) -- (1.07886381,0.21459935) -- (1.08091861,0.20399746) -- (1.08286922,0.19337591) -- (1.08471547,0.18273572) -- (1.08645717,0.17207791) -- (1.08809416,0.16140352) -- (1.08962627,0.15071358) -- (1.09105337,0.14000910) -- (1.09237530,0.12929114) -- (1.09359195,0.11856071) -- (1.09470320,0.10781885) -- (1.09570894,0.09706661) -- (1.09660907,0.08630501) -- (1.09740350,0.07553508) -- (1.09809217,0.06475788) -- (1.09867500,0.05397444) -- (1.09915194,0.04318580) -- (1.09952294,0.03239299) -- (1.09978796,0.02159706) -- (1.09994699,0.01079905) -- (1.10000000,-0.00000000);
+\draw[esblue,dashed] (A) -- (F);
+\draw[esblue,dashed] (E) -- (F);
+\fill[inkiron] (A) circle (1pt);
+\node at (3.90000000,4.28000000) {$A$};
+\fill[inkiron] (B) circle (1pt);
+\node at (-0.25000000,-0.25000000) {$B$};
+\fill[inkiron] (C) circle (1pt);
+\node at (8.25000000,-0.25000000) {$C$};
+\fill[inkiron] (D) circle (1pt);
+\node at (6.00685425,2.69314575) {$D$};
+\fill[inkiron] (E) circle (1pt);
+\node at (7.12842712,3.00842712) {$E$};
+\fill[inkiron] (F) circle (1pt);
+\node at (5.65685425,5.90685425) {$F$};
+\end{tikzpicture}}
+
+\newcommand{\esdiExampleParallel}{%
+\begin{tikzpicture}[scale=.8,line width=.7pt,every node/.style={font=\small,inner sep=2pt}]
+\coordinate (A) at (4.00000000,4.00000000);
+\coordinate (B) at (0.00000000,0.00000000);
+\coordinate (C) at (8.00000000,0.00000000);
+\coordinate (D) at (5.65685425,2.34314575);
+\coordinate (E) at (6.82842712,2.82842712);
+\coordinate (F) at (3.31370850,0.00000000);
+\coordinate (G) at (2.82842712,1.17157288);
+\draw[inkiron] (A) -- (B);
+\draw[inkiron] (B) -- (C);
+\draw[inkiron] (A) -- (C);
+\draw[inkiron] (B) -- (E);
+\draw[inkiron] (C) -- (E);
+\draw[selvage] (3.87979185,3.87979185) -- (4.00000000,3.75958369) -- (4.12020815,3.87979185);
+\draw[selvage] (6.67136760,2.76337094) -- (6.73642379,2.60631142) -- (6.89348331,2.67136760);
+\draw[inkiron] ($(A)!0.50000000!(B)!3pt!90:(B)$) -- ($(A)!0.50000000!(B)!3pt!-90:(B)$);
+\draw[inkiron] ($(A)!0.50000000!(C)!3pt!90:(C)$) -- ($(A)!0.50000000!(C)!3pt!-90:(C)$);
+\draw[esblue] (0.77781746,0.77781746) -- (0.78541606,0.77014389) -- (0.79293896,0.76239610) -- (0.80038543,0.75457482) -- (0.80775476,0.74668082) -- (0.81504624,0.73871485) -- (0.82225916,0.73067768) -- (0.82939283,0.72257009) -- (0.83644656,0.71439285) -- (0.84341968,0.70614676) -- (0.85031150,0.69783261) -- (0.85712137,0.68945120) -- (0.86384862,0.68100334) -- (0.87049262,0.67248985) -- (0.87705272,0.66391154) -- (0.88352828,0.65526923) -- (0.88991869,0.64656378) -- (0.89622333,0.63779600) -- (0.90244159,0.62896676) -- (0.90857287,0.62007689) -- (0.91461657,0.61112726) -- (0.92057213,0.60211872) -- (0.92643896,0.59305216) -- (0.93221649,0.58392843) -- (0.93790418,0.57474842) -- (0.94350147,0.56551302) -- (0.94900782,0.55622311) -- (0.95442271,0.54687959) -- (0.95974561,0.53748337) -- (0.96497600,0.52803533) -- (0.97011339,0.51853641) -- (0.97515728,0.50898751) -- (0.98010718,0.49938955) -- (0.98496261,0.48974346) -- (0.98972311,0.48005016) -- (0.99438822,0.47031060) -- (0.99895749,0.46052571) -- (1.00343048,0.45069643) -- (1.00780675,0.44082372) -- (1.01208589,0.43090851) -- (1.01626749,0.42095178);
+\draw[esblue] (1.01626749,0.42095178) -- (1.02035113,0.41095447) -- (1.02433643,0.40091755) -- (1.02822300,0.39084199) -- (1.03201047,0.38072876) -- (1.03569847,0.37057884) -- (1.03928665,0.36039320) -- (1.04277466,0.35017282) -- (1.04616217,0.33991869) -- (1.04944884,0.32963180) -- (1.05263437,0.31931314) -- (1.05571844,0.30896371) -- (1.05870076,0.29858449) -- (1.06158104,0.28817650) -- (1.06435900,0.27774073) -- (1.06703438,0.26727820) -- (1.06960691,0.25678990) -- (1.07207636,0.24627685) -- (1.07444247,0.23574007) -- (1.07670503,0.22518056) -- (1.07886381,0.21459935) -- (1.08091861,0.20399746) -- (1.08286922,0.19337591) -- (1.08471547,0.18273572) -- (1.08645717,0.17207791) -- (1.08809416,0.16140352) -- (1.08962627,0.15071358) -- (1.09105337,0.14000910) -- (1.09237530,0.12929114) -- (1.09359195,0.11856071) -- (1.09470320,0.10781885) -- (1.09570894,0.09706661) -- (1.09660907,0.08630501) -- (1.09740350,0.07553508) -- (1.09809217,0.06475788) -- (1.09867500,0.05397444) -- (1.09915194,0.04318580) -- (1.09952294,0.03239299) -- (1.09978796,0.02159706) -- (1.09994699,0.01079905) -- (1.10000000,-0.00000000);
+\draw[esblue,dashed] (D) -- (F);
+\draw[esblue,dashed] (F) -- (G);
+\draw[selvage] (2.89348331,1.01451335) -- (2.73642379,0.94945717) -- (2.67136760,1.10651669);
+\draw[inkiron] ($(B)!0.48340228!(F)!3pt!90:(F)$) -- ($(B)!0.48340228!(F)!3pt!-90:(F)$);
+\draw[inkiron] ($(B)!0.51659772!(F)!3pt!90:(F)$) -- ($(B)!0.51659772!(F)!3pt!-90:(F)$);
+\draw[inkiron] ($(D)!0.48340228!(F)!3pt!90:(F)$) -- ($(D)!0.48340228!(F)!3pt!-90:(F)$);
+\draw[inkiron] ($(D)!0.51659772!(F)!3pt!90:(F)$) -- ($(D)!0.51659772!(F)!3pt!-90:(F)$);
+\fill[inkiron] (A) circle (1pt);
+\node at (3.90000000,4.28000000) {$A$};
+\fill[inkiron] (B) circle (1pt);
+\node at (-0.25000000,-0.25000000) {$B$};
+\fill[inkiron] (C) circle (1pt);
+\node at (8.25000000,-0.25000000) {$C$};
+\fill[inkiron] (D) circle (1pt);
+\node at (6.00685425,2.69314575) {$D$};
+\fill[inkiron] (E) circle (1pt);
+\node at (7.12842712,3.00842712) {$E$};
+\fill[inkiron] (F) circle (1pt);
+\node at (3.31370850,-0.35000000) {$F$};
+\fill[inkiron] (G) circle (1pt);
+\node at (2.47842712,1.27157288) {$G$};
+\end{tikzpicture}}
+
+\newcommand{\esdiExampleHand}{%
+\begin{tikzpicture}[scale=.8,line width=.7pt,every node/.style={font=\small,inner sep=2pt}]
+\coordinate (A) at (4.00000000,4.00000000);
+\coordinate (B) at (0.00000000,0.00000000);
+\coordinate (C) at (8.00000000,0.00000000);
+\coordinate (D) at (5.65685425,2.34314575);
+\coordinate (E) at (6.82842712,2.82842712);
+\coordinate (F) at (2.82842712,1.17157288);
+\draw[inkiron] (A) -- (B);
+\draw[inkiron] (B) -- (C);
+\draw[inkiron] (A) -- (C);
+\draw[inkiron] (B) -- (E);
+\draw[inkiron] (C) -- (E);
+\draw[selvage] (3.87979185,3.87979185) -- (4.00000000,3.75958369) -- (4.12020815,3.87979185);
+\draw[selvage] (6.67136760,2.76337094) -- (6.73642379,2.60631142) -- (6.89348331,2.67136760);
+\draw[inkiron] ($(A)!0.50000000!(B)!3pt!90:(B)$) -- ($(A)!0.50000000!(B)!3pt!-90:(B)$);
+\draw[inkiron] ($(A)!0.50000000!(C)!3pt!90:(C)$) -- ($(A)!0.50000000!(C)!3pt!-90:(C)$);
+\draw[esblue] (0.77781746,0.77781746) -- (0.78541606,0.77014389) -- (0.79293896,0.76239610) -- (0.80038543,0.75457482) -- (0.80775476,0.74668082) -- (0.81504624,0.73871485) -- (0.82225916,0.73067768) -- (0.82939283,0.72257009) -- (0.83644656,0.71439285) -- (0.84341968,0.70614676) -- (0.85031150,0.69783261) -- (0.85712137,0.68945120) -- (0.86384862,0.68100334) -- (0.87049262,0.67248985) -- (0.87705272,0.66391154) -- (0.88352828,0.65526923) -- (0.88991869,0.64656378) -- (0.89622333,0.63779600) -- (0.90244159,0.62896676) -- (0.90857287,0.62007689) -- (0.91461657,0.61112726) -- (0.92057213,0.60211872) -- (0.92643896,0.59305216) -- (0.93221649,0.58392843) -- (0.93790418,0.57474842) -- (0.94350147,0.56551302) -- (0.94900782,0.55622311) -- (0.95442271,0.54687959) -- (0.95974561,0.53748337) -- (0.96497600,0.52803533) -- (0.97011339,0.51853641) -- (0.97515728,0.50898751) -- (0.98010718,0.49938955) -- (0.98496261,0.48974346) -- (0.98972311,0.48005016) -- (0.99438822,0.47031060) -- (0.99895749,0.46052571) -- (1.00343048,0.45069643) -- (1.00780675,0.44082372) -- (1.01208589,0.43090851) -- (1.01626749,0.42095178);
+\draw[esblue] (1.01626749,0.42095178) -- (1.02035113,0.41095447) -- (1.02433643,0.40091755) -- (1.02822300,0.39084199) -- (1.03201047,0.38072876) -- (1.03569847,0.37057884) -- (1.03928665,0.36039320) -- (1.04277466,0.35017282) -- (1.04616217,0.33991869) -- (1.04944884,0.32963180) -- (1.05263437,0.31931314) -- (1.05571844,0.30896371) -- (1.05870076,0.29858449) -- (1.06158104,0.28817650) -- (1.06435900,0.27774073) -- (1.06703438,0.26727820) -- (1.06960691,0.25678990) -- (1.07207636,0.24627685) -- (1.07444247,0.23574007) -- (1.07670503,0.22518056) -- (1.07886381,0.21459935) -- (1.08091861,0.20399746) -- (1.08286922,0.19337591) -- (1.08471547,0.18273572) -- (1.08645717,0.17207791) -- (1.08809416,0.16140352) -- (1.08962627,0.15071358) -- (1.09105337,0.14000910) -- (1.09237530,0.12929114) -- (1.09359195,0.11856071) -- (1.09470320,0.10781885) -- (1.09570894,0.09706661) -- (1.09660907,0.08630501) -- (1.09740350,0.07553508) -- (1.09809217,0.06475788) -- (1.09867500,0.05397444) -- (1.09915194,0.04318580) -- (1.09952294,0.03239299) -- (1.09978796,0.02159706) -- (1.09994699,0.01079905) -- (1.10000000,-0.00000000);
+\draw[esblue,dashed] (A) -- (F);
+\draw[esblue,dashed] (A) -- (E);
+\draw[selvage] (3.87754130,3.70435855) -- (4.17318275,3.58189985) -- (4.29564145,3.87754130);
+\draw[inkiron] ($(A)!0.48203476!(F)!3pt!90:(F)$) -- ($(A)!0.48203476!(F)!3pt!-90:(F)$);
+\draw[inkiron] ($(A)!0.51796524!(F)!3pt!90:(F)$) -- ($(A)!0.51796524!(F)!3pt!-90:(F)$);
+\draw[inkiron] ($(A)!0.48203476!(E)!3pt!90:(E)$) -- ($(A)!0.48203476!(E)!3pt!-90:(E)$);
+\draw[inkiron] ($(A)!0.51796524!(E)!3pt!90:(E)$) -- ($(A)!0.51796524!(E)!3pt!-90:(E)$);
+\fill[inkiron] (A) circle (1pt);
+\node at (3.90000000,4.28000000) {$A$};
+\fill[inkiron] (B) circle (1pt);
+\node at (-0.25000000,-0.25000000) {$B$};
+\fill[inkiron] (C) circle (1pt);
+\node at (8.25000000,-0.25000000) {$C$};
+\fill[inkiron] (D) circle (1pt);
+\node at (6.00685425,2.69314575) {$D$};
+\fill[inkiron] (E) circle (1pt);
+\node at (7.12842712,3.00842712) {$E$};
+\fill[inkiron] (F) circle (1pt);
+\node at (2.82842712,0.77157288) {$F$};
+\end{tikzpicture}}
+
+\newcommand{\esdiExampleReflect}{%
+\begin{tikzpicture}[scale=.8,line width=.7pt,every node/.style={font=\small,inner sep=2pt}]
+\coordinate (A) at (4.00000000,4.00000000);
+\coordinate (B) at (0.00000000,0.00000000);
+\coordinate (C) at (8.00000000,0.00000000);
+\coordinate (D) at (5.65685425,2.34314575);
+\coordinate (E) at (6.82842712,2.82842712);
+\coordinate (F) at (5.65685425,5.65685425);
+\draw[inkiron] (A) -- (B);
+\draw[inkiron] (B) -- (C);
+\draw[inkiron] (A) -- (C);
+\draw[inkiron] (B) -- (E);
+\draw[inkiron] (C) -- (E);
+\draw[selvage] (3.87979185,3.87979185) -- (4.00000000,3.75958369) -- (4.12020815,3.87979185);
+\draw[selvage] (6.67136760,2.76337094) -- (6.73642379,2.60631142) -- (6.89348331,2.67136760);
+\draw[inkiron] ($(A)!0.50000000!(B)!3pt!90:(B)$) -- ($(A)!0.50000000!(B)!3pt!-90:(B)$);
+\draw[inkiron] ($(A)!0.50000000!(C)!3pt!90:(C)$) -- ($(A)!0.50000000!(C)!3pt!-90:(C)$);
+\draw[esblue] (0.77781746,0.77781746) -- (0.78541606,0.77014389) -- (0.79293896,0.76239610) -- (0.80038543,0.75457482) -- (0.80775476,0.74668082) -- (0.81504624,0.73871485) -- (0.82225916,0.73067768) -- (0.82939283,0.72257009) -- (0.83644656,0.71439285) -- (0.84341968,0.70614676) -- (0.85031150,0.69783261) -- (0.85712137,0.68945120) -- (0.86384862,0.68100334) -- (0.87049262,0.67248985) -- (0.87705272,0.66391154) -- (0.88352828,0.65526923) -- (0.88991869,0.64656378) -- (0.89622333,0.63779600) -- (0.90244159,0.62896676) -- (0.90857287,0.62007689) -- (0.91461657,0.61112726) -- (0.92057213,0.60211872) -- (0.92643896,0.59305216) -- (0.93221649,0.58392843) -- (0.93790418,0.57474842) -- (0.94350147,0.56551302) -- (0.94900782,0.55622311) -- (0.95442271,0.54687959) -- (0.95974561,0.53748337) -- (0.96497600,0.52803533) -- (0.97011339,0.51853641) -- (0.97515728,0.50898751) -- (0.98010718,0.49938955) -- (0.98496261,0.48974346) -- (0.98972311,0.48005016) -- (0.99438822,0.47031060) -- (0.99895749,0.46052571) -- (1.00343048,0.45069643) -- (1.00780675,0.44082372) -- (1.01208589,0.43090851) -- (1.01626749,0.42095178);
+\draw[esblue] (1.01626749,0.42095178) -- (1.02035113,0.41095447) -- (1.02433643,0.40091755) -- (1.02822300,0.39084199) -- (1.03201047,0.38072876) -- (1.03569847,0.37057884) -- (1.03928665,0.36039320) -- (1.04277466,0.35017282) -- (1.04616217,0.33991869) -- (1.04944884,0.32963180) -- (1.05263437,0.31931314) -- (1.05571844,0.30896371) -- (1.05870076,0.29858449) -- (1.06158104,0.28817650) -- (1.06435900,0.27774073) -- (1.06703438,0.26727820) -- (1.06960691,0.25678990) -- (1.07207636,0.24627685) -- (1.07444247,0.23574007) -- (1.07670503,0.22518056) -- (1.07886381,0.21459935) -- (1.08091861,0.20399746) -- (1.08286922,0.19337591) -- (1.08471547,0.18273572) -- (1.08645717,0.17207791) -- (1.08809416,0.16140352) -- (1.08962627,0.15071358) -- (1.09105337,0.14000910) -- (1.09237530,0.12929114) -- (1.09359195,0.11856071) -- (1.09470320,0.10781885) -- (1.09570894,0.09706661) -- (1.09660907,0.08630501) -- (1.09740350,0.07553508) -- (1.09809217,0.06475788) -- (1.09867500,0.05397444) -- (1.09915194,0.04318580) -- (1.09952294,0.03239299) -- (1.09978796,0.02159706) -- (1.09994699,0.01079905) -- (1.10000000,-0.00000000);
+\draw[esblue,dashed] (E) -- (F);
+\draw[esblue,dashed] (B) -- (F);
+\draw[inkiron] ($(C)!0.48203476!(E)!3pt!90:(E)$) -- ($(C)!0.48203476!(E)!3pt!-90:(E)$);
+\draw[inkiron] ($(C)!0.51796524!(E)!3pt!90:(E)$) -- ($(C)!0.51796524!(E)!3pt!-90:(E)$);
+\draw[inkiron] ($(E)!0.48203476!(F)!3pt!90:(F)$) -- ($(E)!0.48203476!(F)!3pt!-90:(F)$);
+\draw[inkiron] ($(E)!0.51796524!(F)!3pt!90:(F)$) -- ($(E)!0.51796524!(F)!3pt!-90:(F)$);
+\fill[inkiron] (A) circle (1pt);
+\node at (3.90000000,4.28000000) {$A$};
+\fill[inkiron] (B) circle (1pt);
+\node at (-0.25000000,-0.25000000) {$B$};
+\fill[inkiron] (C) circle (1pt);
+\node at (8.25000000,-0.25000000) {$C$};
+\fill[inkiron] (D) circle (1pt);
+\node at (6.00685425,2.69314575) {$D$};
+\fill[inkiron] (E) circle (1pt);
+\node at (7.12842712,3.00842712) {$E$};
+\fill[inkiron] (F) circle (1pt);
+\node at (5.65685425,5.90685425) {$F$};
+\end{tikzpicture}}
+
+\begin{document}
+\setlength{\abovedisplayskip}{7pt plus 2pt minus 1pt}
+\setlength{\belowdisplayskip}{7pt plus 2pt minus 1pt}
+\setlength{\abovedisplayshortskip}{4pt plus 1pt}
+\setlength{\belowdisplayshortskip}{4pt plus 1pt}
+\loomcover{八字形模型}{共斜边、外角平分线与辅助线}{Hence}{2026年10月}
+\clearpage
+{\small\tableofcontents}
+\clearpage
+% Synced from content.md by sync_latex.py.
+\section{\texorpdfstring{关键的八字形}{关键的八字形}}
+
+$\triangle ABC$ 与 $\triangle DBC$ 有公共边 $BC$，连接 $AD$，$AC$ 与 $BD$ 相交于 $O$。
+
+\esdiagram{\esdiModel}
+
+由八字型得
+
+\[
+\angle BAC+\angle ABD=\angle BDC+\angle ACD.
+\]
+
+因此，$\angle BAC=\angle BDC$ 与 $\angle ABD=\angle ACD$ 可以相互推出。图中两个顶角为直角时，就能得到 $\angle ABD=\angle ACD$。
+
+% Synced from content.md by sync_latex.py.
+\section{\texorpdfstring{例 $1$ 四个条件，知三推一}{例 1 四个条件，知三推一}}
+
+按图取定方位：$A$、$D$ 在 $BC$ 的同侧，$AC$ 与 $BD$ 在内部相交。延长 $CD$ 至 $X$，连接 $AD$，$DA$ 位于 $\angle BDX$ 内部。有四个条件：
+
+\esdiagram{\esdiExterior}
+
+\begin{center}
+\small
+\begin{tabularx}{\linewidth}{lL}
+\toprule
+条件 & 内容 \\
+\midrule
+\escond{1} & $AB=AC$ \\
+\escond{2} & $\angle BAC=90^\circ$ \\
+\escond{3} & $\angle BDC=90^\circ$ \\
+\escond{4} & $DA$ 平分 $\angle BDX$，即 $\angle BDA=\angle ADX$ \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\textbf{知道其中任意三个，就能推出剩下的一个。} 下面把四种情况放在一起比较，看看条件交换后，全等的依据怎样随之改变。
+
+\needspace{6\baselineskip}\subsection{\texorpdfstring{（$1$）$\text{\escond{1}\escond{2}\escond{3}}\Rightarrow\text{\escond{4}}$：连接直角顶点，得到外角平分线}{（1）①②③⇒④：连接直角顶点，得到外角平分线}}
+
+已知 $AB=AC$，$\angle BAC=\angle BDC=90^\circ$，说明 $DA$ 平分 $\angle BDX$。
+
+\think
+
+两个直角先给出 $\angle ABD=\angle ACD$。接下来有两个方向：从 $A$ 向 $BD$、$CD$ 作双垂，把斜边 $AB$、$AC$ 配成直角三角形；或者围绕 $A$ 补出另一个等腰直角三角形，把上一章的手拉手用起来。
+
+由 $\angle BAC=\angle BDC$，利用八字形倒角，得
+
+\[
+\angle ABD=\angle ACD.
+\]
+
+\needspace{6\baselineskip}\textbf{方法一：从 $A$ 作双垂。}
+
+过 $A$ 作 $AM\perp BD$，垂足为 $M$；作 $AN\perp CD$，垂足为 $N$。本图中 $M$ 在线段 $BD$ 上，$N$ 在 $CD$ 经过 $D$ 的延长线上。
+
+\esdiagram{\esdiDoublePerpendicular}
+
+在 $\mathrm{Rt}\triangle ABM$ 与 $\mathrm{Rt}\triangle ACN$ 中，$AB=AC$，$\angle ABM=\angle ACN$，且两垂足处都是直角，故
+
+\[
+\triangle ABM\cong\triangle ACN\quad(\mathrm{AAS}),
+\qquad AM=AN.
+\]
+
+再看 $\mathrm{Rt}\triangle ADM$ 与 $\mathrm{Rt}\triangle ADN$：斜边 $AD$ 公共，$AM=AN$，所以
+
+\[
+\triangle ADM\cong\triangle ADN\quad(\mathrm{HL}).
+\]
+
+因此 $\angle MDA=\angle NDA$，即 $\angle BDA=\angle ADX$。又因为 $\angle BDA+\angle ADX=90^\circ$，所以
+
+\[
+\boxed{\angle BDA=\angle ADX=45^\circ.}
+\]
+
+\needspace{6\baselineskip}\textbf{方法二：过 $A$ 添直角，构造手拉手。}
+
+过 $A$ 作 $AP\perp AD$，交 $BD$ 于 $P$。
+
+\esdiagram{\esdiHandLower}
+
+由 $AB\perp AC$、$AP\perp AD$，按图有 $\angle BAP=\angle CAD$；又有 $\angle ABP=\angle ACD$、$AB=AC$，故
+
+\[
+\triangle ABP\cong\triangle ACD\quad(\mathrm{ASA}),
+\qquad AP=AD.
+\]
+
+因此 $\triangle APD$ 为等腰直角三角形，$\angle PDA=45^\circ$。$P$ 在 $DB$ 上，故 $\angle BDA=45^\circ$，$\angle ADX=90^\circ-45^\circ=45^\circ$。
+
+也可以先在 $BD$ 上取 $P$，使 $BP=CD$。由 $\angle ABP=\angle ACD$、$AB=AC$，先以 $\mathrm{SAS}$ 证明同一组全等，得到 $AP=AD$、$\angle BAP=\angle CAD$，再推出 $AP\perp AD$。两种作法落到同一幅图上：一种先添角，另一种先添边。
+
+\insight{共斜边先倒角，再把“等腰”转成一组全等；外角平分线由等距离或等腰直角三角形得到。}
+
+\needspace{6\baselineskip}\subsection{\texorpdfstring{（$2$）$\text{\escond{1}\escond{2}\escond{4}}\Rightarrow\text{\escond{3}}$：已知外角平分线，反推 $D$ 处直角}{（2）①②④⇒③：已知外角平分线，反推 D 处直角}}
+
+已知 $AB=AC$，$\angle BAC=90^\circ$，$DA$ 平分 $\angle BDX$，说明 $\angle BDC=90^\circ$。
+
+\think
+
+这次不能先用两个直角倒角，因为 $D$ 处的直角正是待证结论。$\angle BDA=\angle ADX$ 能先制造对称：作双垂得到 $AM=AN$，或截取等长边制造 $\mathrm{SAS}$ 全等。把对称带来的等长再接上 $AB=AC$，便能推出 $\angle ABD=\angle ACD$。
+
+\needspace{6\baselineskip}\textbf{方法一：作双垂，先用角平分线。}
+
+沿用例 $1$（$1$）的 $AM$、$AN$。由 $\angle BDA=\angle ADX$、公共边 $AD$ 和两个直角，得
+
+\[
+\triangle ADM\cong\triangle ADN\quad(\mathrm{AAS}),
+\qquad AM=AN.
+\]
+
+再结合 $AB=AC$，以 $\mathrm{HL}$ 得 $\mathrm{Rt}\triangle ABM\cong \mathrm{Rt}\triangle ACN$，所以 $\angle ABD=\angle ACD$。由八字形倒角，
+
+\[
+\angle BDC=\angle BAC=90^\circ.
+\]
+
+\needspace{6\baselineskip}\textbf{方法二：向上延长 $CD$，截取 $DE=DB$。}
+
+延长 $CD$ 至 $E$，使 $DE=DB$，连接 $AE$。这里的 $E$ 是本例新作的辅助点。
+
+\esdiagram{\esdiExtendCd}
+
+由 $\angle BDA=\angle ADE$、公共边 $AD$、$DB=DE$，得
+
+\[
+\triangle ADB\cong\triangle ADE\quad(\mathrm{SAS}).
+\]
+
+所以 $AB=AE$，$\angle ABD=\angle AED$。又因为 $AB=AC$，所以 $AE=AC$。在 $\triangle ACE$ 中，等边对等角，有 $\angle AEC=\angle ACE$。
+
+$E$、$D$、$C$ 共线且 $D$ 在 $E$、$C$ 之间，故 $\angle AED=\angle AEC$，$\angle ACE=\angle ACD$。于是 $\angle ABD=\angle ACD$，再倒角得 $\angle BDC=90^\circ$。
+
+\needspace{6\baselineskip}\textbf{方法三：向右延长 $BD$，截取 $DF=DC$。}
+
+延长 $BD$ 至 $F$，使 $DF=DC$，连接 $AF$。
+
+\esdiagram{\esdiExtendBd}
+
+由于 $DB$ 与 $DF$ 反向、$DC$ 与 $DX$ 反向，
+
+\[
+\angle ADF=180^\circ-\angle BDA,
+\qquad \angle ADC=180^\circ-\angle ADX.
+\]
+
+所以 $\angle ADF=\angle ADC$。结合 $AD$ 公共、$DF=DC$，得
+
+\[
+\triangle ADF\cong\triangle ADC\quad(\mathrm{SAS}),
+\qquad AF=AC,
+\quad \angle AFD=\angle ACD.
+\]
+
+又 $AB=AC$，故 $AB=AF$。在 $\triangle ABF$ 中，$\angle ABF=\angle AFB$。$B$、$D$、$F$ 依次共线，故 $\angle ABF=\angle ABD$，$\angle AFB=\angle AFD$，从而 $\angle ABD=\angle ACD$。再由 $\angle BAC=90^\circ$ 得 $\angle BDC=90^\circ$。
+
+\insight{已知角平分线，就先围绕它制造对称全等；不能提前借用待证的直角。}
+
+\needspace{6\baselineskip}\subsection{\texorpdfstring{（$3$）$\text{\escond{2}\escond{3}\escond{4}}\Rightarrow\text{\escond{1}}$：保留两个直角，反推等腰}{（3）②③④⇒①：保留两个直角，反推等腰}}
+
+已知 $\angle BAC=\angle BDC=90^\circ$，$DA$ 平分 $\angle BDX$，说明 $AB=AC$。
+
+\think
+
+两个直角给 $\angle ABD=\angle ACD$；外角平分线给 $AM=AN$。这一次 $AB=AC$ 是待证结论，全等不能再用 $\mathrm{HL}$。已有两个角和一条直角边，可以改用 $\mathrm{AAS}$。
+
+由 $\angle BAC=\angle BDC=90^\circ$，八字形倒角得 $\angle ABD=\angle ACD$。
+
+从 $A$ 向 $BD$、$CD$ 作双垂，记垂足为 $M$、$N$。由 $\angle BDA=\angle ADX$，得 $\mathrm{Rt}\triangle ADM\cong \mathrm{Rt}\triangle ADN$，从而 $AM=AN$。
+
+再由 $\angle ABM=\angle ACN$、两个直角、$AM=AN$，得
+
+\[
+\triangle ABM\cong\triangle ACN\quad(\mathrm{AAS}),
+\qquad AB=AC.
+\]
+
+\textbf{另外两种对称全等的写法。}
+
+\begin{itemize}
+\item 按例 $1$（$2$）方法二作 $E$，得到 $AB=AE$、$\angle ABD=\angle AED$。由 $\angle ABD=\angle ACD$，得 $\angle AEC=\angle ACE$，所以 $AE=AC$，进而 $AB=AC$。
+\item 按例 $1$（$2$）方法三作 $F$，得到 $AF=AC$、$\angle AFD=\angle ACD$。由 $\angle ABD=\angle ACD$，得 $\angle AFB=\angle ABF$，所以 $AB=AF$，进而 $AB=AC$。
+\end{itemize}
+
+\insight{条件与结论交换后，要重新选择全等判定；等边待证时，用等角和等距离搭桥。}
+
+\needspace{6\baselineskip}\subsection{\texorpdfstring{（$4$）$\text{\escond{1}\escond{3}\escond{4}}\Rightarrow\text{\escond{2}}$：保留等边，反推 $A$ 处直角}{（4）①③④⇒②：保留等边，反推 A 处直角}}
+
+已知 $AB=AC$，$\angle BDC=90^\circ$，$DA$ 平分 $\angle BDX$，说明 $\angle BAC=90^\circ$。
+
+\think
+
+$ABC$ 是否为直角三角形还不知道，不能提前使用手拉手或 $K$ 型全等。现在真正可用的是外角平分线和 $AB=AC$：先获得等距离，再用 $\mathrm{HL}$ 换出 $\angle ABD=\angle ACD$，最后倒角。
+
+从 $A$ 向 $BD$、$CD$ 作双垂，垂足分别为 $M$、$N$。由 $\angle BDA=\angle ADX$、$AD$ 公共和两个直角，得 $\mathrm{Rt}\triangle ADM\cong \mathrm{Rt}\triangle ADN$，所以 $AM=AN$。
+
+又 $AB=AC$，故
+
+\[
+\triangle ABM\cong\triangle ACN\quad(\mathrm{HL}),
+\qquad \angle ABD=\angle ACD.
+\]
+
+由八字形倒角，得
+
+\[
+\angle BAC=\angle BDC=90^\circ.
+\]
+
+也可以照例 $1$（$2$）的两种延长作法：先由对称全等和 $AB=AC$ 得到 $\angle ABD=\angle ACD$，再把已知的 $\angle BDC=90^\circ$ 换回 $\angle BAC=90^\circ$。这两种作法在得出 $\angle ABD=\angle ACD$ 之前，都没有用到 $A$ 处是直角。
+
+\insight{先清点已知条件；通过等距离与等斜边得到等角，再把直角搬回另一顶点。}
+
+\needspace{6\baselineskip}\subsection{\texorpdfstring{单角变式：把\escond{4}换成 $45^\circ$ 或 $135^\circ$}{单角变式：把④换成 45° 或 135°}}
+
+\needspace{8\baselineskip}\subsubsection*{\texorpdfstring{变式一：只给 $\angle BDA=45^\circ$}{变式一：只给 ∠BDA＝45°}}
+
+已知 $AB=AC$，$\angle BAC=90^\circ$，$\angle BDA=45^\circ$，说明 $\angle BDC=90^\circ$。
+
+\think
+
+只给 $\angle BDA=45^\circ$，还没有给 $\angle ADX$。此时“到角两边距离相等”不能直接用。应让这个 $45^\circ$ 和新作的直角出现在同一个三角形里，先得到等腰直角三角形，再用手拉手；另一条路是把 $B$、$C$ 向 $AD$ 作双垂，用 $K$ 型全等搬运两条直角边。
+
+\needspace{6\baselineskip}\textbf{方法一：过 $A$ 作 $AP\perp AD$，交 $BD$ 于 $P$。}
+
+\esdiagram{\esdiHandLower}
+
+由于 $\angle ADP=45^\circ$、$\angle PAD=90^\circ$，$\triangle APD$ 是等腰直角三角形，故 $AP=AD$。
+
+由 $AB=AC$、$AP=AD$、$\angle BAP=\angle CAD$，得
+
+\[
+\triangle ABP\cong\triangle ACD\quad(\mathrm{SAS}).
+\]
+
+所以 $\angle ABP=\angle ACD$，即 $\angle ABD=\angle ACD$。由八字形倒角，$\angle BDC=\angle BAC=90^\circ$。
+
+与例 $1$（$1$）对照：那里先全等，再证明 $AP=AD$；这里先由 $45^\circ$ 得 $AP=AD$，再全等。辅助线相同，证明顺序由已知条件决定。
+
+\needspace{6\baselineskip}\textbf{方法二：从 $B$、$C$ 向 $AD$ 作双垂。}
+
+过 $B$ 作 $BM\perp AD$，过 $C$ 作 $CN\perp AD$，垂足分别为 $M$、$N$。本构型中，沿 $AD$ 的方向，点的顺序为 $M$、$A$、$D$、$N$。
+
+\esdiagram{\esdiKPerpendicular}
+
+在 $\mathrm{Rt}\triangle ABM$ 与 $\mathrm{Rt}\triangle CAN$ 中，$\angle BAM=\angle ACN$，$AB=CA$，所以
+
+\[
+\triangle ABM\cong\triangle CAN\quad(\mathrm{AAS}),
+\qquad BM=AN,\quad AM=CN.
+\]
+
+这里的角相等来自 $AB\perp AC$、$AM\perp CN$，按图取相等的锐角。
+
+由于 $\angle BDM=45^\circ$，$\mathrm{Rt}\triangle BMD$ 为等腰直角三角形，所以 $BM=DM$。于是
+
+\[
+AN=DM=AM+AD,
+\qquad DN=AN-AD=AM=CN.
+\]
+
+故 $\mathrm{Rt}\triangle CDN$ 也是等腰直角三角形，$\angle CDN=45^\circ$。$DN$ 与 $DA$ 反向，所以 $\angle ADX=45^\circ$。又 $\angle BDA=45^\circ$，故 $\angle BDC=180^\circ-45^\circ-45^\circ=90^\circ$。
+
+\insight{只给单个 $45^\circ$ 时，先补等腰直角三角形；用 $K$ 型全等时，等长常藏在“加减公共部分”中。}
+
+\needspace{8\baselineskip}\subsubsection*{\texorpdfstring{变式二：换成 $\angle ADC=135^\circ$}{变式二：换成 ∠ADC＝135°}}
+
+已知 $AB=AC$，$\angle BAC=90^\circ$，$\angle ADC=135^\circ$，说明 $\angle BDC=90^\circ$。
+
+\think
+
+$\angle ADC=135^\circ$ 等价于 $\angle ADX=45^\circ$。与变式一对照，现在方便补出的是 $AD$ 与 $CD$ 延长线之间的等腰直角三角形。$K$ 型全等也仍可用，只是先得到等腰直角的变成了 $\triangle CDN$。
+
+\needspace{6\baselineskip}\textbf{方法一：向上补等腰直角三角形。}
+
+过 $A$ 作 $AQ\perp AD$，交 $CD$ 经过 $D$ 的延长线于 $Q$。
+
+\esdiagram{\esdiHandUpper}
+
+由 $\angle ADQ=180^\circ-135^\circ=45^\circ$，得 $AQ=AD$。又 $AB=AC$，且由两对垂直关系，按图有 $\angle BAD=\angle CAQ$，故
+
+\[
+\triangle ABD\cong\triangle ACQ\quad(\mathrm{SAS}).
+\]
+
+所以 $\angle ABD=\angle ACQ=\angle ACD$。再倒角得 $\angle BDC=90^\circ$。
+
+\needspace{6\baselineskip}\textbf{方法二：从 $B$、$C$ 向 $AD$ 作双垂。}
+
+沿用变式一的 $K$ 型图，由 $\mathrm{Rt}\triangle ABM\cong \mathrm{Rt}\triangle CAN$，有 $BM=AN$、$AM=CN$。
+
+因为 $\angle CDN=180^\circ-\angle CDA=45^\circ$，所以 $\mathrm{Rt}\triangle CDN$ 为等腰直角三角形，$CN=DN$。于是
+
+\[
+AM=DN,
+\qquad DM=AM+AD=DN+AD=AN=BM.
+\]
+
+故 $\mathrm{Rt}\triangle BMD$ 为等腰直角三角形，$\angle BDA=45^\circ$。已知 $\angle ADX=45^\circ$，所以 $\angle BDC=90^\circ$。
+
+\insight{$135^\circ$ 先看邻补角；与 $45^\circ$ 变式比较，交换的是先出现的等腰直角三角形。}
+
+\newpage
+% Synced from content.md by sync_latex.py.
+\section{\texorpdfstring{例 $2$ 角平分线上的二倍关系}{例 2 角平分线上的二倍关系}}
+
+如图，在 $\triangle ABC$ 中，$\angle A=90^\circ$，$AB=AC$。$BD$ 平分 $\angle ABC$，交 $AC$ 于 $D$。过 $C$ 作 $CE\perp BD$，交 $BD$ 的延长线于 $E$。求证：$BD=2$$CE$。
+
+\esdiagram{\esdiExample}
+
+\think
+
+$\angle ABC=\angle ACB=45^\circ$，而 $BD$ 平分 $\angle ABC$，所以 $\angle ABD=\angle DBC=22.5^\circ$。目标 $BD=2$$CE$ 可以分别拆成四条路线：
+
+\begin{enumerate}
+\item 延长相交：把 $BD$ 换成一条整段 $CF$，再用 $E$ 是 $CF$ 的中点。
+\item 平行补形：找到 $BD$ 的中点 $G$，证明 $DG=CE$。
+\item 手拉手补形：找到 $BD$ 的中点 $F$，证明 $BF=CE$。
+\item 补短：先把 $CE$ 补成整段 $CF$，再证明 $CF=BD$。
+\end{enumerate}
+
+下面各方法中的 $F$、$G$ 都独立作出。
+
+\needspace{6\baselineskip}\textbf{方法一：延长 $BA$，与 $CE$ 的延长线相交。}
+
+延长 $BA$、$CE$，交于 $F$。
+
+\esdiagram{\esdiExampleExtend}
+
+由于 $AB\perp AC$、$BD\perp CF$，按图有 $\angle ABD=\angle ACF$。又 $\angle BAD=\angle CAF=90^\circ$、$AB=AC$，故
+
+\[
+\triangle ABD\cong\triangle ACF\quad(\mathrm{ASA}),
+\qquad BD=CF.
+\]
+
+在 $\triangle BFC$ 中，$\angle FBC=45^\circ$，$\angle FCB=90^\circ-22.5^\circ=67.5^\circ$，所以 $\angle BFC=67.5^\circ$，从而 $BF=BC$。
+
+因为 $BE\perp FC$，在等腰三角形 $BFC$ 中，底边上的高也是中线，故 $FE=EC$，$CF=2$$CE$。因此 $BD=2$$CE$。
+
+\needspace{6\baselineskip}\textbf{方法二：过 $D$ 作平行线，把二倍关系拆成两半。}
+
+过 $D$ 作 $DF\parallel AB$，交 $BC$ 于 $F$；过 $F$ 作 $FG\perp BD$，垂足为 $G$。
+
+\esdiagram{\esdiExampleParallel}
+
+由 $DF\parallel AB$、$BD$ 平分 $\angle ABC$，得 $\angle DBF=\angle BDF=22.5^\circ$，所以 $BF=DF$。
+
+又 $DF\perp DC$，$\angle DCF=\angle ACB=45^\circ$，故 $\triangle DCF$ 是等腰直角三角形，$DF=DC$。
+
+在 $\mathrm{Rt}\triangle BFG$ 与 $\mathrm{Rt}\triangle DFG$ 中，$BF=DF$，$FG$ 公共，故两三角形全等，$BG=DG$。因此 $BD=2$$DG$。
+
+由于 $DF\perp DC$、$DG\perp CE$，按图有 $\angle FDG=\angle DCE$。结合两个直角、$DF=DC$，得
+
+\[
+\triangle DFG\cong\triangle CDE\quad(\mathrm{AAS}),
+\qquad DG=CE.
+\]
+
+故 $BD=2$$DG=2$$CE$。
+
+\needspace{6\baselineskip}\textbf{方法三：在 $A$ 处添直角，补出手拉手。}
+
+过 $A$ 作 $AF\perp AE$，交 $BD$ 于 $F$。
+
+\esdiagram{\esdiExampleHand}
+
+由 $AB\perp AC$、$AF\perp AE$，按图有 $\angle BAF=\angle CAE$。又 $\angle ABF=22.5^\circ$，由 $AC\perp AB$、$CE\perp BD$，得 $\angle ACE=22.5^\circ$。结合 $AB=AC$，有
+
+\[
+\triangle ABF\cong\triangle ACE\quad(\mathrm{ASA}),
+\qquad AF=AE,\quad BF=CE.
+\]
+
+所以 $\triangle AFE$ 是等腰直角三角形，$\angle AFE=45^\circ$。同时 $\angle BAF=\angle CAE=22.5^\circ$，因此在 $\triangle ABF$ 中，$AF=BF$。
+
+$F$、$D$、$E$ 依次共线，所以 $\angle AFD=45^\circ$；又 $\angle FAD=90^\circ-22.5^\circ=67.5^\circ$，故 $\angle ADF=67.5^\circ$，从而 $FD=AF$。
+
+因此 $BF=AF=FD$，$F$ 是 $BD$ 的中点。于是 $BD=2$$BF=2$$CE$。
+
+\needspace{6\baselineskip}\textbf{方法四：先补短，把 $CE$ 倍长。}
+
+延长 $CE$ 至 $F$，使 $EF=EC$，连接 $BF$。
+
+\esdiagram{\esdiExampleReflect}
+
+因为 $BE\perp CF$、$CE=EF$、$BE$ 公共，
+
+\[
+\triangle BEC\cong\triangle BEF\quad(\mathrm{SAS}).
+\]
+
+所以 $\angle EBF=\angle EBC=22.5^\circ$。$F$、$C$ 在 $BE$ 的两侧，故 $\angle CBF=45^\circ=\angle CBA$，即 $B$、$A$、$F$ 共线，且 $F$ 在 $BA$ 经过 $A$ 的延长线上。
+
+再由 $AB=AC$、$\angle BAD=\angle CAF=90^\circ$、$\angle ABD=\angle ACF$，得 $\triangle ABD\cong \triangle ACF$（$\mathrm{ASA}$），所以 $BD=CF$。
+
+又 $CF=CE+EF=2$$CE$，故 $BD=2$$CE$。
+
+方法一和方法四最终落到同一个辅助点 $F$：方法一先通过相交找到它，再证明 $CE=EF$；方法四先由 $CE=EF$ 作出它，再证明 $B$、$A$、$F$ 共线。作图顺序不同，关键构型相同。
+
+\insight{看到“二倍”，先决定是倍长短段，还是平分长段；再用全等把整段或半段换到目标线段上。}
+
+% Synced from content.md by sync_latex.py.
+\ifteachernotes
+\section{\texorpdfstring{辅助线总结}{辅助线总结}}
+
+\begin{center}
+\small
+\begin{tabularx}{\linewidth}{LLL}
+\toprule
+看见的条件或目标 & 可以先作的线 & 希望得到什么 \\
+\midrule
+已知外角平分线 & 从 $A$ 向 $BD$、$CD$ 作双垂 & 到角两边的距离相等 \\
+外角相等，想造对称全等 & 延长 $CD$，取 $DE=DB$；或延长 $BD$，取 $DF=DC$ & $\mathrm{SAS}$ 全等，再借等腰换角 \\
+单个 $45^\circ$ 或 $135^\circ$ & 过 $A$ 作 $AD$ 的垂线，交相应边或延长线 & 等腰直角三角形，接手拉手 \\
+等腰直角 $ABC$，需搬运长度 & 从 $B$、$C$ 向 $AD$ 作双垂 & $K$ 型全等，直角边交叉对应 \\
+目标为二倍关系 & 倍长短段，或给长段找中点 & 将二倍关系转为整段相等或半段相等 \\
+例 $2$ 的角平分线 & 平行线补等腰；垂线取中点 & 把角平分线条件转成中点与等长 \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+两种“双垂”要分清：\textbf{$A$ 向 $BD$、$CD$ 作双垂，是利用角平分线的等距离；$B$、$C$ 向 $AD$ 作双垂，是利用等腰直角 $ABC$ 的 $K$ 型全等。} 它们的出发点和全等对应顺序都不同。
+
+\needspace{4\baselineskip}\subsection{\texorpdfstring{使用时注意}{使用时注意}}
+
+\begin{enumerate}
+\item $DA$ 平分的是 $\angle BDX$，参与比较的两个角是 $\angle BDA$ 与 $\angle ADX$。
+\item 条件与结论交换后，重新检查全等判定。等边待证时不能用它作 $\mathrm{HL}$ 条件；直角待证时不能提前用手拉手。
+\item $K$ 型全等推出的是 $BM=AN$、$AM=CN$。写完对应边后，再按点的顺序加减公共部分，不能把同一条垂线上的两段凭图认成相等。
+\end{enumerate}
+\fi
+
+\end{document}

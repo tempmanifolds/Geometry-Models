@@ -1,0 +1,98 @@
+% Synced from content.md by sync_latex.py.
+\section{\texorpdfstring{例 $2$ 角平分线上的二倍关系}{例 2 角平分线上的二倍关系}}
+
+如图，在 $\triangle ABC$ 中，$\angle A=90^\circ$，$AB=AC$。$BD$ 平分 $\angle ABC$，交 $AC$ 于 $D$。过 $C$ 作 $CE\perp BD$，交 $BD$ 的延长线于 $E$。求证：$BD=2$$CE$。
+
+\esdiagram{\esdiExample}
+
+\think
+
+$\angle ABC=\angle ACB=45^\circ$，而 $BD$ 平分 $\angle ABC$，所以 $\angle ABD=\angle DBC=22.5^\circ$。目标 $BD=2$$CE$ 可以分别拆成四条路线：
+
+\begin{enumerate}
+\item 延长相交：把 $BD$ 换成一条整段 $CF$，再用 $E$ 是 $CF$ 的中点。
+\item 平行补形：找到 $BD$ 的中点 $G$，证明 $DG=CE$。
+\item 手拉手补形：找到 $BD$ 的中点 $F$，证明 $BF=CE$。
+\item 补短：先把 $CE$ 补成整段 $CF$，再证明 $CF=BD$。
+\end{enumerate}
+
+下面各方法中的 $F$、$G$ 都独立作出。
+
+\needspace{6\baselineskip}\textbf{方法一：延长 $BA$，与 $CE$ 的延长线相交。}
+
+延长 $BA$、$CE$，交于 $F$。
+
+\esdiagram{\esdiExampleExtend}
+
+由于 $AB\perp AC$、$BD\perp CF$，按图有 $\angle ABD=\angle ACF$。又 $\angle BAD=\angle CAF=90^\circ$、$AB=AC$，故
+
+\[
+\triangle ABD\cong\triangle ACF\quad(\mathrm{ASA}),
+\qquad BD=CF.
+\]
+
+在 $\triangle BFC$ 中，$\angle FBC=45^\circ$，$\angle FCB=90^\circ-22.5^\circ=67.5^\circ$，所以 $\angle BFC=67.5^\circ$，从而 $BF=BC$。
+
+因为 $BE\perp FC$，在等腰三角形 $BFC$ 中，底边上的高也是中线，故 $FE=EC$，$CF=2$$CE$。因此 $BD=2$$CE$。
+
+\needspace{6\baselineskip}\textbf{方法二：过 $D$ 作平行线，把二倍关系拆成两半。}
+
+过 $D$ 作 $DF\parallel AB$，交 $BC$ 于 $F$；过 $F$ 作 $FG\perp BD$，垂足为 $G$。
+
+\esdiagram{\esdiExampleParallel}
+
+由 $DF\parallel AB$、$BD$ 平分 $\angle ABC$，得 $\angle DBF=\angle BDF=22.5^\circ$，所以 $BF=DF$。
+
+又 $DF\perp DC$，$\angle DCF=\angle ACB=45^\circ$，故 $\triangle DCF$ 是等腰直角三角形，$DF=DC$。
+
+在 $\mathrm{Rt}\triangle BFG$ 与 $\mathrm{Rt}\triangle DFG$ 中，$BF=DF$，$FG$ 公共，故两三角形全等，$BG=DG$。因此 $BD=2$$DG$。
+
+由于 $DF\perp DC$、$DG\perp CE$，按图有 $\angle FDG=\angle DCE$。结合两个直角、$DF=DC$，得
+
+\[
+\triangle DFG\cong\triangle CDE\quad(\mathrm{AAS}),
+\qquad DG=CE.
+\]
+
+故 $BD=2$$DG=2$$CE$。
+
+\needspace{6\baselineskip}\textbf{方法三：在 $A$ 处添直角，补出手拉手。}
+
+过 $A$ 作 $AF\perp AE$，交 $BD$ 于 $F$。
+
+\esdiagram{\esdiExampleHand}
+
+由 $AB\perp AC$、$AF\perp AE$，按图有 $\angle BAF=\angle CAE$。又 $\angle ABF=22.5^\circ$，由 $AC\perp AB$、$CE\perp BD$，得 $\angle ACE=22.5^\circ$。结合 $AB=AC$，有
+
+\[
+\triangle ABF\cong\triangle ACE\quad(\mathrm{ASA}),
+\qquad AF=AE,\quad BF=CE.
+\]
+
+所以 $\triangle AFE$ 是等腰直角三角形，$\angle AFE=45^\circ$。同时 $\angle BAF=\angle CAE=22.5^\circ$，因此在 $\triangle ABF$ 中，$AF=BF$。
+
+$F$、$D$、$E$ 依次共线，所以 $\angle AFD=45^\circ$；又 $\angle FAD=90^\circ-22.5^\circ=67.5^\circ$，故 $\angle ADF=67.5^\circ$，从而 $FD=AF$。
+
+因此 $BF=AF=FD$，$F$ 是 $BD$ 的中点。于是 $BD=2$$BF=2$$CE$。
+
+\needspace{6\baselineskip}\textbf{方法四：先补短，把 $CE$ 倍长。}
+
+延长 $CE$ 至 $F$，使 $EF=EC$，连接 $BF$。
+
+\esdiagram{\esdiExampleReflect}
+
+因为 $BE\perp CF$、$CE=EF$、$BE$ 公共，
+
+\[
+\triangle BEC\cong\triangle BEF\quad(\mathrm{SAS}).
+\]
+
+所以 $\angle EBF=\angle EBC=22.5^\circ$。$F$、$C$ 在 $BE$ 的两侧，故 $\angle CBF=45^\circ=\angle CBA$，即 $B$、$A$、$F$ 共线，且 $F$ 在 $BA$ 经过 $A$ 的延长线上。
+
+再由 $AB=AC$、$\angle BAD=\angle CAF=90^\circ$、$\angle ABD=\angle ACF$，得 $\triangle ABD\cong \triangle ACF$（$\mathrm{ASA}$），所以 $BD=CF$。
+
+又 $CF=CE+EF=2$$CE$，故 $BD=2$$CE$。
+
+方法一和方法四最终落到同一个辅助点 $F$：方法一先通过相交找到它，再证明 $CE=EF$；方法四先由 $CE=EF$ 作出它，再证明 $B$、$A$、$F$ 共线。作图顺序不同，关键构型相同。
+
+\insight{看到“二倍”，先决定是倍长短段，还是平分长段；再用全等把整段或半段换到目标线段上。}
