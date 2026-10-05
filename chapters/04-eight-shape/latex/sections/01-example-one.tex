@@ -1,0 +1,288 @@
+% Synced from content.md by sync_latex.py.
+\section{\texorpdfstring{例 $1$ 四个条件，知三推一}{例 1 四个条件，知三推一}}
+
+按图取定方位：$A$、$D$ 在 $BC$ 的同侧，$AC$ 与 $BD$ 在内部相交。延长 $CD$ 至 $X$，连接 $AD$，$DA$ 位于 $\angle BDX$ 内部。有四个条件：
+
+\esdiagram{\esdiExterior}
+
+\begin{center}
+\small
+\begin{tabularx}{\linewidth}{lL}
+\toprule
+条件 & 内容 \\
+\midrule
+\escond{1} & $AB=AC$ \\
+\escond{2} & $\angle BAC=90^\circ$ \\
+\escond{3} & $\angle BDC=90^\circ$ \\
+\escond{4} & $DA$ 平分 $\angle BDX$，即 $\angle BDA=\angle ADX$ \\
+\bottomrule
+\end{tabularx}
+\end{center}
+
+\textbf{知道其中任意三个，就能推出剩下的一个。} 
+
+\needspace{6\baselineskip}\subsection{\texorpdfstring{（$1$）$\text{\escond{1}\escond{2}\escond{3}}\Rightarrow\text{\escond{4}}$：连接直角顶点，得到外角平分线}{（1）①②③⇒④：连接直角顶点，得到外角平分线}}
+
+已知 $AB=AC$，$\angle BAC=\angle BDC=90^\circ$，说明 $DA$ 平分 $\angle BDX$。
+
+\think
+
+两个直角先给出 $\angle ABD=\angle ACD$。接下来有两个方向：从 $A$ 向 $BD$、$CD$ 作双垂，把斜边 $AB$、$AC$ 配成直角三角形；或者围绕 $A$ 补出另一个等腰直角三角形，把上一章的手拉手用起来。
+
+由 $\angle BAC=\angle BDC$，利用八字形倒角，得
+
+\[
+\angle ABD=\angle ACD.
+\]
+
+\needspace{6\baselineskip}\textbf{方法一：从 $A$ 作双垂。}
+
+过 $A$ 作 $AM\perp BD$，垂足为 $M$；作 $AN\perp CD$，垂足为 $N$。本图中 $M$ 在线段 $BD$ 上，$N$ 在 $CD$ 经过 $D$ 的延长线上。
+
+\esdiagram{\esdiDoublePerpendicular}
+
+在 $\mathrm{Rt}\triangle ABM$ 与 $\mathrm{Rt}\triangle ACN$ 中，$AB=AC$，$\angle ABM=\angle ACN$，且两垂足处都是直角，故
+
+\[
+\triangle ABM\cong\triangle ACN\quad(\mathrm{AAS}),
+\qquad AM=AN.
+\]
+
+再看 $\mathrm{Rt}\triangle ADM$ 与 $\mathrm{Rt}\triangle ADN$：斜边 $AD$ 公共，$AM=AN$，所以
+
+\[
+\triangle ADM\cong\triangle ADN\quad(\mathrm{HL}).
+\]
+
+因此 $\angle MDA=\angle NDA$，即 $\angle BDA=\angle ADX$。又因为 $\angle BDA+\angle ADX=90^\circ$，所以
+
+\[
+\boxed{\angle BDA=\angle ADX=45^\circ.}
+\]
+
+\needspace{6\baselineskip}\textbf{方法二：过 $A$ 添直角，构造手拉手。}
+
+过 $A$ 作 $AP\perp AD$，交 $BD$ 于 $P$。
+
+\esdiagram{\esdiHandLower}
+
+由 $AB\perp AC$、$AP\perp AD$，按图有 $\angle BAP=\angle CAD$；又有 $\angle ABP=\angle ACD$、$AB=AC$，故
+
+\[
+\triangle ABP\cong\triangle ACD\quad(\mathrm{ASA}),
+\qquad AP=AD.
+\]
+
+因此 $\triangle APD$ 为等腰直角三角形，$\angle PDA=45^\circ$。$P$ 在 $DB$ 上，故 $\angle BDA=45^\circ$，$\angle ADX=90^\circ-45^\circ=45^\circ$。
+
+也可以先在 $BD$ 上取 $P$，使 $BP=CD$。由 $\angle ABP=\angle ACD$、$AB=AC$，先以 $\mathrm{SAS}$ 证明同一组全等，得到 $AP=AD$、$\angle BAP=\angle CAD$，再推出 $AP\perp AD$。两种作法落到同一幅图上：一种先添角，另一种先添边。
+
+\insight{共斜边先倒角，再把“等腰”转成一组全等；外角平分线由等距离或等腰直角三角形得到。}
+
+\needspace{6\baselineskip}\subsection{\texorpdfstring{（$2$）$\text{\escond{1}\escond{2}\escond{4}}\Rightarrow\text{\escond{3}}$：已知外角平分线，反推 $D$ 处直角}{（2）①②④⇒③：已知外角平分线，反推 D 处直角}}
+
+已知 $AB=AC$，$\angle BAC=90^\circ$，$DA$ 平分 $\angle BDX$，说明 $\angle BDC=90^\circ$。
+
+\think
+
+这次不能先用两个直角倒角，因为 $D$ 处的直角正是待证结论。$\angle BDA=\angle ADX$ 能先制造对称：作双垂得到 $AM=AN$，或截取等长边制造 $\mathrm{SAS}$ 全等。把对称带来的等长再接上 $AB=AC$，便能推出 $\angle ABD=\angle ACD$。
+
+\needspace{6\baselineskip}\textbf{方法一：作双垂，先用角平分线。}
+
+沿用例 $1$（$1$）的 $AM$、$AN$。由 $\angle BDA=\angle ADX$、公共边 $AD$ 和两个直角，得
+
+\[
+\triangle ADM\cong\triangle ADN\quad(\mathrm{AAS}),
+\qquad AM=AN.
+\]
+
+再结合 $AB=AC$，以 $\mathrm{HL}$ 得 $\mathrm{Rt}\triangle ABM\cong \mathrm{Rt}\triangle ACN$，所以 $\angle ABD=\angle ACD$。由八字形倒角，
+
+\[
+\angle BDC=\angle BAC=90^\circ.
+\]
+
+\needspace{6\baselineskip}\textbf{方法二：向上延长 $CD$，截取 $DE=DB$。}
+
+延长 $CD$ 至 $E$，使 $DE=DB$，连接 $AE$。
+
+\esdiagram{\esdiExtendCd}
+
+由 $\angle BDA=\angle ADE$、公共边 $AD$、$DB=DE$，得
+
+\[
+\triangle ADB\cong\triangle ADE\quad(\mathrm{SAS}).
+\]
+
+所以 $AB=AE$，$\angle ABD=\angle AED$。又因为 $AB=AC$，所以 $AE=AC$，即 $\angle AEC=\angle ACE$。因此$\angle AEC=\angle ACE=\angle ABD$
+
+最后八字形得 $\angle BDC=90^\circ$。
+
+\needspace{6\baselineskip}\textbf{方法三：向右延长 $BD$，截取 $DF=DC$。}
+
+延长 $BD$ 至 $F$，使 $DF=DC$，连接 $AF$。
+
+\esdiagram{\esdiExtendBd}
+
+
+
+\[
+\angle ADF=180^\circ-\angle BDA,
+\qquad \angle ADC=180^\circ-\angle ADX.
+\]
+
+等角的补角相等，所以 $\angle ADF=\angle ADC$。结合 $AD$ 公共、$DF=DC$，得
+
+\[
+\triangle ADF\cong\triangle ADC\quad(\mathrm{SAS}),
+\qquad AF=AC,
+\quad \angle AFD=\angle ACD.
+\]
+
+故 $AB=AC=AF$，从而 $\angle ABD=\angle AFD=\angle ACD$。最后八字形得 $\angle BDC=90^\circ$。
+
+\insight{已知角平分线，可以先围绕它制造全等或者等腰。}
+
+\needspace{6\baselineskip}\subsection{\texorpdfstring{（$3$）$\text{\escond{2}\escond{3}\escond{4}}\Rightarrow\text{\escond{1}}$：保留两个直角，反推等腰}{（3）②③④⇒①：保留两个直角，反推等腰}}
+
+已知 $\angle BAC=\angle BDC=90^\circ$，$DA$ 平分 $\angle BDX$，说明 $AB=AC$。
+
+\think
+
+两个直角给 $\angle ABD=\angle ACD$；外角平分线给 $AM=AN$。这一次 $AB=AC$ 是待证结论，全等不能再用 $\mathrm{HL}$。已有两个角和一条直角边，可以改用 $\mathrm{AAS}$。
+
+由 $\angle BAC=\angle BDC=90^\circ$，八字形倒角得 $\angle ABD=\angle ACD$。
+
+从 $A$ 向 $BD$、$CD$ 作双垂，记垂足为 $M$、$N$。由 $\angle BDA=\angle ADX$，得 $\mathrm{Rt}\triangle ADM\cong \mathrm{Rt}\triangle ADN$，从而 $AM=AN$。
+
+再由 $\angle ABM=\angle ACN$、两个直角、$AM=AN$，得
+
+\[
+\triangle ABM\cong\triangle ACN\quad(\mathrm{AAS}),
+\qquad AB=AC.
+\]
+
+\textbf{另外两种对称全等的写法。}
+
+\begin{itemize}
+\item 按（$2$）方法二作 $E$，得到 $AB=AE$、$\angle ABD=\angle AED$。由 $\angle ABD=\angle ACD$，得 $\angle AEC=\angle ACE$，所以 $AE=AC$，进而 $AB=AC$。
+\item 按（$2$）方法三作 $F$，得到 $AF=AC$、$\angle AFD=\angle ACD$。由 $\angle ABD=\angle ACD$，得 $\angle AFB=\angle ABF$，所以 $AB=AF$，进而 $AB=AC$。
+\end{itemize}
+
+\insight{条件与结论交换后，要重新选择全等判定；等边待证时，用等角和等距离搭桥。}
+
+\needspace{6\baselineskip}\subsection{\texorpdfstring{（$4$）$\text{\escond{1}\escond{3}\escond{4}}\Rightarrow\text{\escond{2}}$：保留等边，反推 $A$ 处直角}{（4）①③④⇒②：保留等边，反推 A 处直角}}
+
+已知 $AB=AC$，$\angle BDC=90^\circ$，$DA$ 平分 $\angle BDX$，说明 $\angle BAC=90^\circ$。
+
+\think
+
+$ABC$ 是否为直角三角形还不知道，不能提前使用手拉手或 $K$ 型全等。现在真正可用的是外角平分线和 $AB=AC$：先获得等距离，再用 $\mathrm{HL}$ 换出 $\angle ABD=\angle ACD$，最后倒角。
+
+从 $A$ 向 $BD$、$CD$ 作双垂，垂足分别为 $M$、$N$。由 $\angle BDA=\angle ADX$、$AD$ 公共和两个直角，得 $\mathrm{Rt}\triangle ADM\cong \mathrm{Rt}\triangle ADN$，所以 $AM=AN$。
+
+又 $AB=AC$，故
+
+\[
+\triangle ABM\cong\triangle ACN\quad(\mathrm{HL}),
+\qquad \angle ABD=\angle ACD.
+\]
+
+由八字形倒角，得
+
+\[
+\angle BAC=\angle BDC=90^\circ.
+\]
+
+也可以照例 $1$（$2$）的两种延长作法：先由对称全等和 $AB=AC$ 得到 $\angle ABD=\angle ACD$，再把已知的 $\angle BDC=90^\circ$ 换回 $\angle BAC=90^\circ$。这两种作法在得出 $\angle ABD=\angle ACD$ 之前，都没有用到 $A$ 处是直角。
+
+\insight{先清点已知条件；通过等距离与等斜边得到等角，再把直角搬回另一顶点。}
+
+\needspace{6\baselineskip}\subsection{\texorpdfstring{单角变式：把\escond{4}换成 $45^\circ$ 或 $135^\circ$}{单角变式：把④换成 45° 或 135°}}
+
+\needspace{8\baselineskip}\subsubsection*{\texorpdfstring{变式一：只给 $\angle BDA=45^\circ$}{变式一：只给 ∠BDA＝45°}}
+
+已知 $AB=AC$，$\angle BAC=90^\circ$，$\angle BDA=45^\circ$，说明 $\angle BDC=90^\circ$。
+
+\think
+
+只给 $\angle BDA=45^\circ$，还没有给 $\angle ADX$。此时“到角两边距离相等”不能直接用。应让这个 $45^\circ$ 和新作的直角出现在同一个三角形里，先得到等腰直角三角形，再用手拉手；另一条路是把 $B$、$C$ 向 $AD$ 作双垂，用 $K$ 型全等搬运两条直角边。
+
+\needspace{6\baselineskip}\textbf{方法一：过 $A$ 作 $AP\perp AD$，交 $BD$ 于 $P$。}
+
+\esdiagram{\esdiHandLower}
+
+由于 $\angle ADP=45^\circ$、$\angle PAD=90^\circ$，$\triangle APD$ 是等腰直角三角形，故 $AP=AD$。
+
+由 $AB=AC$、$AP=AD$、$\angle BAP=\angle CAD$，得
+
+\[
+\triangle ABP\cong\triangle ACD\quad(\mathrm{SAS}).
+\]
+
+所以 $\angle ABP=\angle ACD$，即 $\angle ABD=\angle ACD$。由八字形倒角，$\angle BDC=\angle BAC=90^\circ$。
+
+与例 $1$（$1$）对照：那里先全等，再证明 $AP=AD$；这里先由 $45^\circ$ 得 $AP=AD$，再全等。辅助线相同，证明顺序由已知条件决定。
+
+\needspace{6\baselineskip}\textbf{方法二：从 $B$、$C$ 向 $AD$ 作双垂。}
+
+过 $B$ 作 $BM\perp AD$，过 $C$ 作 $CN\perp AD$，垂足分别为 $M$、$N$。本构型中，沿 $AD$ 的方向，点的顺序为 $M$、$A$、$D$、$N$。
+
+\esdiagram{\esdiKPerpendicular}
+
+在 $\mathrm{Rt}\triangle ABM$ 与 $\mathrm{Rt}\triangle CAN$ 中，$\angle BAM=\angle ACN$，$AB=CA$，所以
+
+\[
+\triangle ABM\cong\triangle CAN\quad(\mathrm{AAS}),
+\qquad BM=AN,\quad AM=CN.
+\]
+
+这里的角相等来自 $AB\perp AC$、$AM\perp CN$，按图取相等的锐角。
+
+由于 $\angle BDM=45^\circ$，$\mathrm{Rt}\triangle BMD$ 为等腰直角三角形，所以 $BM=DM$。于是
+
+\[
+AN=DM=AM+AD,
+\qquad DN=AN-AD=AM=CN.
+\]
+
+故 $\mathrm{Rt}\triangle CDN$ 也是等腰直角三角形，$\angle CDN=45^\circ$。$DN$ 与 $DA$ 反向，所以 $\angle ADX=45^\circ$。又 $\angle BDA=45^\circ$，故 $\angle BDC=180^\circ-45^\circ-45^\circ=90^\circ$。
+
+\insight{只给单个 $45^\circ$ 时，先补等腰直角三角形；用 $K$ 型全等时，等长常藏在“加减公共部分”中。}
+
+\needspace{8\baselineskip}\subsubsection*{\texorpdfstring{变式二：换成 $\angle ADC=135^\circ$}{变式二：换成 ∠ADC＝135°}}
+
+已知 $AB=AC$，$\angle BAC=90^\circ$，$\angle ADC=135^\circ$，说明 $\angle BDC=90^\circ$。
+
+\think
+
+$\angle ADC=135^\circ$ 等价于 $\angle ADX=45^\circ$。与变式一对照，现在方便补出的是 $AD$ 与 $CD$ 延长线之间的等腰直角三角形。$K$ 型全等也仍可用，只是先得到等腰直角的变成了 $\triangle CDN$。
+
+\needspace{6\baselineskip}\textbf{方法一：向上补等腰直角三角形。}
+
+过 $A$ 作 $AQ\perp AD$，交 $CD$ 经过 $D$ 的延长线于 $Q$。
+
+\esdiagram{\esdiHandUpper}
+
+由 $\angle ADQ=180^\circ-135^\circ=45^\circ$，得 $AQ=AD$。又 $AB=AC$，且由两对垂直关系，按图有 $\angle BAD=\angle CAQ$，故
+
+\[
+\triangle ABD\cong\triangle ACQ\quad(\mathrm{SAS}).
+\]
+
+所以 $\angle ABD=\angle ACQ=\angle ACD$。再倒角得 $\angle BDC=90^\circ$。
+
+\needspace{6\baselineskip}\textbf{方法二：从 $B$、$C$ 向 $AD$ 作双垂。}
+
+沿用变式一的 $K$ 型图，由 $\mathrm{Rt}\triangle ABM\cong \mathrm{Rt}\triangle CAN$，有 $BM=AN$、$AM=CN$。
+
+因为 $\angle CDN=180^\circ-\angle CDA=45^\circ$，所以 $\mathrm{Rt}\triangle CDN$ 为等腰直角三角形，$CN=DN$。于是
+
+\[
+AM=DN,
+\qquad DM=AM+AD=DN+AD=AN=BM.
+\]
+
+故 $\mathrm{Rt}\triangle BMD$ 为等腰直角三角形，$\angle BDA=45^\circ$。已知 $\angle ADX=45^\circ$，所以 $\angle BDC=90^\circ$。
+
+\insight{$135^\circ$ 先看邻补角；与 $45^\circ$ 变式比较，交换的是先出现的等腰直角三角形。}
