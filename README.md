@@ -4,11 +4,12 @@ Hence 的初中几何模型总结与培优讲义。面向初二、初三培优�
 
 ## 阅读与编辑
 
-- [完整讲义 PDF](output/pdf/geometry-Models-讲义.pdf)：夹半角、手拉手与双等腰合编，共用封面和目录，各章保留自己的题号。
+- [完整讲义 PDF](output/pdf/geometry-Models-讲义.pdf)：夹半角、手拉手、双等腰与八字形合编，共用封面和目录，各章保留自己的题号。
 - [全书 Markdown](content.md)：由各章内容稿汇总。
 - [全书 LaTeX 主文件](latex/main.tex)：可编辑正文、显示开关与编译入口。
 - [夹半角单章 PDF](output/pdf/geometry-Models-01-夹半角讲义.pdf)：保留单章使用方式。
 - [双等腰独立核对稿](output/pdf/geometry-Models-03-双等腰模型-核对稿.pdf)：与主书第三章共用正文和重绘图。
+- [八字形独立核对稿](output/pdf/geometry-Models-04-八字形模型-核对稿.pdf)：与主书第四章共用正文和重绘图。
 
 ## 章节
 
@@ -17,6 +18,7 @@ Hence 的初中几何模型总结与培优讲义。面向初二、初三培优�
 | 第一章 夹半角 | 已并入全书 | 9 道题、4 种识别构型；旋转、翻折、延长、矩形迁移及和差变化 | [Markdown](chapters/01-half-angle/content.md) | [专题说明](chapters/01-half-angle/README.md) |
 | 第二章 手拉手模型 | 已并入全书 | 2 道原题，每题两种解法；手拉脚、脚拉脚、倍长及中点搬运 | [Markdown](chapters/02-hand-in-hand/content.md) | [专题说明](chapters/02-hand-in-hand/README.md) |
 | 第三章 双等腰模型（婆罗摩笈多模型） | 已并入全书 | 1 页一线三等角回顾、3 项结论及完整证明；等面积、中点与垂直、伴随长度关系 | [Markdown](chapters/03-double-isosceles/content.md) | [专题说明](chapters/03-double-isosceles/README.md) |
+| 第四章 八字形模型 | 已并入全书 | 2 个例题；四条件互推、45°/135°变式及角平分线二倍关系四解 | [Markdown](chapters/04-eight-shape/content.md) | [专题说明](chapters/04-eight-shape/README.md) |
 
 章节登记表为 [chapters.json](chapters.json)，多对话分工与新增章节流程见[项目维护说明](docs/project-workflow.md)，对话开始时遵循 [AGENTS.md](AGENTS.md)。
 
@@ -28,7 +30,7 @@ Hence 的初中几何模型总结与培优讲义。面向初二、初三培优�
 
     python scripts/build.py
 
-脚本读取章节登记表，默认各编译两遍，生成完整讲义、夹半角单章与双等腰独立核对稿 PDF，同时更新全书 Markdown。核对稿需要显式指定，不自动进入全书。单独编译全书可增加参数：
+脚本读取章节登记表，默认各编译两遍，生成完整讲义、夹半角单章、双等腰及八字形独立核对稿 PDF，同时更新全书 Markdown。核对稿需要显式指定，不自动进入全书。单独编译全书可增加参数：
 
     python scripts/build.py --target book
 
@@ -58,7 +60,7 @@ Hence 的初中几何模型总结与培优讲义。面向初二、初三培优�
 
 几何图由 TikZ 绘制，可在各章的 diagrams.tex 中修改。图中保留点名、角度、等长记号及必要的变量；数值长度写在题干或推导中。
 
-解析采用“怎么想、规范解答、方法点睛”，取消独立“检验”板块及其中的文字；数学核验继续在作者侧脚本中进行。
+练习章节解析采用“怎么想、规范解答、方法点睛”；八字形按用户要求采用例题就地解答，不显示“规范解答”标签。数学核验均在作者侧脚本中进行。
 
 全书现有等长标记的小短线统一加长 50%，TikZ 参数从总长 4pt 调到 6pt，配套 PNG、SVG 同步更新。重绘命令：
 
@@ -72,10 +74,12 @@ Hence 的初中几何模型总结与培优讲义。面向初二、初三培优�
     python scripts/build.py --math
     python scripts/build.py --target double-isosceles --math
 
-默认核验全书三个章节：夹半角数值题和拓展公式、手拉手两题的旋转与搬运关系、双等腰的等面积与中点垂直关系。双等腰检查 288 组精确构型，包含垂足重合情形及镜像反例。第二条命令只核验双等腰。原有各章脚本仍可直接运行。最终 PDF 还需逐页检查。
+默认核验全书四个章节：夹半角数值题和拓展公式、手拉手两题的旋转与搬运关系、双等腰的等面积与中点垂直关系、八字形的四条件互推及二倍关系。双等腰检查 288 组精确构型，包含垂足重合情形及镜像反例。第二条命令只核验双等腰。原有各章脚本仍可直接运行。最终 PDF 还需逐页检查。
 
 编译管理脚本修改后运行回归测试：
 
     python -m unittest discover -s tests -v
 
 Loom 模板由 Polaris（北极甜虾）提供，类文件头保留原作者与 MIT 许可说明。
+
+八字形章节允许直接编辑 TeX。构建时只检查 Markdown/TeX 一致性，发现差异会停止，正文和图形不会自动重写；确认手改后先回填 Markdown 再构建。

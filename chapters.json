@@ -55,6 +55,25 @@
       "math_checks": [
         "scripts/check_double_isosceles.py"
       ]
+    },
+    {
+      "id": "eight-shape",
+      "path": "chapters/04-eight-shape",
+      "title": "八字形模型",
+      "book_title": "第四章 八字形模型",
+      "status": "integrated",
+      "content_kind": "examples",
+      "problem_count": 0,
+      "example_count": 2,
+      "book_entry": "latex/sections/04-eight-shape.tex",
+      "standalone": {
+        "main": "chapters/04-eight-shape/latex/main.tex",
+        "pdf": "geometry-Models-04-八字形模型-核对稿.pdf",
+        "builder": "chapters/04-eight-shape/build.py"
+      },
+      "math_checks": [
+        "chapters/04-eight-shape/check_math.py"
+      ]
     }
   ]
 }

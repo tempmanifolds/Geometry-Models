@@ -9,6 +9,7 @@
 
 % 挑战题 ★ 用 Zapf Dingbats 绘制，不依赖系统字体（Optima 等）是否含 U+2605
 \usepackage{pifont}
+\usepackage{adjustbox}
 
 % 页眉线（可选）；老师偏好极简时可整行注释掉
 %\runningthread{《主题》 · 课前自学讲义}
@@ -50,7 +51,14 @@
 \setlist[itemize]{leftmargin=1.6em, itemsep=2pt, topsep=3pt}
 
 
-\usetikzlibrary{angles,quotes,arrows.meta}
+\usetikzlibrary{calc,angles,quotes,arrows.meta}
+\definecolor{esblue}{HTML}{355C86}
+\definecolor{esorange}{HTML}{B76543}
+\DeclareRobustCommand{\escond}[1]{\tikz[baseline=(n.base)]
+  \node[draw,circle,inner sep=.65pt,line width=.35pt,font=\footnotesize] (n) {#1};}
+\newcommand{\esdiagram}[1]{\par\smallskip{\centering
+  \adjustbox{max width=.84\linewidth,max height=5.8cm}{#1}
+  \par}\smallskip}
 \newif\ifteachernotes\teachernotestrue
 \newif\ifshowhints\showhintstrue
 \let\originalhint\hint
@@ -58,13 +66,14 @@
 \newcommand{\diagram}[1]{\par\smallskip\begin{center}#1\end{center}\smallskip}
 \let\originalblock\block
 \renewcommand{\block}[1]{\needspace{4\baselineskip}\originalblock{#1}}
-\hypersetup{pdftitle={geometry Models},pdfauthor={Hence},pdfsubject={初中几何模型培优讲义：夹半角、手拉手、双等腰}}
+\hypersetup{pdftitle={geometry Models},pdfauthor={Hence},pdfsubject={初中几何模型培优讲义：夹半角、手拉手、双等腰、八字形}}
 \renewcommand{\loomcovermotto}{从图形中发现关系，在推理中理解几何}
 \renewcommand{\contentsname}{目录}
 % BEGIN GENERATED: chapter-diagrams
 \input{../chapters/01-half-angle/latex/diagrams}
 \input{../chapters/02-hand-in-hand/latex/diagrams}
 \input{../chapters/03-double-isosceles/latex/diagrams}
+\input{../chapters/04-eight-shape/latex/diagrams}
 % END GENERATED: chapter-diagrams
 \begin{document}
 \loomcover{geometry Models}{}{Hence}{2026年10月}
@@ -77,5 +86,7 @@
 \input{sections/02-hand-in-hand}
 \clearpage
 \input{sections/03-double-isosceles}
+\clearpage
+\input{sections/04-eight-shape}
 % END GENERATED: chapter-body
 \end{document}

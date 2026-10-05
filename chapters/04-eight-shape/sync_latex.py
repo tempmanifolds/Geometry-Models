@@ -78,6 +78,26 @@ def convert(text):
         i+=1
     return '\n'.join(out).strip()+'\n'
 
+def section_sources(md):
+    headings=['## 关键的八字形','## 例 1','## 例 2','## 辅助线总结']
+    starts=[md.index(h) for h in headings]+[len(md)]
+    names=['00-key-model','01-example-one','02-example-two','95-summary']
+    result={}
+    for j,name in enumerate(names):
+        body=convert(md[starts[j]:starts[j+1]])
+        if j==3:body='\\ifteachernotes\n\\clearpage\n'+body+'\\fi\n'
+        result[name+'.tex']='% Synced from content.md by sync_latex.py.\n'+body
+    return result
+
+def check_sync():
+    # Ignore typesetting whitespace, but never discard teacher edits during a build.
+    def lines(s):return [x.strip() for x in s.splitlines() if x.strip()]
+    md=(CH/'content.md').read_text(encoding='utf-8')
+    for name,expected in section_sources(md).items():
+        actual=(SECTIONS/name).read_text(encoding='utf-8')
+        if lines(actual)!=lines(expected):
+            raise ValueError(f'{name}: TeX/Markdown differ; preserve direct TeX edits and mirror them before building.')
+
 def sync():
     md=(CH/'content.md').read_text(encoding='utf-8')
     for a,b in [('①②③推④',r'$\text{①②③}\Rightarrow\text{④}$'),
@@ -85,14 +105,9 @@ def sync():
                 ('②③④推①',r'$\text{②③④}\Rightarrow\text{①}$'),
                 ('①③④推②',r'$\text{①③④}\Rightarrow\text{②}$')]:md=md.replace(a,b)
     (CH/'content.md').write_text(md,encoding='utf-8')
-    headings=['## 关键的八字形','## 例 1','## 例 2','## 辅助线总结']
-    starts=[md.index(h) for h in headings]+[len(md)]
-    names=['00-key-model','01-example-one','02-example-two','95-summary']
     SECTIONS.mkdir(parents=True,exist_ok=True)
-    for j,name in enumerate(names):
-        body=convert(md[starts[j]:starts[j+1]])
-        if j==3:body='\\ifteachernotes\n'+body+'\\fi\n'
-        (SECTIONS/(name+'.tex')).write_text('% Synced from content.md by sync_latex.py.\n'+body,encoding='utf-8')
+    for name,body in section_sources(md).items():
+        (SECTIONS/name).write_text(body,encoding='utf-8')
     print('PASS: synchronized four LaTeX sections with the Markdown source.')
 
 if __name__=='__main__':sync()

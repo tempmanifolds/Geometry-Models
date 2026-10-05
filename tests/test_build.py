@@ -158,6 +158,41 @@ class BuildWorkflowTests(unittest.TestCase):
         self.write('chapters/03-review/latex/child.tex', '% \\end{document}\n' + r'10\% complete')
         self.assertIn(r'10\% complete', build.expanded_tex(main.parent, main))
 
+    def test_inline_examples_are_registered_and_counted_without_problem_boxes(self):
+        chapter = self.registry['chapters'][2]
+        chapter.update(content_kind='examples', problem_count=0, example_count=2)
+        text = (r'\section{\texorpdfstring{例 $1$ 四条件}{例 1 四条件}}' + '\n' +
+                r'\section{例 2 二倍关系}')
+        self.write(chapter['standalone']['main'], text)
+        self.save_registry()
+        build.load_registry(self.root)
+        build.check_chapter(self.root, self.registry, chapter)
+        chapter.update(status='integrated', book_entry='latex/sections/examples.tex')
+        self.write(chapter['book_entry'], text)
+        self.save_registry()
+        with redirect_stdout(io.StringIO()):
+            build.sync_book(self.root, self.registry)
+        build.check_book(self.root, self.registry)
+
+    def test_inline_examples_reject_missing_duplicate_or_boxed_numbers(self):
+        chapter = {'id': 'examples', 'content_kind': 'examples',
+                   'problem_count': 0, 'example_count': 2}
+        for text in (r'\section{例 1 A}',
+                     r'\section{例 1 A}\section{例 1 B}',
+                     r'\section{例 1 A}\section{例 2 B}' + paired_text(1)):
+            with self.subTest(text=text), self.assertRaisesRegex(ValueError, 'inline example'):
+                build.check_pairs(text, chapter)
+
+    def test_example_registry_requires_explicit_valid_counts(self):
+        chapter = self.registry['chapters'][2]
+        for problem_count, example_count in ((1, 2), (0, 0), (0, True)):
+            chapter.update(content_kind='examples', problem_count=problem_count,
+                           example_count=example_count)
+            self.save_registry()
+            with self.subTest(problem_count=problem_count, example_count=example_count):
+                with self.assertRaisesRegex(ValueError, 'example'):
+                    build.load_registry(self.root)
+
 
 if __name__ == '__main__':
     unittest.main()

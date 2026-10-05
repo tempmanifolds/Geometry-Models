@@ -15,6 +15,7 @@ ROOT = Path(__file__).resolve().parent.parent
 INPUT_RE = re.compile(r"\\input\{([^}]+)\}")
 PROBLEM_RE = re.compile(r"\\begin\{problem\}\{\s*题\s*(\d+)")
 SOLUTION_RE = re.compile(r"\\begin\{solution\}\{\s*题\s*(\d+)")
+EXAMPLE_RE = re.compile(r"\\section\{(?:\\texorpdfstring\{)?例\s*\$?(\d+)\$?\s")
 
 
 def project_path(root, relative):
@@ -67,7 +68,16 @@ def load_registry(root):
         if chapter['status'] not in ('draft', 'review', 'integrated'):
             raise ValueError(f'{slug}: status must be draft, review, or integrated.')
         count = chapter['problem_count']
-        if type(count) is not int or count < 1:
+        kind = chapter.get('content_kind', 'problems')
+        if kind not in ('problems', 'examples'):
+            raise ValueError(f'{slug}: content_kind must be problems or examples.')
+        if kind == 'examples':
+            examples = chapter.get('example_count')
+            if type(count) is not int or count != 0:
+                raise ValueError(f'{slug}: example chapters must have problem_count=0.')
+            if type(examples) is not int or examples < 1:
+                raise ValueError(f'{slug}: example_count must be a positive integer.')
+        elif type(count) is not int or count < 1:
             raise ValueError(f'{slug}: problem_count must be a positive integer.')
         for key in ('title', 'book_title'):
             if not isinstance(chapter[key], str) or not chapter[key].strip():
@@ -131,6 +141,15 @@ def expanded_tex(project, path, seen=None):
 def check_pairs(text, chapter):
     problems = Counter(PROBLEM_RE.findall(text))
     solutions = Counter(SOLUTION_RE.findall(text))
+    if chapter.get('content_kind') == 'examples':
+        examples = Counter(EXAMPLE_RE.findall(text))
+        expected = Counter(str(n) for n in range(1, chapter['example_count'] + 1))
+        if problems or solutions or examples != expected:
+            raise ValueError(f'{chapter["id"]}: expected one inline example for each '
+                             f'number 1..{chapter["example_count"]}; '
+                             f'examples={dict(examples)}, problems={dict(problems)}, '
+                             f'solutions={dict(solutions)}')
+        return
     expected = Counter(str(n) for n in range(1, chapter['problem_count'] + 1))
     if problems != expected or solutions != expected:
         raise ValueError(
@@ -274,8 +293,11 @@ def main(argv=None, *, root=ROOT):
         if args.list:
             for chapter in registry['chapters']:
                 support = 'standalone PDF' if chapter.get('standalone') else 'book/check/math only'
-                print(f'{chapter["id"]}: {chapter["status"]}, {chapter["problem_count"]} problems, {support}')
-            print(f'book: {sum(c["problem_count"] for c in book_chapters(registry))} problems')
+                count = (f'{chapter["example_count"]} examples' if chapter.get('content_kind') == 'examples'
+                         else f'{chapter["problem_count"]} problems')
+                print(f'{chapter["id"]}: {chapter["status"]}, {count}, {support}')
+            print(f'book: {sum(c["problem_count"] for c in book_chapters(registry))} problems, '
+                  f'{sum(c.get("example_count", 0) for c in book_chapters(registry))} examples')
             return 0
         if args.sync:
             if args.target not in ('all', 'book'):

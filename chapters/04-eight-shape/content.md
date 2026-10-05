@@ -8,7 +8,7 @@
 
 ![关键的八字形：双色突出两个三角形，标出直角](assets/diagrams/model.png)
 
-由八字型得
+由八字形得
 
 \[
 \angle BAC+\angle ABD=\angle BDC+\angle ACD.
@@ -29,7 +29,7 @@
 | ③ | ∠BDC＝90° |
 | ④ | DA 平分 ∠BDX，即 ∠BDA＝∠ADX |
 
-**知道其中任意三个，就能推出剩下的一个。** 下面把四种情况放在一起比较，看看条件交换后，全等的依据怎样随之改变。
+**知道其中任意三个，就能推出剩下的一个。**
 
 ### （1）$\text{①②③}\Rightarrow\text{④}$：连接直角顶点，得到外角平分线
 
@@ -114,7 +114,7 @@
 
 **方法二：向上延长 CD，截取 DE＝DB。**
 
-延长 CD 至 E，使 DE＝DB，连接 AE。这里的 E 是本例新作的辅助点。
+延长 CD 至 E，使 DE＝DB，连接 AE。
 
 ![向上延长 CD 构造对称全等](assets/diagrams/extend-cd.png)
 
@@ -124,9 +124,9 @@
 \triangle ADB\cong\triangle ADE\quad(\mathrm{SAS}).
 \]
 
-所以 AB＝AE，∠ABD＝∠AED。又因为 AB＝AC，所以 AE＝AC。在 △ACE 中，等边对等角，有 ∠AEC＝∠ACE。
+所以 AB＝AE，∠ABD＝∠AED。又因为 AB＝AC，所以 AE＝AC，即 ∠AEC＝∠ACE。因此 ∠AEC＝∠ACE＝∠ABD。
 
-E、D、C 共线且 D 在 E、C 之间，故 ∠AED＝∠AEC，∠ACE＝∠ACD。于是 ∠ABD＝∠ACD，再倒角得 ∠BDC＝90°。
+最后八字形得 ∠BDC＝90°。
 
 **方法三：向右延长 BD，截取 DF＝DC。**
 
@@ -134,14 +134,12 @@ E、D、C 共线且 D 在 E、C 之间，故 ∠AED＝∠AEC，∠ACE＝∠ACD�
 
 ![向右延长 BD 构造对称全等](assets/diagrams/extend-bd.png)
 
-由于 DB 与 DF 反向、DC 与 DX 反向，
-
 \[
 \angle ADF=180^\circ-\angle BDA,
 \qquad \angle ADC=180^\circ-\angle ADX.
 \]
 
-所以 ∠ADF＝∠ADC。结合 AD 公共、DF＝DC，得
+等角的补角相等，所以 ∠ADF＝∠ADC。结合 AD 公共、DF＝DC，得
 
 \[
 \triangle ADF\cong\triangle ADC\quad(\mathrm{SAS}),
@@ -149,9 +147,9 @@ E、D、C 共线且 D 在 E、C 之间，故 ∠AED＝∠AEC，∠ACE＝∠ACD�
 \quad \angle AFD=\angle ACD.
 \]
 
-又 AB＝AC，故 AB＝AF。在 △ABF 中，∠ABF＝∠AFB。B、D、F 依次共线，故 ∠ABF＝∠ABD，∠AFB＝∠AFD，从而 ∠ABD＝∠ACD。再由 ∠BAC＝90° 得 ∠BDC＝90°。
+故 AB＝AC＝AF，从而 ∠ABD＝∠AFD＝∠ACD。最后八字形得 ∠BDC＝90°。
 
-**方法点睛**：已知角平分线，就先围绕它制造对称全等；不能提前借用待证的直角。
+**方法点睛**：已知角平分线，可以先围绕它制造全等或者等腰。
 
 ### （3）$\text{②③④}\Rightarrow\text{①}$：保留两个直角，反推等腰
 
@@ -174,18 +172,14 @@ E、D、C 共线且 D 在 E、C 之间，故 ∠AED＝∠AEC，∠ACE＝∠ACD�
 
 **另外两种对称全等的写法。**
 
-- 按例 1（2）方法二作 E，得到 AB＝AE、∠ABD＝∠AED。由 ∠ABD＝∠ACD，得 ∠AEC＝∠ACE，所以 AE＝AC，进而 AB＝AC。
-- 按例 1（2）方法三作 F，得到 AF＝AC、∠AFD＝∠ACD。由 ∠ABD＝∠ACD，得 ∠AFB＝∠ABF，所以 AB＝AF，进而 AB＝AC。
+- 按（2）方法二作 E，得到 AB＝AE、∠ABD＝∠AED。由 ∠ABD＝∠ACD，得 ∠AEC＝∠ACE，所以 AE＝AC，进而 AB＝AC。
+- 按（2）方法三作 F，得到 AF＝AC、∠AFD＝∠ACD。由 ∠ABD＝∠ACD，得 ∠AFB＝∠ABF，所以 AB＝AF，进而 AB＝AC。
 
 **方法点睛**：条件与结论交换后，要重新选择全等判定；等边待证时，用等角和等距离搭桥。
 
 ### （4）$\text{①③④}\Rightarrow\text{②}$：保留等边，反推 A 处直角
 
 已知 AB＝AC，∠BDC＝90°，DA 平分 ∠BDX，说明 ∠BAC＝90°。
-
-**怎么想**
-
-ABC 是否为直角三角形还不知道，不能提前使用手拉手或 K 型全等。现在真正可用的是外角平分线和 AB＝AC：先获得等距离，再用 HL 换出 ∠ABD＝∠ACD，最后倒角。
 
 从 A 向 BD、CD 作双垂，垂足分别为 M、N。由 ∠BDA＝∠ADX、AD 公共和两个直角，得 Rt△ADM≅Rt△ADN，所以 AM＝AN。
 
@@ -202,7 +196,7 @@ ABC 是否为直角三角形还不知道，不能提前使用手拉手或 K 型�
 \angle BAC=\angle BDC=90^\circ.
 \]
 
-也可以照例 1（2）的两种延长作法：先由对称全等和 AB＝AC 得到 ∠ABD＝∠ACD，再把已知的 ∠BDC＝90° 换回 ∠BAC＝90°。这两种作法在得出 ∠ABD＝∠ACD 之前，都没有用到 A 处是直角。
+也可以照例 1（2）的两种延长作法：先由对称全等和 AB＝AC 得到 ∠ABD＝∠ACD，再把已知的 ∠BDC＝90° 换回 ∠BAC＝90°。
 
 **方法点睛**：先清点已知条件；通过等距离与等斜边得到等角，再把直角搬回另一顶点。
 
@@ -234,7 +228,7 @@ ABC 是否为直角三角形还不知道，不能提前使用手拉手或 K 型�
 
 **方法二：从 B、C 向 AD 作双垂。**
 
-过 B 作 BM⊥AD，过 C 作 CN⊥AD，垂足分别为 M、N。本构型中，沿 AD 的方向，点的顺序为 M、A、D、N。
+过 B 作 BM⊥AD，过 C 作 CN⊥AD，垂足分别为 M、N。构造一线三等角。
 
 ![从 B、C 向 AD 作双垂：K 型全等](assets/diagrams/k-perpendicular.png)
 
@@ -245,8 +239,6 @@ ABC 是否为直角三角形还不知道，不能提前使用手拉手或 K 型�
 \qquad BM=AN,\quad AM=CN.
 \]
 
-这里的角相等来自 AB⊥AC、AM⊥CN，按图取相等的锐角。
-
 由于 ∠BDM＝45°，Rt△BMD 为等腰直角三角形，所以 BM＝DM。于是
 
 \[
@@ -254,9 +246,9 @@ AN=DM=AM+AD,
 \qquad DN=AN-AD=AM=CN.
 \]
 
-故 Rt△CDN 也是等腰直角三角形，∠CDN＝45°。DN 与 DA 反向，所以 ∠ADX＝45°。又 ∠BDA＝45°，故 ∠BDC＝180°－45°－45°＝90°。
+故 Rt△CDN 也是等腰直角三角形，∠CDN＝45°。又 ∠BDA＝45°，故 ∠BDC＝180°－45°－45°＝90°。
 
-**方法点睛**：只给单个 45° 时，先补等腰直角三角形；用 K 型全等时，等长常藏在“加减公共部分”中。
+**方法点睛**：只给单个 45° 时，先补等腰直角三角形；用一线三等角时，等长常藏在“加减公共部分”中。
 
 #### 变式二：换成 ∠ADC＝135°
 

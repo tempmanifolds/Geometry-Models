@@ -5,7 +5,7 @@ import re
 import shutil
 import subprocess
 import sys
-from sync_latex import sync
+from sync_latex import check_sync
 
 CH=Path(__file__).resolve().parent
 ROOT=CH.parents[1]
@@ -22,8 +22,7 @@ def expand(path):
     return re.sub(r'\\input\{([^}]+)\}',child,text)
 
 def prepare():
-    sync()
-    subprocess.run([sys.executable,str(CH/'make_diagrams.py')],check=True)
+    check_sync()
     text=expand(PROJECT/'main.tex')
     assert text.count(r'\end{document}')==1
     assert len(re.findall(r'\\section\{\\texorpdfstring\{例 \$[12]\$',text))==2

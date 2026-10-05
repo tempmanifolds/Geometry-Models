@@ -9,6 +9,7 @@
 | `half-angle` | `chapters/01-half-angle` | 已并入全书 | 9 | 单章与全书 |
 | `hand-in-hand` | `chapters/02-hand-in-hand` | 已并入全书 | 2 | 全书；可独立检查和数学核验 |
 | `double-isosceles` | `chapters/03-double-isosceles` | 已并入全书 | 3 | 单章与全书 |
+| `eight-shape` | `chapters/04-eight-shape` | 已并入全书 | 0 道练习、2 个例题 | 单章与全书 |
 
 这张表用于阅读，运行时以根目录 `chapters.json` 为准。手拉手目前没有独立的 `latex/main.tex`，本轮保留现有编译能力。
 
@@ -34,7 +35,8 @@
 | `path` | 仓库内的章节目录，如 `chapters/03-double-isosceles` |
 | `title` / `book_title` | 章节名称与全书 Markdown 的显示标题 |
 | `status` | `draft`、`review` 或 `integrated`；仅后者进入全书 |
-| `problem_count` | 本章正式题数，题目与解析均须从 1 连续编号 |
+| `problem_count` | 本章正式题数，题目与解析均须从 1 连续编号；例题章节为 0 |
+| `content_kind` / `example_count` | 默认为 `problems`；`examples` 表示例题就地解答，须给出正整数例题数并从 1 连续编号 |
 | `book_entry` | 全书章节入口的仓库相对路径；未并入时可为 `null` |
 | `standalone` | 单章主文件和 PDF 文件名；没有独立入口时为 `null` |
 | `standalone.builder` | 可选的专用脚本，保留本章特殊导出；双等腰用它更新 `review.tex` |
@@ -98,3 +100,7 @@ python -m unittest discover -s tests -v
 Git 保存章节源文件、来源说明、核验脚本、重绘图和交付 PDF。提交前查看差异，明确区分已有稿件与本次修改；全书汇总与全书 PDF 由整合任务生成后一起提交。
 
 本轮先建立上述管理基础。公共排版宏的进一步抽取、手拉手单章入口、自动 CI 和正式版本标签，可在实际需要时逐项处理。
+
+## 八字形的例题结构与手改保护
+
+第四章采用 `content_kind: examples`，登记 0 道正式练习、2 个例题。公共检查核对例题连续编号并拒绝混入题目/解析框；其他章节仍严格检查题目与解析配对。单章构建不自动从 Markdown 重写 TeX，也不重绘图形。直接编辑 TeX 后先核对并回填 Markdown；内容不一致时编译停止，保留手改。
