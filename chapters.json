@@ -15,7 +15,7 @@
       "title": "夹半角",
       "book_title": "第一章 夹半角",
       "status": "integrated",
-      "problem_count": 10,
+      "problem_count": 9,
       "book_entry": "latex/sections/01-half-angle.tex",
       "markdown_remove_heading": "第一部分 夹半角",
       "standalone": {

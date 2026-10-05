@@ -19,7 +19,7 @@
 \end{tikzpicture}}
 
 \newcommand{\figIntroA}{%
-\begin{tikzpicture}[scale=0.73,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\begin{tikzpicture}[baseline=(current bounding box.center),scale=0.88,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
 \coordinate (A) at (0,3);
 \coordinate (B) at (0,0);
 \coordinate (C) at (3,0);
@@ -35,7 +35,7 @@
 \node[above right] at (D) {$D$};
 \node[below] at (E) {$E$};
 \node[right] at (F) {$F$};
-\node[font=\small] at (current bounding box.south) [below=6pt] {图 A 顶点夹半角};
+\node[font=\small] at (current bounding box.south) [below=6pt] {图 A 原图};
 \end{tikzpicture}}
 
 \newcommand{\figOneSolve}{%
@@ -64,7 +64,7 @@
 \end{tikzpicture}}
 
 \newcommand{\figIntroB}{%
-\begin{tikzpicture}[scale=0.73,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\begin{tikzpicture}[baseline=(current bounding box.center),scale=0.88,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
 \coordinate (A) at (0,3);
 \coordinate (B) at (0,0);
 \coordinate (C) at (3,0);
@@ -83,11 +83,11 @@
 \node[below] at (E) {$E$};
 \node[left] at (F) {$F$};
 \node[above right] at (P) {$P$};
-\node[font=\small] at (current bounding box.south) [below=6pt] {图 B 交叉角与平行转移};
+\node[font=\small] at (current bounding box.south) [below=6pt] {图 B 原图};
 \end{tikzpicture}}
 
 \newcommand{\figIntroC}{%
-\begin{tikzpicture}[scale=0.73,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\begin{tikzpicture}[baseline=(current bounding box.center),scale=0.88,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
 \coordinate (A) at (0,3);
 \coordinate (B) at (0,0);
 \coordinate (C) at (3,0);
@@ -106,20 +106,20 @@
 \node[below] at (E) {$E$};
 \node[above] at (F) {$F$};
 \node[left] at (P) {$P$};
-\node[font=\small] at (current bounding box.south) [below=6pt] {图 C 交叉角与垂直转移};
+\node[font=\small] at (current bounding box.south) [below=6pt] {图 C 原图};
 \end{tikzpicture}}
 
 \newcommand{\figIntroD}{%
-\begin{tikzpicture}[scale=0.73,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\begin{tikzpicture}[baseline=(current bounding box.center),scale=0.88,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
 \coordinate (A) at (0,3);
 \coordinate (B) at (0,0);
 \coordinate (C) at (3,0);
 \coordinate (D) at (3,3);
-\coordinate (E) at (0.3,3);
-\coordinate (F) at (1.3,0);
-\coordinate (M) at (0,2.2);
-\coordinate (N) at (3,0.7);
-\coordinate (P) at (0.68,1.86);
+\coordinate (E) at (0.65,3);
+\coordinate (F) at (1.65,0);
+\coordinate (M) at (0,2.45);
+\coordinate (N) at (3,0.95);
+\coordinate (P) at (1,1.95);
 \draw[inkiron] (A) -- (B) -- (C) -- (D) -- (A);
 \draw[inkiron] (E) -- (F);
 \draw[inkiron] (M) -- (N);
@@ -133,7 +133,7 @@
 \node[left] at (M) {$M$};
 \node[right] at (N) {$N$};
 \node[above right] at (P) {$P$};
-\node[font=\small] at (current bounding box.south) [below=6pt] {图 D 两条线同时平移};
+\node[font=\small] at (current bounding box.south) [below=6pt] {图 D 原图};
 \end{tikzpicture}}
 
 \newcommand{\figTwo}{%
@@ -154,33 +154,55 @@
 \node[right] at (N) {$N$};
 \end{tikzpicture}}
 
-\newcommand{\figTwoSolve}{%
-\begin{tikzpicture}[scale=0.34,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
-\coordinate (A) at (0,9);
-\coordinate (B) at (0,0);
-\coordinate (C) at (9,0);
-\coordinate (D) at (9,9);
-\coordinate (M) at (3,9);
-\coordinate (N) at (9,4.5);
+\newcommand{\figTwoEquivalence}{%
+\begin{tikzpicture}[every node/.style={font=\small,align=center},line width=.65pt]
+\node[draw=thread,rounded corners=2pt,fill=linen,text width=2.55cm,minimum height=1.05cm] (sum) at (0,0) {\((2)\) 线段和\\\(MN=AM+CN\)};
+\node[draw=thread,rounded corners=2pt,fill=linen,text width=2.55cm,minimum height=1.05cm] (half) at (3.4,0) {\((1)\) 半角\\\(\angle MBN=45^\circ\)};
+\node[draw=thread,rounded corners=2pt,fill=linen,text width=2.55cm,minimum height=1.05cm] (m) at (6.8,0) {\((3)\) \(M\) 处等角\\\(\angle AMB=\angle BMN\)};
+\node[draw=thread,rounded corners=2pt,fill=linen,text width=2.55cm,minimum height=1.05cm] (n) at (10.2,0) {\((4)\) \(N\) 处等角\\\(\angle BNM=\angle BNC\)};
+\draw[indigo,<->,>=Latex] (sum) -- (half);
+\draw[indigo,<->,>=Latex] (half) -- (m);
+\draw[indigo,<->,>=Latex] (m) -- (n);
+\end{tikzpicture}}
+
+\newcommand{\figTwoRotateSolve}{%
+\begin{tikzpicture}[scale=0.29,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\coordinate (A) at (0,9); \coordinate (B) at (0,0);
+\coordinate (C) at (9,0); \coordinate (D) at (9,9);
+\coordinate (M) at (3,9); \coordinate (N) at (9,4.5);
 \coordinate (P) at (9,-3);
-\coordinate (Q) at (5.4,7.2);
 \draw[inkiron] (A) -- (B) -- (C) -- (D) -- (A);
 \draw[inkiron] (B) -- (M) -- (N) -- (B);
 \draw[indigo,dashed] (C) -- (P) -- (B);
 \draw[indigo,dashed] (P) -- (N);
-\draw[indigo,dashed] (B) -- (Q);
 \pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=N--B--M};
 \pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=P--B--N};
-\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$90^\circ$"] {angle=B--Q--N};
-\node[above left] at (A) {$A$};
-\node[below left] at (B) {$B$};
-\node[below right] at (C) {$C$};
-\node[above right] at (D) {$D$};
-\node[above] at (M) {$M$};
-\node[right] at (N) {$N$};
+\node[above left] at (A) {$A$}; \node[below left] at (B) {$B$};
+\node[below right] at (C) {$C$}; \node[above right] at (D) {$D$};
+\node[above] at (M) {$M$}; \node[right] at (N) {$N$};
 \node[below right] at (P) {$P$};
-\node[above right] at (Q) {$Q$};
+\path (C) -- node[right=5pt] {$AM$} (P);
+\node[font=\small] at (current bounding box.south) [below=6pt] {旋转：构造全等三角形};
 \end{tikzpicture}}
+
+\newcommand{\figTwoDistanceSolve}{%
+\begin{tikzpicture}[scale=0.29,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\coordinate (A) at (0,9); \coordinate (B) at (0,0);
+\coordinate (C) at (9,0); \coordinate (D) at (9,9);
+\coordinate (M) at (3,9); \coordinate (N) at (9,4.5);
+\coordinate (Q) at (5.4,7.2);
+\draw[inkiron] (A) -- (B) -- (C) -- (D) -- (A);
+\draw[inkiron] (B) -- (M) -- (N) -- (B);
+\draw[indigo,dashed] (B) -- (Q);
+\pic[draw=indigo,angle radius=2mm] {right angle=B--Q--N};
+\node[above left] at (A) {$A$}; \node[below left] at (B) {$B$};
+\node[below right] at (C) {$C$}; \node[above right] at (D) {$D$};
+\node[above] at (M) {$M$}; \node[right] at (N) {$N$};
+\node[above right] at (Q) {$Q$};
+\node[font=\small] at (current bounding box.south) [below=6pt] {垂线：等角与等距相互转化};
+\end{tikzpicture}}
+
+\newcommand{\figTwoSolve}{\figTwoRotateSolve\hspace{1.6cm}\figTwoDistanceSolve}
 
 \newcommand{\figThree}{%
 \begin{tikzpicture}[scale=0.36,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
@@ -380,7 +402,7 @@
 \node[above] at (M) {$M$};
 \node[below] at (Q) {$Q$};
 \node[above right] at (N) {$N$};
-\path (M) -- node[right,fill=white] {$x$} (N);
+\path (M) -- node[left=3pt,fill=white,inner sep=1pt] {$x$} (N);
 \path (N) -- node[right,fill=white] {$6-x$} (Q);
 \end{tikzpicture}}
 
@@ -444,8 +466,8 @@
 \node[above right] at (D) {$D$};
 \node[below] at (E) {$E$};
 \node[right] at (F) {$F$};
-\path (E) -- node[below,fill=white] {$x$} (C);
-\path (C) -- node[right,fill=white] {$x$} (F);
+\path (E) -- node[below=3pt] {$x$} (C);
+\path (C) -- node[right=4pt] {$x$} (F);
 \end{tikzpicture}}
 
 \newcommand{\figEightSolve}{%
@@ -458,10 +480,13 @@
 \coordinate (F) at (9,5);
 \coordinate (G) at (8,12);
 \coordinate (H) at (9,12);
+\coordinate (T) at (8,8);
 \draw[inkiron] (A) -- (B) -- (C) -- (D) -- (A);
 \draw[inkiron] (A) -- (E) -- (F) -- (A);
 \draw[indigo,dashed] (A) -- (G) -- (H) -- (F);
 \draw[indigo,dashed] (F) -- (G);
+\draw[indigo,dashed] (G) -- (T);
+\pic[draw=indigo,angle radius=1.7mm] {right angle=G--H--F};
 \pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=E--A--F};
 \pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=F--A--G};
 \node[above left] at (A) {$A$};
@@ -472,6 +497,14 @@
 \node[right] at (F) {$F$};
 \node[above left] at (G) {$G$};
 \node[above right] at (H) {$H$};
+\node[below left] at (T) {$T$};
+\path (E) -- node[below=3pt] {$x$} (C);
+\path (C) -- node[right=4pt] {$x$} (F);
+\path (B) -- node[below=3pt] {$4$} (E);
+\path (F) -- node[right=4pt] {$3$} (D);
+\path (D) -- node[right=4pt] {$4$} (H);
+\path (A) -- node[above=2pt] {$x+3$} (T);
+\node[above=15pt] at (8.5,12) {$1$};
 \end{tikzpicture}}
 
 \newcommand{\figNineIn}{%
@@ -606,6 +639,10 @@
 \node[below] at (H) {$H$};
 \node[below] at (K) {$K$};
 \node[above] at (G) {$G$};
+\path (K) -- node[left=4pt] {$4$} (G);
+\path (G) -- node[above=3pt] {$5$} (C);
+\path (K) -- node[below=13pt] {$3$} (C);
+\pic[draw=indigo,angle radius=1.7mm] {right angle=G--K--C};
 \node[font=\small] at (current bounding box.south) [below=6pt] {构型一 H 在 BD 内部};
 \end{tikzpicture}}
 
@@ -631,7 +668,129 @@
 \node[below] at (H) {$H$};
 \node[below] at (K) {$K$};
 \node[above] at (G) {$G$};
+\path (K) -- node[right=4pt] {$4$} (G);
+\path (G) -- node[above=3pt] {$5$} (C);
+\path (K) -- node[below=13pt] {$3$} (C);
+\pic[draw=indigo,angle radius=1.7mm] {right angle=G--K--C};
 \node[font=\small] at (current bounding box.south) [below=6pt] {构型二 H 在 DC 内部};
 \end{tikzpicture}}
 
 \newcommand{\figTenSolve}{\figTenSmall\hspace{.8cm}\figTenLarge}
+
+
+% 第一章导入：与原图对应的辅助线图。
+\newcommand{\figIntroASolve}{%
+\begin{tikzpicture}[baseline=(current bounding box.center),scale=0.95,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\coordinate (A) at (0,3);
+\coordinate (B) at (0,0);
+\coordinate (C) at (3,0);
+\coordinate (D) at (3,3);
+\coordinate (E) at (1,0);
+\coordinate (F) at (3,1.5);
+\coordinate (G) at (3,4);
+\draw[inkiron] (A) -- (B) -- (C) -- (D) -- (A);
+\draw[inkiron] (A) -- (E) -- (F) -- (A);
+\draw[indigo,dashed] (D) -- (G) -- (A);
+\draw[indigo,dashed] (F) -- (G);
+\pic[draw=madder,angle radius=6mm,angle eccentricity=1.5,"$45^\circ$"] {angle=E--A--F};
+\pic[draw=madder,angle radius=9mm] {angle=F--A--G};
+\node at (1.35,3.22) {$45^\circ$};
+\node[above left] at (A) {$A$};
+\node[below left] at (B) {$B$};
+\node[below right] at (C) {$C$};
+\node[below right] at (D) {$D$};
+\node[below] at (E) {$E$};
+\node[right] at (F) {$F$};
+\node[above right] at (G) {$G$};
+\path (D) -- node[midway,right=5pt,fill=white,inner sep=1pt] {$BE$} (G);
+\node[font=\small] at (current bounding box.south) [below=6pt] {图 A 辅助线图};
+\end{tikzpicture}}
+
+\newcommand{\figIntroBSolve}{%
+\begin{tikzpicture}[baseline=(current bounding box.center),scale=0.88,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\coordinate (A) at (0,3);
+\coordinate (B) at (0,0);
+\coordinate (C) at (3,0);
+\coordinate (D) at (3,3);
+\coordinate (E) at (1,0);
+\coordinate (F) at (0,1.5);
+\coordinate (G) at (3,1.5);
+\coordinate (P) at (0.6,1.2);
+\draw[inkiron] (A) -- (B) -- (C) -- (D) -- (A);
+\draw[inkiron] (A) -- (E);
+\draw[inkiron] (F) -- (C);
+\draw[indigo,dashed] (A) -- (G) -- (E);
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=E--P--C};
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=E--A--G};
+\node[above left] at (A) {$A$};
+\node[below left] at (B) {$B$};
+\node[below right] at (C) {$C$};
+\node[above right] at (D) {$D$};
+\node[below] at (E) {$E$};
+\node[right] at (G) {$G$};
+\node[left] at (F) {$F$};
+\node[above right] at (P) {$P$};
+\node[font=\small] at (current bounding box.south) [below=6pt] {图 B 辅助线图};
+\end{tikzpicture}}
+
+\newcommand{\figIntroCSolve}{%
+\begin{tikzpicture}[baseline=(current bounding box.center),scale=0.88,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\coordinate (A) at (0,3);
+\coordinate (B) at (0,0);
+\coordinate (C) at (3,0);
+\coordinate (D) at (3,3);
+\coordinate (E) at (1,0);
+\coordinate (F) at (1.5,3);
+\coordinate (G) at (3,1.5);
+\coordinate (Q) at (1.2,2.4);
+\coordinate (P) at (0.6,1.2);
+\draw[inkiron] (A) -- (B) -- (C) -- (D) -- (A);
+\draw[inkiron] (A) -- (E);
+\draw[inkiron] (B) -- (F);
+\draw[indigo,dashed] (A) -- (G) -- (E);
+\pic[draw=indigo,angle radius=2mm] {right angle=F--Q--A};
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=F--P--A};
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=E--A--G};
+\node[above left] at (A) {$A$};
+\node[below left] at (B) {$B$};
+\node[below right] at (C) {$C$};
+\node[above right] at (D) {$D$};
+\node[below] at (E) {$E$};
+\node[right] at (G) {$G$};
+\node[above] at (F) {$F$};
+\node[left] at (P) {$P$};
+\node[font=\small] at (current bounding box.south) [below=6pt] {图 C 辅助线图};
+\end{tikzpicture}}
+
+\newcommand{\figIntroDSolve}{%
+\begin{tikzpicture}[baseline=(current bounding box.center),scale=0.88,every node/.style={font=\small,inner sep=2pt},line width=.65pt]
+\coordinate (A) at (0,3);
+\coordinate (B) at (0,0);
+\coordinate (C) at (3,0);
+\coordinate (D) at (3,3);
+\coordinate (E) at (0.65,3);
+\coordinate (F) at (1.65,0);
+\coordinate (M) at (0,2.45);
+\coordinate (N) at (3,0.95);
+\coordinate (T) at (1,0);
+\coordinate (U) at (3,1.5);
+\coordinate (P) at (1,1.95);
+\draw[inkiron] (A) -- (B) -- (C) -- (D) -- (A);
+\draw[inkiron] (E) -- (F);
+\draw[inkiron] (M) -- (N);
+\draw[indigo,dashed] (A) -- (T) -- (U) -- (A);
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=F--P--N};
+\pic[draw=madder,angle radius=4.2mm,angle eccentricity=1.45,"$45^\circ$"] {angle=T--A--U};
+\node[above left] at (A) {$A$};
+\node[below left] at (B) {$B$};
+\node[below right] at (C) {$C$};
+\node[above right] at (D) {$D$};
+\node[above] at (E) {$E$};
+\node[below right] at (F) {$F$};
+\node[below left] at (T) {$T$};
+\node[above right] at (U) {$U$};
+\node[left] at (M) {$M$};
+\node[below right] at (N) {$N$};
+\node[above right] at (P) {$P$};
+\node[font=\small] at (current bounding box.south) [below=6pt] {图 D 辅助线图};
+\end{tikzpicture}}

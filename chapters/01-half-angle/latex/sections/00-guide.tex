@@ -1,25 +1,119 @@
-\setcounter{section}{-1}
-\section{基础知识与模型识别}
-面向初二、初三培优学生。先从一道正方形题观察“\(45^\circ \)怎样把两段线段接起来”，再学习旋转、翻折与延长构造，最后处理交叉角、矩形和外部构型。建议分两次课使用：第一次完成题 \(1\) 至 \(5\)，第二次完成题 \(6\) 至 \(10\)。题目与解析分开，先独立尝试，再阅读提示。
+\setcounter{section}{0}
+\section*{四种常见构型}
+\phantomsection
+\addcontentsline{toc}{section}{四种常见构型}
+四图中的 \(ABCD\) 均为正方形，各动点在指定边的内部。识别时先找等长邻边和直角，再看 \(45^\circ\) 在顶点还是交点。原图与辅助线图并排，辅助线用虚线表示。
 
-\block{从一幅图开始}
+\block{图 A 顶点夹半角：完整证明}
+\textbf{条件与结论}\quad \(E\in BC\)、\(F\in CD\)，\(\angle EAF=45^\circ\)。则 \(EF=BE+DF\)；反过来，\(EF=BE+DF\) 也能推出 \(\angle EAF=45^\circ\)。
+\diagram{\figIntroA\hspace{1.2cm}\figIntroASolve}
 
-正方形 \(ABCD\) 中，\(E\) 在 \(BC\) 上，\(F\) 在 \(CD\) 上，\(\angle EAF=45^\circ \)。图中没有现成的全等三角形，但 \(AB=AD\)，\(\angle BAD=90^\circ \)，而 \(45^\circ \)正好是它的一半。把 \(\triangle ABE\) 绕 \(A\) 逆时针旋转 \(90^\circ \)，\(E\) 会落到 \(CD\) 向 \(D\) 外的延长线上。这样，\(BE\) 被搬到 \(DF\) 所在的直线上；原来的 \(45^\circ \)则提供第二次全等所需的相等夹角。
+\think 把 \(BE\) 搬到 \(CD\) 的延长线上，使 \(BE+DF\) 成为一条线段，再用半角证明这条线段等于 \(EF\)。
+\solve 延长 \(CD\) 至 \(G\)，使 \(DG=BE\)，连接 \(AG\)。点序为 \(C,F,D,G\)。这相当于把 \(\triangle ABE\) 绕 \(A\) 逆时针旋转 \(90^\circ\) 到 \(\triangle ADG\)。
+\begin{enumerate}
+\item 在 \(\triangle ABE\) 与 \(\triangle ADG\) 中，\(AB=AD\)、\(BE=DG\)、\(\angle ABE=\angle ADG=90^\circ\)，所以 \(\triangle ABE\cong\triangle ADG\)（SAS）。于是 \(AE=AG\)，\(\angle BAE=\angle DAG\)。
+\item 因为 \(\angle BAE+\angle EAD=90^\circ\)，所以
+\[
+\angle EAG=\angle EAD+\angle DAG=90^\circ.
+\]
+\(AF\) 在 \(\angle EAG\) 内，而 \(\angle EAF=45^\circ\)，故 \(\angle FAG=45^\circ\)。由 \(AE=AG\)、\(AF\) 公共、\(\angle EAF=\angle GAF\)，得 \(\triangle EAF\cong\triangle GAF\)（SAS），因此 \(EF=FG\)。
+\item 由 \(F,D,G\) 的点序，\(EF=FG=FD+DG=DF+BE\)，结论成立。
+\end{enumerate}
+\insight{等长邻边提供第一次全等，半角提供第二次全等，最后按点序写线段和。}
 
-夹半角的识别重点是：一个大角、一半大小的小角、可以对应的两条等长边。\(45^\circ \)最常见，真正起作用的是“半角＋等长＋位置”。仅看到 \(45^\circ \)，不能直接套线段和结论。
-
-先试题 \(1\)，再读下面的四幅识别图。四种常见构型均保留，交点统一记为 \(P\)。
-\diagram{\figOne}
 \clearpage
-\block{四种常见构型}
-\diagram{\figIntroA\hspace{1cm}\figIntroB}
-\diagram{\figIntroC\hspace{1cm}\figIntroD}
-\begin{itemize}
-\item 图 \(A\)：\(E\in BC\)、\(F\in CD\)，\(\angle EAF=45^\circ \)。这是顶点夹半角。
-\item 图 \(B\)：\(E\in BC\)、\(F\in AB\)，\(AE\) 与 \(CF\) 交于 \(P\)，\(\angle EPC=45^\circ \)。过 \(A\) 作 \(AG\parallel CF\)，\(G\in CD\)，则 \(\angle EAG=45^\circ \)；由直角三角形全等可得 \(DG=BF\)。
-\item 图 \(C\)：\(E\in BC\)、\(F\in AD\)，\(AE\) 与 \(BF\) 交于 \(P\)，\(\angle APF=45^\circ \)。过 \(A\) 作 \(AG\perp BF\)，\(G\in CD\)，则 \(\angle EAG=45^\circ \)，且 \(DG=AF\)。
-\item 图 \(D\)：\(E\in AD\)、\(F\in BC\)、\(M\in AB\)、\(N\in CD\)，\(EF\) 与 \(MN\) 交于 \(P\)，\(\angle FPN=45^\circ \)。按图示点序 \(BF>AE\)、\(DN>AM\)，过 \(A\) 作 \(AT\parallel EF\)、\(AU\parallel MN\)，\(T\in BC\)、\(U\in CD\)，把交叉角搬到 \(A\)。此时 \(BT=BF-AE\)，\(DU=DN-AM\)。
-\end{itemize}
+\block{图 A 的逆命题与相应结论}
+\textbf{逆命题的证明}\quad 仍作 \(DG=BE\)，第一组全等仍给出 \(AE=AG\)、\(\angle EAG=90^\circ\)。若 \(EF=BE+DF\)，则 \(EF=FG\)。结合 \(AF\) 公共，\(\triangle EAF\cong\triangle GAF\)（SSS），所以 \(\angle EAF=\angle GAF\)。两角相加为 \(90^\circ\)，故 \(\angle EAF=45^\circ\)。
 
-图 \(B\)、\(C\)、\(D\) 的新增辅助线把交叉角转为图 \(A\) 的顶点角。上述位置条件保证交点在相应边内；换点序时，应重新判断射线方向和线段加减。
+设 \(AB=s\)、\(BE=e\)、\(DF=f\)，其中 \(0<e,f<s\)。由线段和可以继续得到：
+\begin{enumerate}
+\item \textbf{定周长。} \(CE=s-e\)、\(CF=s-f\)，所以
+\[
+EF=e+f\quad\Longrightarrow\quad
+C_{\triangle CEF}=(s-e)+(s-f)+(e+f)=2s.
+\]
+\item \textbf{长度关系。} 在 \(\mathrm{Rt}\triangle CEF\) 中，由勾股定理，
+\[
+(s-e)^2+(s-f)^2=(e+f)^2.
+\]
+\item \textbf{已知 \(AB\)、\(BE\) 求另两段。} 由上式解得
+\[
+\boxed{DF=\frac{s(s-e)}{s+e}},\qquad
+\boxed{CF=s-DF=\frac{2se}{s+e}}.
+\]
+\end{enumerate}
+
+\par\bigskip
+\noindent\begin{minipage}{\linewidth}
+\block{图 B 交叉角：平行转移}
+\(E\in BC\)、\(F\in AB\)，\(AE\) 与 \(CF\) 交于 \(P\)，\(\angle EPC=45^\circ\)。过 \(A\) 作 \(AG\parallel CF\)，交 \(CD\) 于 \(G\)，并连接 \(EG\)。
+\diagram{\figIntroB\hspace{1.2cm}\figIntroBSolve}
+\[
+AG\parallel CF\quad\Longrightarrow\quad\angle EAG=\angle EPC=45^\circ.
+\]
+\[
+\left.\begin{gathered}
+AD=CB,\quad\angle ADG=\angle CBF=90^\circ\\
+\angle DAG=\angle BCF
+\end{gathered}\right\}
+\ \Longrightarrow\ \triangle ADG\cong\triangle CBF\ (\mathrm{ASA})
+\ \Longrightarrow\ DG=BF.
+\]
+\[
+\text{转为图 A}\quad\Longrightarrow\quad
+\boxed{EG=BE+DG=BE+BF}.
+\]
+若 \(AB=s\)、\(BE=e\)、\(BF=f\)，则由图 A 的勾股等式化简得 \(\boxed{ef+s(e+f)=s^2}\)。
+\end{minipage}
+
+\clearpage
+\noindent\begin{minipage}{\linewidth}
+\block{图 C 交叉角：垂直转移}
+\(E\in BC\)、\(F\in AD\)，\(AE\) 与 \(BF\) 交于 \(P\)，\(\angle APF=45^\circ\)。过 \(A\) 作 \(AG\perp BF\)，交 \(CD\) 于 \(G\)，并连接 \(EG\)。
+\diagram{\figIntroC\hspace{1.2cm}\figIntroCSolve}
+\[
+AG\perp BF,\quad\angle APF=45^\circ
+\quad\Longrightarrow\quad\angle EAG=90^\circ-45^\circ=45^\circ.
+\]
+\[
+\left.\begin{gathered}
+AD=BA,\quad\angle ADG=\angle BAF=90^\circ\\
+\angle DAG=\angle ABF
+\end{gathered}\right\}
+\ \Longrightarrow\ \triangle ADG\cong\triangle BAF\ (\mathrm{ASA})
+\ \Longrightarrow\ DG=AF.
+\]
+其中 \(\angle DAG=\angle ABF\)，因为这两个锐角的两边分别垂直。
+\[
+\text{转为图 A}\quad\Longrightarrow\quad
+\boxed{EG=BE+DG=BE+AF}.
+\]
+若 \(AB=s\)、\(BE=e\)、\(AF=f\)，则 \(\boxed{ef+s(e+f)=s^2}\)。
+\end{minipage}
+
+\par\bigskip
+\noindent\begin{minipage}{\linewidth}
+\block{图 D 两条线同时平移}
+\(E\in AD\)、\(F\in BC\)、\(M\in AB\)、\(N\in CD\)，\(EF\) 与 \(MN\) 交于 \(P\)，\(\angle FPN=45^\circ\)。按图示位置，\(BF>AE\)、\(DN>AM\)。过 \(A\) 作 \(AT\parallel EF\)、\(AU\parallel MN\)，分别交 \(BC\)、\(CD\) 于 \(T,U\)，并连接 \(TU\)。
+\diagram{\figIntroD\hspace{1.2cm}\figIntroDSolve}
+\[
+\begin{aligned}
+AE\parallel TF,\ AT\parallel EF
+&\ \Longrightarrow\ AEFT\text{ 为平行四边形}\\
+&\ \Longrightarrow\ TF=AE\ \Longrightarrow\ BT=BF-AE;\\[5pt]
+AM\parallel NU,\ AU\parallel MN
+&\ \Longrightarrow\ AMNU\text{ 为平行四边形}\\
+&\ \Longrightarrow\ NU=AM\ \Longrightarrow\ DU=DN-AM.
+\end{aligned}
+\]
+\[
+AT\parallel PF,\ AU\parallel PN
+\quad\Longrightarrow\quad\angle TAU=45^\circ
+\quad\Longrightarrow\quad\text{转为图 A}.
+\]
+\[
+\boxed{TU=BT+DU=(BF-AE)+(DN-AM)}.
+\]
+若 \(AB=s\)、\(BT=e\)、\(DU=f\)，仍有 \(ef+s(e+f)=s^2\)。点序改变时，要重新判断射线方向及线段加减。
+\end{minipage}
 \clearpage

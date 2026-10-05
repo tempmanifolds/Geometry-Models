@@ -6,7 +6,7 @@
 
 | ID | 目录 | 状态 | 题数 | 编译方式 |
 | --- | --- | --- | --- | --- |
-| `half-angle` | `chapters/01-half-angle` | 已并入全书 | 10 | 单章与全书 |
+| `half-angle` | `chapters/01-half-angle` | 已并入全书 | 9 | 单章与全书 |
 | `hand-in-hand` | `chapters/02-hand-in-hand` | 已并入全书 | 2 | 全书；可独立检查和数学核验 |
 | `double-isosceles` | `chapters/03-double-isosceles` | 已并入全书 | 3 | 单章与全书 |
 

@@ -14,7 +14,7 @@ Hence 的初中几何模型总结与培优讲义。面向初二、初三培优�
 
 | 章节 | 状态 | 内容 | 内容稿 | 维护说明 |
 | --- | --- | --- | --- | --- |
-| 第一章 夹半角 | 已并入全书 | 10 道题、4 种识别构型；旋转、翻折、延长、矩形迁移及和差变化 | [Markdown](chapters/01-half-angle/content.md) | [专题说明](chapters/01-half-angle/README.md) |
+| 第一章 夹半角 | 已并入全书 | 9 道题、4 种识别构型；旋转、翻折、延长、矩形迁移及和差变化 | [Markdown](chapters/01-half-angle/content.md) | [专题说明](chapters/01-half-angle/README.md) |
 | 第二章 手拉手模型 | 已并入全书 | 2 道原题，每题两种解法；手拉脚、脚拉脚、倍长及中点搬运 | [Markdown](chapters/02-hand-in-hand/content.md) | [专题说明](chapters/02-hand-in-hand/README.md) |
 | 第三章 双等腰模型（婆罗摩笈多模型） | 已并入全书 | 1 页一线三等角回顾、3 项结论及完整证明；等面积、中点与垂直、伴随长度关系 | [Markdown](chapters/03-double-isosceles/content.md) | [专题说明](chapters/03-double-isosceles/README.md) |
 
